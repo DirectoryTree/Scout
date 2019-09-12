@@ -1,8 +1,24 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Font awesome
+@import url('https://use.fontawesome.com/releases/v5.7.1/css/all.css');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Sweet alert
+@import "~sweetalert2/src/sweetalert2";
+
+// Ladda buttons
+@import "~ladda/dist/ladda-themeless.min.css";
+
+// Hide vue elements until loaded.
+[v-cloak] {
+    display:none;
+}
+
+hr {
+    border-top:1px dotted rgba(0, 0, 0, 0.1);
+}

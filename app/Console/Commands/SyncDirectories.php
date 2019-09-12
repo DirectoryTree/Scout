@@ -32,16 +32,6 @@ class SyncDirectories extends Command
     protected $blacklist = [];
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

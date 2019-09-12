@@ -1,32 +1,56 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import * as Ladda from 'ladda';
+import Turbolinks from 'turbolinks';
 
 require('./bootstrap');
 
 window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+// Register components...
+Vue.component('notification', require('./components/Notification.vue').default);
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// Construct a new Vue instance when turbolinks loads...
+$(document).on('turbolinks:load', () => {
+    const app = new Vue({
+        el: '#app',
+    });
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+    // Enable tooltips.
+    $('[data-toggle="tooltip"]').tooltip();
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+    // Enable ladda.
+    Ladda.bind('button[type=submit]:not(.no-loading)');
 
-const app = new Vue({
-    el: '#app',
+    // Autofocus the first input on modal windows.
+    $(document).on('shown.bs.modal', function () {
+        $(this).find('[autofocus]').focus();
+    });
+
+    // Show / hide modals when included as an anchor in the URL.
+    $('.modal').on('show.bs.modal hide.bs.modal', function (e) {
+        let url = window.location.origin + window.location.pathname;
+
+        if (e.type === 'show') {
+            url = url + '#' + $(e.target).attr('id');
+        }
+
+        window.history.replaceState(window.history.state, "", url);
+    });
+
+    // Open modals if they are included in the URL hash.
+    let hash = location.hash;
+
+    if (hash) {
+        let modal = $(hash);
+
+        // Determine if the given has is a modal.
+        if (
+            modal.attr('class') !== undefined &&
+            modal.attr('class').includes('modal')
+        ) {
+            modal.modal('show');
+        }
+    }
 });
+
+// Boot Turbolinks...
+Turbolinks.start();

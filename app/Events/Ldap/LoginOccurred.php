@@ -2,8 +2,6 @@
 
 namespace App\Events\Ldap;
 
-use Illuminate\Support\Arr;
-
 class LoginOccurred extends Event
 {
     /**
@@ -11,13 +9,7 @@ class LoginOccurred extends Event
      */
     public function getSubject() : string
     {
-        $name = Arr::get($this->object->attributes, 'cn.0');
-
-        $subject = "User $name has logged in.";
-
-        logger($subject);
-
-        return $subject;
+        return "User {$this->getObjectName()} has logged in at {$this->getFirstValue()}.";
     }
 
     /**
@@ -25,6 +17,7 @@ class LoginOccurred extends Event
      */
     public function getDescription() : string
     {
+        // TODO: Determine model type and return human timestamp.
         return "";
     }
 }

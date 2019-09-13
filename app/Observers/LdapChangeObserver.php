@@ -13,7 +13,7 @@ class LdapChangeObserver
      * @var array
      */
     protected $events = [
-        'member' => \App\Events\Ldap\MemberChanged::class,
+        'member' => \App\Events\Ldap\MembershipsChanged::class,
         'lastlogontimestamp' => \App\Events\Ldap\LoginOccurred::class,
     ];
 
@@ -33,10 +33,7 @@ class LdapChangeObserver
             logger("Event: $event is being fired.");
 
             // Dispatch the relevant event from the map.
-            Event::dispatch(new $event(
-                $change->object,
-                $change->attributes[$attribute]
-            ));
+            Event::dispatch(new $event($change, $change->object, $attribute));
         }
     }
 }

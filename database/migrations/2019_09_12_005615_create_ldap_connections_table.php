@@ -20,12 +20,12 @@ class CreateLdapConnectionsTable extends Migration
             $table->string('name')->unique();
             $table->string('username');
             $table->string('password');
-            $table->string('hosts');
+            $table->json('hosts');
             $table->string('base_dn');
             $table->integer('port')->default(389);
             $table->integer('timeout')->default(5);
-            $table->boolean('use_tls');
-            $table->boolean('use_ssl');
+            $table->boolean('use_tls')->default(false);
+            $table->boolean('use_ssl')->default(false);
             $table->boolean('follow_referrals')->default(false);
 
             $table->tinyInteger('status')->default(LdapConnection::STATUS_OFFLINE);

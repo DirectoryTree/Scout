@@ -25,6 +25,8 @@ class LdapConnectionProvider extends ServiceProvider
      */
     public function boot()
     {
+        Container::setLogger(logger());
+
         $conn = new Connection([
             'hosts' => explode(',', env('LDAP_HOSTS')),
             'username' => env('LDAP_USERNAME'),

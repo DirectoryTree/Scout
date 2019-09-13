@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "directorytree/ldaprecord": "dev-master",
         "fideloper/proxy": "^4.0",
         "laracasts/flash": "^3.0",

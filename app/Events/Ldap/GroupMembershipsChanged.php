@@ -2,7 +2,7 @@
 
 namespace App\Events\Ldap;
 
-class MembershipsChanged extends Event
+class GroupMembershipsChanged extends Event
 {
     /**
      * {@inheritDoc}

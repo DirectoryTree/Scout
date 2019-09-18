@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class LdapConnection extends Model
 {
     // The LDAP connection types.
-    const TYPE_ACTIVE_DIRECTORY = 1;
-    const TYPE_OPEN_LDAP = 2;
+    const TYPE_UNKNOWN = 1;
+    const TYPE_ACTIVE_DIRECTORY = 2;
+    const TYPE_OPEN_LDAP = 3;
 
     // The LDAP connection statuses.
     const STATUS_ONLINE = 1;

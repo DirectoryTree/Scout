@@ -29,9 +29,13 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ request()->routeIs('connections') ? 'active' : null }}">
+                            <li class="nav-item {{ request()->routeIs('connections.*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('connections.index') }}">
                                     <i class="fa fa-network-wired"></i> {{ __('Connections') }}
+
+                                    @component('components.status-count', ['count' => $counts['connections']])
+                                        {{ $counts['connections'] }}
+                                    @endcomponent
                                 </a>
                             </li>
                         @endauth

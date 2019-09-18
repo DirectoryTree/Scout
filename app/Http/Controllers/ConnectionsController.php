@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LdapConnection;
+use App\Http\Requests\LdapConnectionRequest;
 
 class ConnectionsController extends Controller
 {
@@ -30,7 +31,7 @@ class ConnectionsController extends Controller
         return view('connections.create', compact('connection'));
     }
 
-    public function store()
+    public function store(LdapConnectionRequest $request)
     {
         //
     }

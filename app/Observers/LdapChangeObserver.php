@@ -13,7 +13,8 @@ class LdapChangeObserver
      * @var array
      */
     protected $events = [
-        'member' => \App\Events\Ldap\MembershipsChanged::class,
+        'member' => \App\Events\Ldap\GroupMembershipsChanged::class,
+        'memberof' => \App\Events\Ldap\UserMembershipsChanged::class,
         'lastlogontimestamp' => \App\Events\Ldap\LoginOccurred::class,
     ];
 

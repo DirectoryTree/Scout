@@ -17,10 +17,11 @@ class CreateLdapConnectionsTable extends Migration
         Schema::create('ldap_connections', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('user_id');
             $table->string('name')->unique();
             $table->string('username');
             $table->string('password');
-            $table->json('hosts');
+            $table->text('hosts');
             $table->string('base_dn');
             $table->integer('port')->default(389);
             $table->integer('timeout')->default(5);

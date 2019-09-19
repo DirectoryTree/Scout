@@ -29,6 +29,16 @@ class LdapConnection extends Model
     ];
 
     /**
+     * The belongsTo creator relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * Encrypts the username upon it being set.
      *
      * @param string $username

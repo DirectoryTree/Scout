@@ -27,6 +27,6 @@ class DistinguishedName implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be a valid RDN.';
+        return __('The :attribute must be a valid RDN (example: dc=local,dc=com).');
     }
 }

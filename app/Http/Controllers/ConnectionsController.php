@@ -31,9 +31,30 @@ class ConnectionsController extends Controller
         return view('connections.create', compact('connection'));
     }
 
-    public function store(LdapConnectionRequest $request)
+    /**
+     * Create a new LDAP connection.
+     *
+     * @param LdapConnectionRequest $request
+     * @param LdapConnection        $connection
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(LdapConnectionRequest $request, LdapConnection $connection)
     {
-        //
+        $connection->creator()->associate($request->user());
+
+        $connection->type = $request->type;
+        $connection->name = $request->name;
+        $connection->hosts = explode(',', $request->hosts);
+        $connection->port = $request->port;
+        $connection->base_dn = $request->base_dn;
+        $connection->username = $request->username;
+        $connection->password = $request->password;
+        $connection->save();
+
+        flash()->success('Added LDAP connection.');
+
+        return redirect()->route('connections.index');
     }
 
     public function edit()

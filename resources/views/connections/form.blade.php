@@ -40,25 +40,91 @@
     </div>
 </div>
 
+<div class="form-row">
+    <div class="col">
+        <div class="form-group">
+            <label for="hosts">{{ __('Hosts / Controllers') }}</label>
+            <input
+                name="hosts"
+                type="text"
+                value="{{ old('hosts', $connection->hosts) }}"
+                class="form-control{{ $errors->has('hosts') ? ' is-invalid' : '' }}"
+                id="hosts"
+                placeholder="10.0.0.1,10.0.0.2"
+            >
+
+            @error('hosts')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+
+            <small class="form-text text-muted">
+                Enter each host separated by a comma.
+            </small>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <label for="port">{{ __('Port') }}</label>
+            <input
+                name="port"
+                type="text"
+                value="{{ old('port', $connection->port ?? 389) }}"
+                class="form-control{{ $errors->has('port') ? ' is-invalid' : '' }}"
+                id="port"
+                placeholder="389"
+            >
+
+            @error('port')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <label for="timeout">{{ __('Timeout') }}</label>
+            <input
+                name="timeout"
+                type="text"
+                value="{{ old('timeout', $connection->timeout ?? 5) }}"
+                class="form-control{{ $errors->has('timeout') ? ' is-invalid' : '' }}"
+                id="timeout"
+                placeholder="5"
+            >
+
+            @error('timeout')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+    </div>
+</div>
+
 <div class="form-group">
-    <label for="hosts">{{ __('Hosts / Controllers') }}</label>
+    <label for="base_dn">{{ __('Search Base DN') }}</label>
     <input
-        name="hosts"
+        name="base_dn"
         type="text"
-        value="{{ old('hosts', $connection->hosts) }}"
-        class="form-control{{ $errors->has('hosts') ? ' is-invalid' : '' }}"
-        id="hosts"
-        placeholder="10.0.0.1,10.0.0.2"
+        value="{{ old('base_dn', $connection->base_dn) }}"
+        class="form-control{{ $errors->has('base_dn') ? ' is-invalid' : '' }}"
+        id="base_dn"
+        placeholder="dc=local,dc=com"
     >
 
-    @error('hosts')
+    @error('base_dn')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>
     @enderror
 
-    <small id="hostHelpBlock" class="form-text text-muted">
-        Enter each host separated by a comma.
+    <small class="form-text text-muted">
+        The <strong>Search Base DN</strong> is critical to scanning your directory.
     </small>
 </div>
 
@@ -83,7 +149,7 @@
                 placeholder="admin"
             >
 
-            @error('name')
+            @error('username')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -104,4 +170,3 @@
         </div>
     </div>
 </div>
-

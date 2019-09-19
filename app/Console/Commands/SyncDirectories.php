@@ -91,7 +91,10 @@ class SyncDirectories extends Command
                 'follow_referrals'
             ]);
 
-            $container->add(new Connection($config, new Ldap($connection->name)));
+            $container->add(
+                new Connection($config, new Ldap($connection->name)),
+                $connection->name
+            );
         }
 
         return $container;
@@ -130,7 +133,7 @@ class SyncDirectories extends Command
         }
 
         // Determine any differences from our last sync.
-        $results = array_diff(
+        $modifications = array_diff(
             array_map('serialize', $attributes),
             array_map('serialize', $object->attributes ?? [])
         );
@@ -143,7 +146,7 @@ class SyncDirectories extends Command
 
         $this->info("Successfully synchronized object.");
 
-        if (count($results) > 0) {
+        if (count($modifications) > 0) {
             $change = new LdapChange();
 
             $change->object()->associate($object);
@@ -151,7 +154,7 @@ class SyncDirectories extends Command
             $change->fill([
                 'before' => $attributes,
                 'after' => $object->attributes,
-                'attributes' => array_map('unserialize', $results),
+                'attributes' => array_map('unserialize', $modifications),
             ])->save();
         }
     }

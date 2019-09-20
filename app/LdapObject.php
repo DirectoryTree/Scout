@@ -28,4 +28,14 @@ class LdapObject extends Model
      * @var array
      */
     protected $casts = ['attributes' => 'array'];
+
+    /**
+     * The belongsTo domain relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function domain()
+    {
+        return $this->belongsTo(LdapDomain::class, 'domain_id');
+    }
 }

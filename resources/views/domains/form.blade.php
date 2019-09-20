@@ -5,7 +5,7 @@
 
             <select name="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" id="type">
                 @foreach($types as $value => $name)
-                    <option value="{{ $value }}" {{ old('type', $connection->type) == $value ? 'selected' : null }}>
+                    <option value="{{ $value }}" {{ old('type', $domain->type) == $value ? 'selected' : null }}>
                         {{ $name }}
                     </option>
                 @endforeach
@@ -25,7 +25,7 @@
             <input
                 name="name"
                 type="text"
-                value="{{ old('name', $connection->name) }}"
+                value="{{ old('name', $domain->name) }}"
                 class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
                 id="name"
                 placeholder="Domain Name / Company"
@@ -47,7 +47,7 @@
             <input
                 name="hosts"
                 type="text"
-                value="{{ old('hosts', $connection->hosts) }}"
+                value="{{ old('hosts', $domain->hosts) }}"
                 class="form-control{{ $errors->has('hosts') ? ' is-invalid' : '' }}"
                 id="hosts"
                 placeholder="10.0.0.1,10.0.0.2"
@@ -71,7 +71,7 @@
             <input
                 name="port"
                 type="text"
-                value="{{ old('port', $connection->port ?? 389) }}"
+                value="{{ old('port', $domain->port ?? 389) }}"
                 class="form-control{{ $errors->has('port') ? ' is-invalid' : '' }}"
                 id="port"
                 placeholder="389"
@@ -91,7 +91,7 @@
             <input
                 name="timeout"
                 type="text"
-                value="{{ old('timeout', $connection->timeout ?? 5) }}"
+                value="{{ old('timeout', $domain->timeout ?? 5) }}"
                 class="form-control{{ $errors->has('timeout') ? ' is-invalid' : '' }}"
                 id="timeout"
                 placeholder="5"
@@ -111,7 +111,7 @@
     <input
         name="base_dn"
         type="text"
-        value="{{ old('base_dn', $connection->base_dn) }}"
+        value="{{ old('base_dn', $domain->base_dn) }}"
         class="form-control{{ $errors->has('base_dn') ? ' is-invalid' : '' }}"
         id="base_dn"
         placeholder="dc=local,dc=com"
@@ -143,7 +143,7 @@
             <input
                 name="username"
                 type="text"
-                value="{{ old('username', $connection->username) }}"
+                value="{{ old('username', $domain->username) }}"
                 class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}"
                 id="username"
                 placeholder="admin"

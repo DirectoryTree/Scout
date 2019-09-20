@@ -17,10 +17,10 @@ class CreateLdapObjectsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->softDeletes();
+            $table->unsignedInteger('domain_id');
             $table->string('guid')->unique()->index();
             $table->string('dn');
             $table->text('attributes');
-            $table->string('domain');
         });
     }
 

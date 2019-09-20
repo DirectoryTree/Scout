@@ -10,7 +10,7 @@ use LdapRecord\LdapRecordException;
 use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LdapConnectionRequest extends FormRequest
+class LdapDomainRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +24,7 @@ class LdapConnectionRequest extends FormRequest
             'name' => [
                 'required',
                 'max:20',
-                Rule::unique('ldap_connections', 'name')->ignore($this->connection)
+                Rule::unique('ldap_domains', 'name')->ignore($this->domain)
             ],
             'hosts' => 'required',
             'username' => 'required',

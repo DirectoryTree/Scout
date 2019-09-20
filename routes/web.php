@@ -17,6 +17,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::resource('connections', 'ConnectionsController');
+    Route::resource('domains', 'DomainsController');
 
 });

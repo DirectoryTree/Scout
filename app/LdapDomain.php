@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class LdapConnection extends Model
+class LdapDomain extends Model
 {
     // The LDAP connection types.
     const TYPE_UNKNOWN = 1;
@@ -31,11 +32,41 @@ class LdapConnection extends Model
     /**
      * The belongsTo creator relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * The hasMany objects relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function objects()
+    {
+        return $this->hasMany(LdapObject::class, 'domain_id');
+    }
+
+    /**
+     * Returns the domains connection attributes.
+     *
+     * @return array
+     */
+    public function getConnectionAttributes()
+    {
+        return $this->only([
+            'username',
+            'password',
+            'hosts',
+            'base_dn',
+            'port',
+            'use_ssl',
+            'use_tls',
+            'timeout',
+            'follow_referrals'
+        ]);
     }
 
     /**

@@ -1,11 +1,11 @@
 <?php
 
-use App\LdapConnection;
+use App\LdapDomain;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLdapConnectionsTable extends Migration
+class CreateLdapDomainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateLdapConnectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ldap_connections', function (Blueprint $table) {
+        Schema::create('ldap_domains', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedInteger('user_id');
@@ -29,8 +29,8 @@ class CreateLdapConnectionsTable extends Migration
             $table->boolean('use_ssl')->default(false);
             $table->boolean('follow_referrals')->default(false);
 
-            $table->tinyInteger('status')->default(LdapConnection::STATUS_OFFLINE);
-            $table->tinyInteger('type')->default(LdapConnection::TYPE_ACTIVE_DIRECTORY);
+            $table->tinyInteger('status')->default(LdapDomain::STATUS_OFFLINE);
+            $table->tinyInteger('type')->default(LdapDomain::TYPE_ACTIVE_DIRECTORY);
         });
     }
 
@@ -41,6 +41,6 @@ class CreateLdapConnectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ldap_connections');
+        Schema::dropIfExists('ldap_domains');
     }
 }

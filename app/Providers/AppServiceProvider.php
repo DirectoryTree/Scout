@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\LdapChange;
-use App\LdapConnection;
+use App\LdapDomain;
 use App\Observers\LdapChangeObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -31,15 +31,15 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', function ($view) {
             $view->with(['counts' => [
-                'connections' => LdapConnection::count(),
+                'domains' => LdapDomain::count(),
             ]]);
         });
 
-        View::composer('connections.form', function ($view) {
+        View::composer('domains.form', function ($view) {
             $view->with(['types' => [
-                LdapConnection::TYPE_ACTIVE_DIRECTORY => __('Active Directory'),
-                LdapConnection::TYPE_OPEN_LDAP => __('OpenLDAP'),
-                LdapConnection::TYPE_UNKNOWN => __('Other'),
+                LdapDomain::TYPE_ACTIVE_DIRECTORY => __('Active Directory'),
+                LdapDomain::TYPE_OPEN_LDAP => __('OpenLDAP'),
+                LdapDomain::TYPE_UNKNOWN => __('Other'),
             ]]);
         });
     }

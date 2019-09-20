@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    <form method="post" action="{{ route('connections.store') }}">
+    <form method="post" action="{{ route('domains.store') }}">
         @csrf
         @component('components.card')
-            @slot('header', __('Create Connection'))
+            @slot('header', __('Add Connection'))
 
-            @include('connections.form')
+            @include('domains.form')
 
             @slot('footer')
                 <div class="form-row justify-content-between">
-                    <a href="{{ route('connections.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('domains.index') }}" class="btn btn-secondary">
                         <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
                     </a>
 

@@ -29,12 +29,12 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ request()->routeIs('connections.*') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('connections.index') }}">
-                                    <i class="fa fa-network-wired"></i> {{ __('Connections') }}
+                            <li class="nav-item {{ request()->routeIs('domains.*') ? 'active' : null }}">
+                                <a class="nav-link" href="{{ route('domains.index') }}">
+                                    <i class="fa fa-network-wired"></i> {{ __('Domains') }}
 
-                                    @component('components.status-count', ['count' => $counts['connections']])
-                                        {{ $counts['connections'] }}
+                                    @component('components.status-count', ['count' => $counts['domains']])
+                                        {{ $counts['domains'] }}
                                     @endcomponent
                                 </a>
                             </li>

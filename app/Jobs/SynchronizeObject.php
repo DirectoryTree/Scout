@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Jobs;
+
+use App\LdapChange;
+use App\LdapDomain;
+use App\LdapObject;
+use LdapRecord\Utilities;
+use Illuminate\Support\Arr;
+use LdapRecord\Models\ActiveDirectory\Entry;
+
+class SynchronizeObject
+{
+    /**
+     * The global attribute blacklist.
+     *
+     * @var array
+     */
+    protected $blacklist = [];
+
+    /**
+     * The domain the entry is being imported from.
+     *
+     * @var LdapDomain
+     */
+    protected $domain;
+
+    /**
+     * The LDAP object being imported.
+     *
+     * @var Entry
+     */
+    protected $entry;
+
+    /**
+     * Create a new job instance.
+     *
+     * @param LdapDomain $domain
+     * @param Entry      $entry
+     */
+    public function __construct(LdapDomain $domain, Entry $entry)
+    {
+        $this->domain = $domain;
+        $this->entry = $entry;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // Retrieve the LDAP entry's attributes and sort them by their key.
+        $attributes = $this->getFilteredAttributes();
+        ksort($attributes);
+
+        /** @var LdapObject $object */
+        $object = LdapObject::firstOrNew(['guid' => $this->getObjectGuid()]);
+
+        // Determine any differences from our last sync.
+        $modifications = array_diff(
+            array_map('serialize', $attributes),
+            array_map('serialize', $object->attributes ?? [])
+        );
+
+        $object->domain()->associate($this->domain);
+
+        $object->name = $this->getObjectName();
+        $object->dn = $this->entry->getDn();
+        $object->attributes = $attributes;
+
+        $object->save();
+
+        if (count($modifications) > 0) {
+            $change = new LdapChange();
+
+            $change->object()->associate($object);
+
+            $change->fill([
+                'before' => $attributes,
+                'after' => $object->attributes,
+                'attributes' => array_map('unserialize', $modifications),
+            ])->save();
+        }
+    }
+
+    /**
+     * Returns the objects GUID.
+     *
+     * @return string|null
+     */
+    protected function getObjectGuid()
+    {
+        return $this->entry->getConvertedGuid();
+    }
+
+    /**
+     * Get the LDAP objects name.
+     *
+     * @return mixed
+     */
+    protected function getObjectName()
+    {
+        $parts = Utilities::explodeDn($this->entry->getDn(), true);
+
+        return Arr::first(Arr::except($parts, 'count'));
+    }
+
+    /**
+     * Returns the attributes except the blacklisted.
+     *
+     * @return array
+     */
+    protected function getFilteredAttributes()
+    {
+        if (count($this->blacklist) === 0) {
+            return $this->entry->jsonSerialize();
+        }
+
+        return array_filter($this->entry->jsonSerialize(), function ($key) {
+            return ! in_array($key, $this->blacklist);
+        }, ARRAY_FILTER_USE_KEY);
+    }
+}

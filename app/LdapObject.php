@@ -64,4 +64,23 @@ class LdapObject extends Model
     {
         return $this->hasMany(LdapChange::class, 'object_id');
     }
+
+    /**
+     * Get the LDAP objects type icon.
+     *
+     * @return string
+     */
+    public function getIconAttribute()
+    {
+        switch ($this->type) {
+            case 'group':
+                return 'fa fa-users';
+            case 'container':
+                return 'fa fa-folder';
+            case 'user':
+                return 'fa fa-user';
+            case 'domain':
+                return '';
+        }
+    }
 }

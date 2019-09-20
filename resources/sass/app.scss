@@ -2,6 +2,8 @@
 // Font awesome
 @import url('https://use.fontawesome.com/releases/v5.7.1/css/all.css');
 
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
 // Variables
 @import 'variables';
 
@@ -21,4 +23,29 @@
 
 hr {
     border-top:1px dotted rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu .dropdown-item {
+    color: #fff;
+    background-color: $dark;
+    &:hover {
+        color: #ddd;
+        background-color: darken($dark, 10%);
+    }
+    &:active {
+        color: #ddd;
+        background-color: darken($dark, 10%);
+    }
+    &:focus {
+        color: #ddd;
+        background-color: darken($dark, 10%);
+    }
+}
+
+.card-header:first-child {
+    border-radius: $border-radius $border-radius 0 0;
+}
+
+.card-footer {
+    border-radius: $border-radius;
 }

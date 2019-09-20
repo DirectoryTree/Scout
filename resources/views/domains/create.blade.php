@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('breadcrumbs', Breadcrumbs::render('domains.create'))
+
 @section('content')
     <form method="post" action="{{ route('domains.store') }}">
         @csrf

@@ -1,14 +1,10 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #fbfdff;
 
 // Typography
-$font-family-sans-serif: Arial, Helvetica, sans-serif;
+$font-family-sans-serif: 'Nunito', Arial, Helvetica, sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
-
-$navbar-padding-y: 1.1rem;
-
-$enable-gradients: true;
 
 // Colors
 $blue: #2c7be5;
@@ -21,4 +17,18 @@ $yellow: #f6c343;
 $green: #00d97e;
 $teal: #4dc0b5;
 $cyan: #39afd1;
-$dark: #152e4d;
+$dark: #322867;
+
+// Dropdowns
+$dropdown-bg: $dark;
+$dropdown-color:#fff;
+
+// Cards
+$card-bg:#fafafa;
+$card-border-width:0;
+$card-border-radius:.35rem;
+$card-cap-bg:#fff;
+
+$border-radius: .35rem;
+
+$swal2-confirm-button-background-color: $dark;

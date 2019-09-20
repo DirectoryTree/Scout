@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\LdapChange;
 use App\LdapDomain;
 use App\LdapObject;
+use App\Ldap\TypeGuesser;
 use LdapRecord\Utilities;
 use Illuminate\Support\Arr;
 use LdapRecord\Models\ActiveDirectory\Entry;
@@ -67,7 +68,8 @@ class SynchronizeObject
         $object->domain()->associate($this->domain);
 
         $object->name = $this->getObjectName();
-        $object->dn = $this->entry->getDn();
+        $object->dn = $this->getObjectDn();
+        $object->type = $this->getObjectType();
         $object->attributes = $attributes;
 
         $object->save();
@@ -96,6 +98,16 @@ class SynchronizeObject
     }
 
     /**
+     * Returns the objects distinguished named.
+     *
+     * @return string|null
+     */
+    protected function getObjectDn()
+    {
+        return $this->entry->getDn();
+    }
+
+    /**
      * Get the LDAP objects name.
      *
      * @return mixed
@@ -105,6 +117,16 @@ class SynchronizeObject
         $parts = Utilities::explodeDn($this->entry->getDn(), true);
 
         return Arr::first(Arr::except($parts, 'count'));
+    }
+
+    /**
+     * Get the LDAP objects type.
+     *
+     * @var string
+     */
+    protected function getObjectType()
+    {
+        return (new TypeGuesser($this->entry))->get();
     }
 
     /**

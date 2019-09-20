@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
+    <div class="row py-2">
         <div class="col">
             <h2>{{ __('Domains') }}</h2>
         </div>
@@ -13,12 +13,10 @@
         </div>
     </div>
 
-    <hr/>
-
     <div class="row">
         <div class="col">
             @forelse($domains as $domain)
-                @component('components.card')
+                @component('components.card', ['class' => 'bg-white'])
                     <div class="d-flex justify-content-between">
                         <a class="h4" href="{{ route('domains.show', $domain) }}">
                             {{ $domain->name }}
@@ -65,11 +63,19 @@
                         @else
                             <em>Never</em>
                         @endif
+
+                        |
+
+                        {{ __('Created By') }}:
+
+                        {{ $domain->creator->name }}
                     </small>
                 @endcomponent
             @empty
-                @component('components.card')
-                    {{ __("You don't have any domains configured.") }}
+                @component('components.card', ['class' => 'bg-white'])
+                    <div class="text-center text-muted">
+                        {{ __("You don't have any domains configured.") }}
+                    </div>
                 @endcomponent
             @endforelse
         </div>

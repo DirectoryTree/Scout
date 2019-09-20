@@ -85,8 +85,21 @@ class DomainsController extends Controller
         //
     }
 
-    public function destroy()
+    /**
+     * Deletes the domain and all of its data.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Exception
+     */
+    public function destroy(LdapDomain $domain)
     {
-        //
+        $domain->delete();
+
+        flash()->success('Removed domain and all data.');
+
+        return redirect()->route('domains.index');
     }
 }

@@ -21,6 +21,7 @@ class CreateLdapObjectsTable extends Migration
             $table->string('guid')->unique()->index();
             $table->string('name');
             $table->string('dn');
+            $table->string('type')->nullable();
             $table->text('attributes');
         });
     }

@@ -3,13 +3,19 @@
 @section('head')
     <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
+
+    <style>
+        .navbar {
+            border-top: 5px solid #7247a6;
+        }
+    </style>
 @endsection
 
 @section('body')
     <div id="app" v-cloak>
         @include('layouts.flash')
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-gradient-dark navbar-app shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <i class="fa fa-binoculars"></i> {{ config('app.name', 'Scout') }}

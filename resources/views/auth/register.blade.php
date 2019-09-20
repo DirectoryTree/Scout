@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8">
-            @component('components.card')
+            @component('components.card', ['class' => 'bg-white'])
                 <h4 class="text-center">Create an Administrator Account</h4>
 
                 <hr/>

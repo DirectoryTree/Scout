@@ -9,7 +9,7 @@
     <div id="app" v-cloak>
         @include('layouts.flash')
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-gradient-dark navbar-app shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <i class="fa fa-binoculars"></i> {{ config('app.name', 'Scout') }}

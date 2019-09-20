@@ -68,7 +68,11 @@ class DomainsController extends Controller
      */
     public function show(LdapDomain $domain)
     {
-        return view('domains.show', compact('domain'));
+        $objects = $domain->objects()
+            ->orderBy('name')
+            ->paginate(25);
+
+        return view('domains.show', compact('domain', 'objects'));
     }
 
     public function edit()

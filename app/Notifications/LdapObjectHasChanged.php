@@ -35,7 +35,8 @@ class LdapObjectHasChanged extends Notification
     public function toArray(LdapObject $notifiable)
     {
         return [
-            'object_id' => $this->change->object_id,
+            'change_id' => $this->change->id,
+            'object' => $notifiable->toArray(),
             'modified' => array_keys($this->change->attributes),
         ];
     }

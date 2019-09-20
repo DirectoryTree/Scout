@@ -18,6 +18,16 @@ class LdapDomain extends Model
     const STATUS_INVALID_CREDENTIALS = 3;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'synchronized_at',
+        'status',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -28,6 +38,13 @@ class LdapDomain extends Model
         'use_tls' => 'bool',
         'follow_referrals' => 'bool',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['synchronized_at'];
 
     /**
      * The "booting" method of the model.

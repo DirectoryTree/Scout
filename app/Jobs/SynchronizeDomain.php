@@ -52,15 +52,17 @@ class SynchronizeDomain implements ShouldQueue
      */
     public function handle()
     {
+        $name = $this->domain->slug;
+
         $conn = new Connection(
             $this->domain->getConnectionAttributes(),
-            new Ldap($this->domain->name)
+            new Ldap($name)
         );
 
-        // We'll overwrite each connection. We only need
-        //to connect to it during synchronization.
-        Container::getInstance()->add($conn);
+        // Add the connection to the container.
+        Container::getInstance()->add($conn, $name);
 
+        // Bind to the LDAP server if not yet bound.
         if (! $conn->getLdapConnection()->isBound()) {
             $config = $conn->getConfiguration();
 
@@ -71,11 +73,17 @@ class SynchronizeDomain implements ShouldQueue
         }
 
         /** TODO: Implement chunking results to prevent memory issues. */
-        Entry::select('*')
+        Entry::on($name)
+            ->select('*')
             ->paginate(1000)
             ->each(function (Entry $entry) {
                 $this->import($entry);
             });
+
+        $this->domain->update([
+            'synchronized_at' => now(),
+            'status' => LdapDomain::STATUS_ONLINE,
+        ]);
     }
 
     /**

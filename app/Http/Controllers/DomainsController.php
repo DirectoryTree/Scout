@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LdapDomain;
+use Illuminate\Support\Str;
 use App\Http\Requests\LdapDomainRequest;
 
 class DomainsController extends Controller
@@ -45,6 +46,7 @@ class DomainsController extends Controller
 
         $domain->type = $request->type;
         $domain->name = $request->name;
+        $domain->slug = Str::slug($request->name);
         $domain->hosts = explode(',', $request->hosts);
         $domain->port = $request->port;
         $domain->base_dn = $request->base_dn;
@@ -55,6 +57,18 @@ class DomainsController extends Controller
         flash()->success('Added LDAP domain.');
 
         return redirect()->route('domains.index');
+    }
+
+    /**
+     * Displays the LDAP domain.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(LdapDomain $domain)
+    {
+        return view('domains.show', compact('domain'));
     }
 
     public function edit()

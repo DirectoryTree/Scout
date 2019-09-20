@@ -30,6 +30,28 @@ class LdapDomain extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(LdapDomain $domain) {
+            // The domain may have a large amount of objects. We
+            // will chunk our results to keep memory usage low
+            // and so object deletion events are fired.
+            $domain->objects()->chunk(500, function ($objects) {
+                /** @var LdapObject $object */
+                foreach ($objects as $object) {
+                     $object->delete();
+                }
+            });
+        });
+    }
+
+    /**
      * The belongsTo creator relationship.
      *
      * @return BelongsTo

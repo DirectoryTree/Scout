@@ -1,16 +1,30 @@
 @component('components.card', ['flush' => true])
     <div class="list-group list-group-flush">
+        <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    @isset($object)
+                        <i class="fa fa-level-down-alt"></i> {{ __('Nested Objects') }}
+                    @else
+                        {{ __('Root Domain Objects') }}
+                    @endisset
+                </h5>
+            </div>
+        </div>
+
         @forelse($objects as $object)
             <div class="list-group-item">
                 <div class="row">
                     <div class="col">
-                            <span class="text-muted">
-                                @if($icon = $object->icon)
-                                    <i class="{{ $icon }}"></i>
-                                @else
-                                    <i class="fa fa-question-circle"></i>
-                                @endif
+                        @if($icon = $object->icon)
+                            <span class="text-muted" title="{{ ucfirst($object->type) }}">
+                               <i class="{{ $icon }}"></i>
                             </span>
+                        @else
+                            <span class="text-muted" title="{{ __('Unknown') }}">
+                                <i class="fa fa-question-circle"></i>
+                            </span>
+                        @endif
 
                         <a href="{{ route('domains.objects.show', [$domain, $object]) }}" class="font-weight-bold">
                             {{ $object->name }}
@@ -25,7 +39,7 @@
                 </div>
             </div>
         @empty
-            <div class="list-group-item">
+            <div class="list-group-item text-center text-muted">
                 {{ __('There are no objects to list.') }}
             </div>
         @endforelse

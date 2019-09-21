@@ -17,7 +17,7 @@
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand font-weight-bold" href="{{ url('/') }}">
                     <i class="fa fa-binoculars"></i> {{ config('app.name', 'Scout') }}
                 </a>
 

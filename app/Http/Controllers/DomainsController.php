@@ -64,23 +64,48 @@ class DomainsController extends Controller
      *
      * @param LdapDomain $domain
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function show(LdapDomain $domain)
     {
-        $domain->loadCount('objects');
-
         return view('domains.show', compact('domain'));
     }
 
-    public function edit()
+    /**
+     * Displays the form for editing the
+     *
+     * @param LdapDomain $domain
+     *
+     * @return \Illuminate\View\View
+     */
+    public function edit(LdapDomain $domain)
     {
-        //
+        return view('domains.edit', compact('domain'));
     }
 
-    public function update()
+    /**
+     * Update the LDAP domain.
+     *
+     * @param LdapDomainRequest $request
+     * @param LdapDomain        $domain
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(LdapDomainRequest $request, LdapDomain $domain)
     {
-        //
+        $domain->type = $request->type;
+        $domain->name = $request->name;
+        $domain->slug = Str::slug($request->name);
+        $domain->hosts = explode(',', $request->hosts);
+        $domain->port = $request->port;
+        $domain->base_dn = $request->base_dn;
+        $domain->username = $request->username;
+        $domain->password = $request->password;
+        $domain->save();
+
+        flash()->success('Updated LDAP domain.');
+
+        return redirect()->route('domains.show', $domain);
     }
 
     /**

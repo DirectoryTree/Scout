@@ -5,8 +5,9 @@
 @section('content')
     <form method="post" action="{{ route('domains.store') }}">
         @csrf
+
         @component('components.card')
-            @slot('header', __('Add Connection'))
+            @slot('header', __('Add Domain'))
 
             @include('domains.form')
 

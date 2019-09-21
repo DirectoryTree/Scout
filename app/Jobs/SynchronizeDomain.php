@@ -68,6 +68,7 @@ class SynchronizeDomain implements ShouldQueue
         // Run the import on the given connection.
         $this->import($name);
 
+        // Update the domains synchronization status.
         $this->domain->update([
             'synchronized_at' => now(),
             'status' => LdapDomain::STATUS_ONLINE,
@@ -75,7 +76,7 @@ class SynchronizeDomain implements ShouldQueue
     }
 
     /**
-     * Imports the LDAP object.
+     * Import the LDAP objects on the given connection.
      *
      * @param string          $connection
      * @param Entry|null      $entry

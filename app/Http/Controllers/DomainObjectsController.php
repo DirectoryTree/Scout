@@ -35,7 +35,10 @@ class DomainObjectsController extends Controller
     public function show(LdapDomain $domain, $objectId)
     {
         /** @var LdapObject $object */
-        $object = $domain->objects()->with('parent')->findOrFail($objectId);
+        $object = $domain->objects()
+            ->with('parent')
+            ->withCount('changes')
+            ->findOrFail($objectId);
 
         $objects = $object->descendants()
             ->orderBy('name')

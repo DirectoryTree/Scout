@@ -62,10 +62,20 @@ class LdapDomain extends Model
             $domain->objects()->chunk(500, function ($objects) {
                 /** @var LdapObject $object */
                 foreach ($objects as $object) {
-                     $object->delete();
+                     $object->forceDelete();
                 }
             });
         });
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     /**

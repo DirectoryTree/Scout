@@ -74,7 +74,7 @@
             @empty
                 @component('components.card', ['class' => 'bg-white'])
                     <div class="text-center text-muted">
-                        {{ __("You don't have any domains configured.") }}
+                        {{ __("You don't have any domains configured. Click the 'Add' button to get started.") }}
                     </div>
                 @endcomponent
             @endforelse

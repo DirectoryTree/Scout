@@ -10,6 +10,12 @@ Breadcrumbs::for('domains.create', function ($trail) {
     $trail->push('Add Domain', route('domains.create'));
 });
 
+Breadcrumbs::for('domains.edit', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('Edit', route('domains.edit', $domain));
+});
+
 Breadcrumbs::for('domains.show', function ($trail, $domain) {
     $trail->parent('domains.index');
 

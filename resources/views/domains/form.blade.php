@@ -47,7 +47,7 @@
             <input
                 name="hosts"
                 type="text"
-                value="{{ old('hosts', $domain->hosts) }}"
+                value="{{ old('hosts', implode(',', $domain->hosts)) }}"
                 class="form-control{{ $errors->has('hosts') ? ' is-invalid' : '' }}"
                 id="hosts"
                 placeholder="10.0.0.1,10.0.0.2"
@@ -143,7 +143,7 @@
             <input
                 name="username"
                 type="text"
-                value="{{ old('username', $domain->username) }}"
+                value="{{ old('username', decrypt($domain->username)) }}"
                 class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}"
                 id="username"
                 placeholder="admin"

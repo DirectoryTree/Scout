@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\LdapDomain;
+use App\LdapObject;
 use LdapRecord\Ldap;
 use LdapRecord\Container;
 use LdapRecord\Connection;
@@ -64,17 +65,51 @@ class SynchronizeDomain implements ShouldQueue
             );
         }
 
-        /** TODO: Implement chunking results to prevent memory issues. */
-        Entry::on($name)
-            ->select('*')
-            ->paginate(1000)
-            ->each(function (Entry $entry) {
-                Bus::dispatch(new SynchronizeObject($this->domain, $entry));
-            });
+        // Run the import on the given connection.
+        $this->import($name);
 
         $this->domain->update([
             'synchronized_at' => now(),
             'status' => LdapDomain::STATUS_ONLINE,
         ]);
+    }
+
+    /**
+     * Imports the LDAP object.
+     *
+     * @param string          $connection
+     * @param Entry|null      $entry
+     * @param LdapObject|null $parent
+     */
+    protected function import($connection, Entry $entry = null, LdapObject $parent = null)
+    {
+        $this->query($connection, $entry)->each(function (Entry $child) use ($connection, $entry, $parent) {
+            /** @var LdapObject $object */
+            $object = Bus::dispatch(new SynchronizeObject($this->domain, $child, $parent));
+
+            // If the object is a container, we will import its descendants.
+            if ($object->type == 'container') {
+                $this->import($connection, $child, $object);
+            }
+        });
+    }
+
+    /**
+     * Queries the LDAP directory.
+     *
+     * If an entry is supplied, it will query leaf LDAP entries.
+     *
+     * @param string     $connection
+     * @param Entry|null $entry
+     *
+     * @return \LdapRecord\Query\Collection
+     */
+    protected function query($connection, Entry $entry = null)
+    {
+        $query = $entry ? $entry->in($entry->getDn()) : Entry::on($connection);
+
+        return $query->listing()
+            ->select('*')
+            ->paginate(1000);
     }
 }

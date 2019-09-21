@@ -19,4 +19,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('domains', 'DomainsController');
 
+    Route::resource('domains.objects', 'DomainObjectsController', [
+        'only' => ['index', 'show']
+    ]);
+
 });

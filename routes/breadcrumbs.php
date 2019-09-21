@@ -15,3 +15,19 @@ Breadcrumbs::for('domains.show', function ($trail, $domain) {
 
     $trail->push($domain->name, route('domains.show', $domain));
 });
+
+Breadcrumbs::for('domains.objects.index', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('Objects', route('domains.objects.index', $domain));
+});
+
+Breadcrumbs::for('domains.objects.show', function ($trail, $domain, $object) {
+    if ($object->parent) {
+        $trail->parent('domains.objects.show', $domain, $object->parent);
+    } else {
+        $trail->parent('domains.objects.index', $domain);
+    }
+
+    $trail->push($object->name, route('domains.objects.show', [$domain, $object]));
+});

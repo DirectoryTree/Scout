@@ -12316,3 +12316,11 @@ hr {
   border-radius: 0.35rem;
 }
 
+.card .card-body .list-group .list-group-item:first-child {
+  border-radius: 0.35rem 0.35rem 0 0;
+}
+
+.card .card-body .list-group .list-group-item:last-child {
+  border-radius: 0 0 0.35rem 0.35rem;
+}
+

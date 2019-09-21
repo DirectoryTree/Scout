@@ -56,6 +56,36 @@ class LdapObject extends Model
     }
 
     /**
+     * The belongsTo parent relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * The hasMany children relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id')->latest();
+    }
+
+    /**
+     * The hasMany descendants relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function descendants()
+    {
+        return $this->children()->with('descendants');
+    }
+
+    /**
      * The hasMany changes relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

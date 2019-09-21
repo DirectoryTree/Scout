@@ -34,21 +34,30 @@ class SynchronizeObject
     protected $entry;
 
     /**
+     * The parent LDAP object.
+     *
+     * @var LdapObject|null
+     */
+    protected $parent;
+
+    /**
      * Create a new job instance.
      *
-     * @param LdapDomain $domain
-     * @param Entry      $entry
+     * @param LdapDomain      $domain
+     * @param Entry           $entry
+     * @param LdapObject|null $parent
      */
-    public function __construct(LdapDomain $domain, Entry $entry)
+    public function __construct(LdapDomain $domain, Entry $entry, LdapObject $parent = null)
     {
         $this->domain = $domain;
         $this->entry = $entry;
+        $this->parent = $parent;
     }
 
     /**
      * Execute the job.
      *
-     * @return void
+     * @return LdapObject
      */
     public function handle()
     {
@@ -66,6 +75,10 @@ class SynchronizeObject
         );
 
         $object->domain()->associate($this->domain);
+
+        if ($this->parent) {
+            $object->parent()->associate($this->parent);
+        }
 
         $object->name = $this->getObjectName();
         $object->dn = $this->getObjectDn();
@@ -85,6 +98,8 @@ class SynchronizeObject
                 'attributes' => array_map('unserialize', $modifications),
             ])->save();
         }
+
+        return $object;
     }
 
     /**

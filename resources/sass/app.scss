@@ -49,3 +49,12 @@ hr {
 .card-footer {
     border-radius: $border-radius;
 }
+
+.card .card-body .list-group .list-group-item {
+    &:first-child {
+        border-radius: $border-radius $border-radius 0 0;
+    }
+    &:last-child {
+        border-radius: 0 0 $border-radius $border-radius;
+    }
+}

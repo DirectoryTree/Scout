@@ -2,17 +2,8 @@
 
 namespace App\Ldap;
 
-use LdapRecord\Models\Entry;
-
 class TypeGuesser
 {
-    /**
-     * The LDAP entry.
-     *
-     * @var Entry
-     */
-    protected $entry;
-
     /**
      * The LDAP entry's object classes.
      *
@@ -39,12 +30,11 @@ class TypeGuesser
     /**
      * Constructor.
      *
-     * @param Entry $entry
+     * @param array $classes
      */
-    public function __construct(Entry $entry)
+    public function __construct(array $classes = [])
     {
-        $this->entry = $entry;
-        $this->classes = $entry->objectclass ?? [];
+        $this->classes = $classes;
     }
 
     /**

@@ -3,12 +3,6 @@
 @section('head')
     <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
-
-    <style>
-        .navbar {
-            border-top: 5px solid #7247a6;
-        }
-    </style>
 @endsection
 
 @section('body')

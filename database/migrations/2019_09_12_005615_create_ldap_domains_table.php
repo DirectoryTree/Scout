@@ -26,10 +26,9 @@ class CreateLdapDomainsTable extends Migration
             $table->text('hosts');
             $table->string('base_dn');
             $table->string('filter')->nullable();
+            $table->string('encryption')->nullable();
             $table->integer('port')->default(389);
             $table->integer('timeout')->default(5);
-            $table->boolean('use_tls')->default(false);
-            $table->boolean('use_ssl')->default(false);
             $table->boolean('follow_referrals')->default(false);
 
             $table->tinyInteger('status')->default(LdapDomain::STATUS_OFFLINE);

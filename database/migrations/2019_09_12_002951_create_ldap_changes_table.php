@@ -17,9 +17,9 @@ class CreateLdapChangesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedInteger('object_id');
+            $table->string('attribute');
             $table->text('before')->nullable();
             $table->text('after');
-            $table->text('attributes')->nullable();
         });
     }
 

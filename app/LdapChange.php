@@ -12,9 +12,9 @@ class LdapChange extends Model
      * @var array
      */
     protected $fillable = [
+        'attribute',
         'before',
         'after',
-        'attributes',
     ];
 
     /**
@@ -25,7 +25,6 @@ class LdapChange extends Model
     protected $casts = [
         'before' => 'array',
         'after' => 'array',
-        'attributes' => 'array',
     ];
 
     /**

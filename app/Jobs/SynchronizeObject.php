@@ -62,41 +62,49 @@ class SynchronizeObject
     public function handle()
     {
         // Retrieve the LDAP entry's attributes and sort them by their key.
-        $attributes = $this->getFilteredAttributes();
-        ksort($attributes);
+        $newAttributes = $this->getFilteredAttributes();
+        ksort($newAttributes);
 
         /** @var LdapObject $object */
         $object = LdapObject::firstOrNew(['guid' => $this->getObjectGuid()]);
 
+        $oldAttributes = $object->attributes ?? [];
+
         // Determine any differences from our last sync.
         $modifications = array_diff(
-            array_map('serialize', $attributes),
-            array_map('serialize', $object->attributes ?? [])
+            array_map('serialize', $newAttributes),
+            array_map('serialize', $oldAttributes)
         );
 
         $object->domain()->associate($this->domain);
 
         if ($this->parent) {
             $object->parent()->associate($this->parent);
+        } else {
+            $object->parent()->dissociate();
         }
 
         $object->name = $this->getObjectName();
         $object->dn = $this->getObjectDn();
         $object->type = $this->getObjectType();
-        $object->attributes = $attributes;
+        $object->attributes = $newAttributes;
 
         $object->save();
 
         if (count($modifications) > 0) {
-            $change = new LdapChange();
+            foreach ($modifications as $attribute => $values) {
+                $change = new LdapChange();
 
-            $change->object()->associate($object);
+                $change->object()->associate($object);
 
-            $change->fill([
-                'before' => $attributes,
-                'after' => $object->attributes,
-                'attributes' => array_map('unserialize', $modifications),
-            ])->save();
+                $before = array_key_exists($attribute, $oldAttributes) ? $oldAttributes[$attribute] : [];
+
+                $change->fill([
+                    'attribute' => $attribute,
+                    'before' => $before,
+                    'after' => unserialize($values),
+                ])->save();
+            }
         }
 
         return $object;

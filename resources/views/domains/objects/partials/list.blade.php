@@ -16,15 +16,7 @@
             <div class="list-group-item">
                 <div class="row">
                     <div class="col">
-                        @if($icon = $object->icon)
-                            <span class="text-muted" title="{{ ucfirst($object->type) }}">
-                               <i class="{{ $icon }}"></i>
-                            </span>
-                        @else
-                            <span class="text-muted" title="{{ __('Unknown') }}">
-                                <i class="fa fa-question-circle"></i>
-                            </span>
-                        @endif
+                        @include('domains.objects.partials.icon')
 
                         <a href="{{ route('domains.objects.show', [$domain, $object]) }}" class="font-weight-bold">
                             {{ $object->name }}

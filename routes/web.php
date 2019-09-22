@@ -20,7 +20,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('domains', 'DomainsController');
 
     Route::resource('domains.objects', 'DomainObjectsController', [
-        'only' => ['index', 'show']
+        'only' => ['index', 'show'],
+    ]);
+
+    Route::resource('domains.objects.attributes', 'DomainObjectAttributesController', [
+        'only' => ['index', 'show'],
+    ]);
+
+    Route::resource('domains.objects.changes', 'DomainObjectChangesController', [
+        'only' => ['index', 'show'],
     ]);
 
 });

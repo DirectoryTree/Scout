@@ -37,3 +37,21 @@ Breadcrumbs::for('domains.objects.show', function ($trail, $domain, $object) {
 
     $trail->push($object->name, route('domains.objects.show', [$domain, $object]));
 });
+
+Breadcrumbs::for('domains.objects.attributes.index', function ($trail, $domain, $object) {
+    $trail->parent('domains.objects.show', $domain, $object);
+
+    $trail->push('Attributes', route('domains.objects.attributes.index', [$domain, $object]));
+});
+
+Breadcrumbs::for('domains.objects.changes.index', function ($trail, $domain, $object) {
+    $trail->parent('domains.objects.show', $domain, $object);
+
+    $trail->push('Changes', route('domains.objects.changes.index', [$domain, $object]));
+});
+
+Breadcrumbs::for('domains.objects.changes.show', function ($trail, $domain, $object, $attribute) {
+    $trail->parent('domains.objects.changes.index', $domain, $object);
+
+    $trail->push($attribute, route('domains.objects.changes.show', [$domain, $object, $attribute]));
+});

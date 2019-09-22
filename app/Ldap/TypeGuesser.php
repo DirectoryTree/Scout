@@ -26,12 +26,14 @@ class TypeGuesser
      * @var array
      */
     protected $map = [
-        'user' => 'user',
-        'inetorgperson' => 'user',
-        'container' => 'container',
-        'organizationalunit' => 'container',
-        'group' => 'group',
-        'domain' => 'domain',
+        'user'                  => 'user',
+        'inetorgperson'         => 'user',
+        'group'                 => 'group',
+        'domain'                => 'domain',
+        'locality'              => 'container',
+        'container'             => 'container',
+        'lostandfound'          => 'container',
+        'organizationalunit'    => 'container',
     ];
 
     /**

@@ -25,6 +25,7 @@ class CreateLdapDomainsTable extends Migration
             $table->string('password');
             $table->text('hosts');
             $table->string('base_dn');
+            $table->string('filter')->nullable();
             $table->integer('port')->default(389);
             $table->integer('timeout')->default(5);
             $table->boolean('use_tls')->default(false);

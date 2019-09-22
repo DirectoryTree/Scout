@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\LdapDomain;
-use Illuminate\Support\Str;
+use App\Jobs\SynchronizeDomain;
+use Illuminate\Support\Facades\Bus;
 use App\Http\Requests\LdapDomainRequest;
 
 class DomainsController extends Controller
@@ -42,17 +43,7 @@ class DomainsController extends Controller
      */
     public function store(LdapDomainRequest $request, LdapDomain $domain)
     {
-        $domain->creator()->associate($request->user());
-
-        $domain->type = $request->type;
-        $domain->name = $request->name;
-        $domain->slug = Str::slug($request->name);
-        $domain->hosts = explode(',', $request->hosts);
-        $domain->port = $request->port;
-        $domain->base_dn = $request->base_dn;
-        $domain->username = $request->username;
-        $domain->password = $request->password;
-        $domain->save();
+        $request->persist($domain);
 
         flash()->success('Added LDAP domain.');
 
@@ -93,17 +84,25 @@ class DomainsController extends Controller
      */
     public function update(LdapDomainRequest $request, LdapDomain $domain)
     {
-        $domain->type = $request->type;
-        $domain->name = $request->name;
-        $domain->slug = Str::slug($request->name);
-        $domain->hosts = explode(',', $request->hosts);
-        $domain->port = $request->port;
-        $domain->base_dn = $request->base_dn;
-        $domain->username = $request->username;
-        $domain->password = $request->password;
-        $domain->save();
+        $request->persist($domain);
 
         flash()->success('Updated LDAP domain.');
+
+        return redirect()->route('domains.show', $domain);
+    }
+
+    /**
+     * Queues the synchronization of the domain.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function synchronize(LdapDomain $domain)
+    {
+        Bus::dispatch(new SynchronizeDomain($domain));
+
+        flash()->success('Queued Synchronization.');
 
         return redirect()->route('domains.show', $domain);
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\LdapDomain;
 use LdapRecord\Connection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use App\Rules\DistinguishedName;
@@ -32,9 +34,36 @@ class LdapDomainRequest extends FormRequest
             'base_dn' => ['required', new DistinguishedName()],
             'port' => 'required|integer',
             'timeout' => 'required|integer|max:50',
-            'use_ssl' => 'sometimes|required_without:use_tls|boolean',
-            'use_tls' => 'sometimes|required_without:use_ssl|boolean',
+            'encryption' => 'nullable|in:tls,ssl',
         ];
+    }
+
+    /**
+     * Save the LDAP domain information.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return LdapDomain
+     */
+    public function persist(LdapDomain $domain)
+    {
+        if (!$domain->exists) {
+            $domain->creator()->associate($this->user());
+        }
+
+        $domain->type = $this->type;
+        $domain->name = $this->name;
+        $domain->slug = Str::slug($this->name);
+        $domain->hosts = explode(',', $this->hosts);
+        $domain->port = $this->port;
+        $domain->base_dn = $this->base_dn;
+        $domain->username = $this->username;
+        $domain->password = $this->password;
+        $domain->encryption = $this->encryption ?? null;
+
+        $domain->save();
+
+        return $domain;
     }
 
     /**
@@ -67,6 +96,8 @@ class LdapDomainRequest extends FormRequest
     protected function getLdapConfiguration(array $validated)
     {
         $validated['hosts'] = explode(',', $validated['hosts']);
+        $validated['use_ssl'] = $validated['encryption'] == 'ssl';
+        $validated['use_tls'] = $validated['encryption'] == 'tls';
 
         // Override the timeout for testing connectivity.
         $validated['timeout'] = 5;

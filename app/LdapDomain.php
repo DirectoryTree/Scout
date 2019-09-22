@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LdapDomain extends Model
 {
@@ -34,8 +33,6 @@ class LdapDomain extends Model
      */
     protected $casts = [
         'hosts' => 'array',
-        'use_ssl' => 'bool',
-        'use_tls' => 'bool',
         'follow_referrals' => 'bool',
     ];
 
@@ -81,11 +78,21 @@ class LdapDomain extends Model
     /**
      * The belongsTo creator relationship.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * The hasMany LDAP scans relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function scans()
+    {
+        return $this->hasMany(LdapScan::class, 'domain_id');
     }
 
     /**
@@ -105,17 +112,20 @@ class LdapDomain extends Model
      */
     public function getConnectionAttributes()
     {
-        return $this->only([
+        $attributes = $this->only([
             'username',
             'password',
             'hosts',
             'base_dn',
             'port',
-            'use_ssl',
-            'use_tls',
             'timeout',
             'follow_referrals'
         ]);
+
+        $attributes['use_ssl'] = $this->encryption == 'ssl';
+        $attributes['use_tls'] = $this->encryption == 'tls';
+
+        return $attributes;
     }
 
     /**

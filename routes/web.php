@@ -19,6 +19,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('domains', 'DomainsController');
 
+    Route::post('/domains/{domain}/synchronize', 'DomainsController@synchronize')->name('domains.synchronize');
+
+    Route::resource('domains.scans', 'DomainScansController', [
+        'only' => ['index', 'show'],
+    ]);
+
     Route::resource('domains.objects', 'DomainObjectsController', [
         'only' => ['index', 'show'],
     ]);

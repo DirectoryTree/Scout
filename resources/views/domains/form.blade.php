@@ -1,3 +1,49 @@
+<div class="form-group">
+    <label class="pr-2">Connection Encryption</label>
+
+    <div class="custom-control custom-radio d-inline pr-2">
+        <input
+            class="custom-control-input"
+            type="radio"
+            name="encryption"
+            id="none"
+            value=""
+            {{ old('encryption', $domain->encryption) == '' ? 'checked' : null }}
+        >
+        <label class="custom-control-label" for="none">
+            No Encryption
+        </label>
+    </div>
+
+    <div class="custom-control custom-radio d-inline pr-2">
+        <input
+            class="custom-control-input"
+            type="radio"
+            name="encryption"
+            id="radio-use-tls"
+            value="tls"
+            {{ old('encryption', $domain->encryption) == 'tls' ? 'checked' : null }}
+        >
+        <label class="custom-control-label" for="radio-use-tls">
+            Use TLS
+        </label>
+    </div>
+
+    <div class="custom-control custom-radio d-inline pr-2">
+        <input
+            class="custom-control-input"
+            type="radio"
+            name="encryption"
+            id="radio-use-ssl"
+            value="ssl"
+            {{ old('encryption', $domain->encryption) == 'ssl' ? 'checked' : null }}
+        >
+        <label class="custom-control-label" for="radio-use-ssl">
+            Use SSL
+        </label>
+    </div>
+</div>
+
 <div class="form-row">
     <div class="col">
         <div class="form-group">

@@ -6,9 +6,9 @@ use App\LdapDomain;
 use App\LdapObject;
 use App\Ldap\TypeGuesser;
 use LdapRecord\Utilities;
+use LdapRecord\Models\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
-use LdapRecord\Models\ActiveDirectory\Entry;
 
 class SynchronizeObject
 {
@@ -29,9 +29,9 @@ class SynchronizeObject
     /**
      * The LDAP object being imported.
      *
-     * @var Entry
+     * @var Model
      */
-    protected $entry;
+    protected $model;
 
     /**
      * The parent LDAP object.
@@ -44,13 +44,13 @@ class SynchronizeObject
      * Create a new job instance.
      *
      * @param LdapDomain      $domain
-     * @param Entry           $entry
+     * @param Model           $model
      * @param LdapObject|null $parent
      */
-    public function __construct(LdapDomain $domain, Entry $entry, LdapObject $parent = null)
+    public function __construct(LdapDomain $domain, Model $model, LdapObject $parent = null)
     {
         $this->domain = $domain;
-        $this->entry = $entry;
+        $this->model = $model;
         $this->parent = $parent;
     }
 
@@ -105,7 +105,7 @@ class SynchronizeObject
      */
     protected function getObjectGuid()
     {
-        return $this->entry->getConvertedGuid();
+        return $this->model->getConvertedGuid();
     }
 
     /**
@@ -115,7 +115,7 @@ class SynchronizeObject
      */
     protected function getObjectDn()
     {
-        return $this->entry->getDn();
+        return $this->model->getDn();
     }
 
     /**
@@ -125,7 +125,7 @@ class SynchronizeObject
      */
     protected function getObjectName()
     {
-        $parts = Utilities::explodeDn($this->entry->getDn(), true);
+        $parts = Utilities::explodeDn($this->model->getDn(), true);
 
         return Arr::first(Arr::except($parts, 'count'));
     }
@@ -137,7 +137,7 @@ class SynchronizeObject
      */
     protected function getObjectType()
     {
-        return (new TypeGuesser($this->entry))->get();
+        return (new TypeGuesser($this->model->objectclass ?? []))->get();
     }
 
     /**
@@ -148,10 +148,10 @@ class SynchronizeObject
     protected function getFilteredAttributes()
     {
         if (count($this->blacklist) === 0) {
-            return $this->entry->jsonSerialize();
+            return $this->model->jsonSerialize();
         }
 
-        return array_filter($this->entry->jsonSerialize(), function ($key) {
+        return array_filter($this->model->jsonSerialize(), function ($key) {
             return ! in_array($key, $this->blacklist);
         }, ARRAY_FILTER_USE_KEY);
     }

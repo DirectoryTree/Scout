@@ -77,6 +77,20 @@
                     </div>
 
                     <a
+                        href="{{ route('domains.show', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.show') ? 'active' : null }}"
+                    >
+                        <i class="far fa-eye"></i> {{ __('Overview') }}
+                    </a>
+
+                    <a
+                        href="{{ route('domains.show', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold"
+                    >
+                        <i class="fas fa-search"></i> {{ __('Recent Scans') }}
+                    </a>
+
+                    <a
                         href="{{ route('domains.objects.index', $domain) }}"
                         class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.index') ? 'active' : null }}"
                     >

@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
-use App\LdapChange;
 use App\LdapDomain;
 use App\LdapObject;
 use App\Ldap\TypeGuesser;
 use LdapRecord\Utilities;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Bus;
 use LdapRecord\Models\ActiveDirectory\Entry;
 
 class SynchronizeObject
@@ -92,19 +92,7 @@ class SynchronizeObject
         $object->save();
 
         if (count($modifications) > 0) {
-            foreach ($modifications as $attribute => $values) {
-                $change = new LdapChange();
-
-                $change->object()->associate($object);
-
-                $before = array_key_exists($attribute, $oldAttributes) ? $oldAttributes[$attribute] : [];
-
-                $change->fill([
-                    'attribute' => $attribute,
-                    'before' => $before,
-                    'after' => unserialize($values),
-                ])->save();
-            }
+            Bus::dispatch(new GenerateObjectChanges($object, $modifications, $oldAttributes));
         }
 
         return $object;

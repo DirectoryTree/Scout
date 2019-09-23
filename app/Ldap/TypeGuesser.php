@@ -25,6 +25,7 @@ class TypeGuesser
         'container'             => 'container',
         'lostandfound'          => 'container',
         'organizationalunit'    => 'container',
+        'msds-quotacontainer'   => 'container',
     ];
 
     /**
@@ -34,7 +35,7 @@ class TypeGuesser
      */
     public function __construct(array $classes = [])
     {
-        $this->classes = $classes;
+        $this->classes = array_map('strtolower', $classes);
     }
 
     /**

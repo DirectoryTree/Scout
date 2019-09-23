@@ -84,10 +84,17 @@
                     </a>
 
                     <a
+                        href="{{ route('domains.search.index', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.search.*') ? 'active' : null }}"
+                    >
+                        <i class="fas fa-search"></i> {{ __('Search') }}
+                    </a>
+
+                    <a
                         href="{{ route('domains.scans.index', $domain) }}"
                         class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.scans.*') ? 'active' : null }}"
                     >
-                        <i class="fas fa-search"></i> {{ __('Recent Scans') }}
+                        <i class="fas fa-heartbeat"></i> {{ __('Recent Scans') }}
                     </a>
 
                     <a

@@ -22,6 +22,12 @@ Breadcrumbs::for('domains.show', function ($trail, $domain) {
     $trail->push($domain->name, route('domains.show', $domain));
 });
 
+Breadcrumbs::for('domains.search.index', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('Search', route('domains.search.index', $domain));
+});
+
 Breadcrumbs::for('domains.changes.index', function ($trail, $domain) {
     $trail->parent('domains.show', $domain);
 

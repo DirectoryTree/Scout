@@ -21,6 +21,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/domains/{domain}/synchronize', 'DomainsController@synchronize')->name('domains.synchronize');
 
+    Route::get('/domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
+
     Route::resource('domains.scans', 'DomainScansController', [
         'only' => ['index', 'show'],
     ]);

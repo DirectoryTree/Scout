@@ -53,6 +53,9 @@ class LdapDomain extends Model
         parent::boot();
 
         static::deleting(function(LdapDomain $domain) {
+            // Delete any scans that have been performed.
+            $domain->scans()->delete();
+
             // The domain may have a large amount of objects. We
             // will chunk our results to keep memory usage low
             // and so object deletion events are fired.

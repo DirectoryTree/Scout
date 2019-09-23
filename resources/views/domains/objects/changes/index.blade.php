@@ -13,7 +13,7 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th class="pl-4">Name</th>
+                            <th class="pl-4">Attribute</th>
                             <th class="text-center">Times Changed</th>
                             <th>
                                 <i class="far fa-clock"></i> Last Change

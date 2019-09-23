@@ -20,9 +20,9 @@ class DomainObjectChangesController extends Controller
         $object = $domain->objects()->findOrFail($objectId);
 
         $changes = $object->changes()
-            ->select(DB::raw('COUNT(*) as count, attribute, max(created_at) as created_at'))
+            ->select(DB::raw('COUNT(*) as count, attribute, max(ldap_updated_at) as ldap_updated_at'))
             ->groupBy('attribute')
-            ->orderBy('attribute')
+            ->orderBy('ldap_updated_at', 'desc')
             ->paginate(20);
 
         return view('domains.objects.changes.index', compact(

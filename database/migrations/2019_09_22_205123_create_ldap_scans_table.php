@@ -18,7 +18,7 @@ class CreateLdapScansTable extends Migration
             $table->timestamps();
             $table->timestamp('started_at');
             $table->timestamp('completed_at');
-            $table->unsignedInteger('domain_id');
+            $table->unsignedBigInteger('domain_id');
             $table->boolean('success')->default(false);
             $table->integer('total_synchronized')->default(0);
             $table->text('synchronized')->nullable();

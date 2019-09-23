@@ -18,7 +18,7 @@ class CreateLdapDomainsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->timestamp('synchronized_at')->nullable();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->string('username');

@@ -17,8 +17,8 @@ class CreateLdapObjectsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->softDeletes();
-            $table->unsignedInteger('domain_id');
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('domain_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('guid')->unique()->index();
             $table->string('name');
             $table->string('dn');

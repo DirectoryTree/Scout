@@ -16,7 +16,8 @@ class CreateLdapChangesTable extends Migration
         Schema::create('ldap_changes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedInteger('object_id');
+            $table->timestamp('ldap_updated_at')->nullable();
+            $table->unsignedBigInteger('object_id');
             $table->string('attribute');
             $table->text('before')->nullable();
             $table->text('after');

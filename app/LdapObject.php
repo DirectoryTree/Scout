@@ -104,7 +104,7 @@ class LdapObject extends Model
     {
         switch ($this->type) {
             case 'group':
-                return 'far fa-users';
+                return 'fas fa-users';
             case 'container':
                 return 'far fa-folder';
             case 'user':

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\LdapDomain;
 use App\LdapObject;
 use App\Ldap\TypeGuesser;
@@ -9,6 +10,7 @@ use LdapRecord\Utilities;
 use LdapRecord\Models\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
+use LdapRecord\Models\Types\ActiveDirectory;
 
 class SynchronizeObject
 {
@@ -91,8 +93,11 @@ class SynchronizeObject
 
         $object->save();
 
-        if (count($modifications) > 0) {
-            Bus::dispatch(new GenerateObjectChanges($object, $modifications, $oldAttributes));
+        // We don't want to create changes for newly imported objects.
+        if (!$object->wasRecentlyCreated && count($modifications) > 0) {
+            $when = $this->getObjectUpdatedDate();
+
+            Bus::dispatch(new GenerateObjectChanges($object, $when, $modifications, $oldAttributes));
         }
 
         return $object;
@@ -128,6 +133,26 @@ class SynchronizeObject
         $parts = Utilities::explodeDn($this->model->getDn(), true);
 
         return Arr::first(Arr::except($parts, 'count'));
+    }
+
+    /**
+     * Get the LDAP objects modified date.
+     *
+     * @return Carbon
+     */
+    protected function getObjectUpdatedDate()
+    {
+        $attribute = 'modifytimestamp';
+
+        if ($this->model instanceof ActiveDirectory) {
+            $attribute = 'whenchanged';
+        }
+
+        $timestamp = $this->model->{$attribute};
+
+        return $timestamp instanceof Carbon ?
+            $timestamp->setTimezone(config('app.timezone')) :
+            now();
     }
 
     /**

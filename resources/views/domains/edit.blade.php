@@ -1,14 +1,16 @@
-@extends('layouts.app')
+@extends('domains.layout')
 
 @section('breadcrumbs', Breadcrumbs::render('domains.edit', $domain))
 
-@section('content')
+@section('page')
     <form method="post" action="{{ route('domains.update', $domain) }}">
         @csrf
         @method('patch')
 
         @component('components.card')
-            @slot('header', __('Edit Domain'))
+            @slot('header')
+                <h5 class="mb-0">{{ __('Edit Domain') }}</h5>
+            @endslot
 
             @include('domains.form')
 

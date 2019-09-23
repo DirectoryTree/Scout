@@ -6,7 +6,11 @@
     @component('components.card', ['class' => 'bg-white', 'flush' => true])
         <div class="list-group list-group-flush">
             <div class="list-group-item">
-                <h5 class="mb-0">{{ $attribute }} changes</h5>
+                <h5 class="mb-0">
+                    <strong>{{ ucfirst($attribute) }}</strong>
+                    changes on
+                    <strong>{{ $object->name }}</strong>
+                </h5>
             </div>
 
             <div class="table-responsive">
@@ -28,7 +32,7 @@
                                         {{ $change->created_at->diffForHumans() }}
                                     </span>
                                 </td>
-                                <td class="align-middle">
+                                <td class="table-success align-middle">
                                     @if (count($change->after) > 1)
                                         <ul class="pl-3 mb-0">
                                             @foreach($change->after as $value)
@@ -39,7 +43,7 @@
                                         {{ $change->after[0] }}
                                     @endif
                                 </td>
-                                <td class="align-middle">
+                                <td class="table-danger align-middle">
                                     @if (count($change->before) > 1)
                                         <ul class="pl-3 mb-0">
                                             @foreach($change->before as $value)

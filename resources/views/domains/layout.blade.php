@@ -84,8 +84,8 @@
                     </a>
 
                     <a
-                        href="{{ route('domains.show', $domain) }}"
-                        class="list-group-item list-group-item-action font-weight-bold"
+                        href="{{ route('domains.scans.index', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.scans.*') ? 'active' : null }}"
                     >
                         <i class="fas fa-search"></i> {{ __('Recent Scans') }}
                     </a>
@@ -104,8 +104,8 @@
                     </a>
 
                     <a
-                        href="#"
-                        class="list-group-item list-group-item-action font-weight-bold"
+                        href="{{ route('domains.changes.index', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.changes.*') ? 'active' : null }}"
                     >
                         <div class="d-flex justify-content-between align-items-center">
                             <span>
@@ -118,16 +118,16 @@
 
                     <a
                         href="{{ route('domains.edit', $domain) }}"
-                        class="list-group-item list-group-item-action font-weight-bold"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.edit') ? 'active' : null }}"
                     >
-                        <i class="fa fa-edit"></i> {{ __('Edit') }}
+                        <i class="far fa-edit"></i> {{ __('Edit') }}
                     </a>
 
                     <a
                         href="#"
                         class="list-group-item list-group-item-action font-weight-bold"
                         onclick="event.preventDefault();document.getElementById('delete-domain-btn').click();">
-                        <i class="fa fa-trash"></i> {{ __('Delete') }}
+                        <i class="far fa-trash-alt"></i> {{ __('Delete') }}
                     </a>
                 </div>
             @endcomponent

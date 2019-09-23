@@ -25,6 +25,10 @@ Route::group(['middleware' => 'auth'], function () {
         'only' => ['index', 'show'],
     ]);
 
+    Route::resource('domains.changes', 'DomainChangesController', [
+        'only' => ['index', 'show'],
+    ]);
+
     Route::resource('domains.objects', 'DomainObjectsController', [
         'only' => ['index', 'show'],
     ]);

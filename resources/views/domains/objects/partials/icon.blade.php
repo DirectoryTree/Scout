@@ -4,6 +4,6 @@
     </span>
 @else
     <span class="text-muted" title="{{ __('Unknown') }}">
-        <i class="fa fa-question-circle"></i>
+        <i class="far fa-question-circle"></i>
     </span>
 @endif

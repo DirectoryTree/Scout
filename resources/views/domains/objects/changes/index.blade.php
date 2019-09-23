@@ -33,13 +33,17 @@
                                 </td>
                                 <td class="text-center">{{ $change->count }}</td>
                                 <td>
-                                    <span title="{{ $change->created_at }}">
-                                        {{ $change->created_at->diffForHumans() }}
+                                    <span title="{{ $change->ldap_updated_at }}">
+                                        {{ $change->ldap_updated_at->diffForHumans() }}
                                     </span>
                                 </td>
                             </tr>
                         @empty
-
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    <em>There are no changes to list.</em>
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>

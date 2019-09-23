@@ -47,7 +47,7 @@ class DomainsController extends Controller
 
         flash()->success('Added LDAP domain.');
 
-        return redirect()->route('domains.index');
+        return redirect()->route('domains.show', $domain);
     }
 
     /**
@@ -88,7 +88,7 @@ class DomainsController extends Controller
 
         flash()->success('Updated LDAP domain.');
 
-        return redirect()->route('domains.show', $domain);
+        return redirect()->route('domains.edit', $domain);
     }
 
     /**

@@ -22,6 +22,24 @@ Breadcrumbs::for('domains.show', function ($trail, $domain) {
     $trail->push($domain->name, route('domains.show', $domain));
 });
 
+Breadcrumbs::for('domains.changes.index', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('All Changes', route('domains.changes.index', $domain));
+});
+
+Breadcrumbs::for('domains.changes.show', function ($trail, $domain, $attribute) {
+    $trail->parent('domains.changes.index', $domain);
+
+    $trail->push($attribute, route('domains.changes.show', [$domain, $attribute]));
+});
+
+Breadcrumbs::for('domains.scans.index', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('Scans', route('domains.scans.index', $domain));
+});
+
 Breadcrumbs::for('domains.objects.index', function ($trail, $domain) {
     $trail->parent('domains.show', $domain);
 

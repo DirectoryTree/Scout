@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use App\LdapChange;
 use App\LdapObject;
 
@@ -13,6 +14,13 @@ class GenerateObjectChanges
      * @var LdapObject
      */
     protected $object;
+
+    /**
+     * When the LDAP object was modified.
+     *
+     * @var Carbon
+     */
+    protected $when;
 
     /**
      * The LDAP objects modified attributes and their new values.
@@ -32,14 +40,16 @@ class GenerateObjectChanges
      * Create a new job instance.
      *
      * @param LdapObject $object
+     * @param Carbon     $when
      * @param array      $modified
      * @param array      $old
      *
      * @return void
      */
-    public function __construct(LdapObject $object, array $modified = [], array $old = [])
+    public function __construct(LdapObject $object, Carbon $when, array $modified = [], array $old = [])
     {
         $this->object = $object;
+        $this->when = $when;
         $this->modified = $modified;
         $this->old = $old;
     }
@@ -59,6 +69,7 @@ class GenerateObjectChanges
             $before = array_key_exists($attribute, $this->old) ? $this->old[$attribute] : [];
 
             $change->fill([
+                'ldap_updated_at' => $this->when,
                 'attribute' => $attribute,
                 'before' => $before,
                 'after' => unserialize($values),

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\QueueSynchronization;
 use App\LdapDomain;
 use App\Jobs\SynchronizeDomain;
+use App\LdapScan;
 use Illuminate\Support\Facades\Bus;
 use App\Http\Requests\LdapDomainRequest;
 
@@ -100,7 +102,7 @@ class DomainsController extends Controller
      */
     public function synchronize(LdapDomain $domain)
     {
-        Bus::dispatch(new SynchronizeDomain($domain));
+        Bus::dispatch(new QueueSynchronization($domain));
 
         flash()->success('Queued Synchronization.');
 

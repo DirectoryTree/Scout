@@ -33,22 +33,31 @@ class SynchronizeDomain implements ShouldQueue
     protected $domain;
 
     /**
-     * The distinguished names of the LDAP objects synchronized.
+     * The current LDAP scan record.
+     *
+     * @var LdapScan
+     */
+    protected $scan;
+
+    /**
+     * The number of LDAP objects synchronized.
      *
      * @var array
      */
-    protected $synchronized = [];
+    protected $synchronized = 0;
 
     /**
      * Create a new job instance.
      *
      * @param LdapDomain $domain
+     * @param LdapScan   $scan
      *
      * @return void
      */
-    public function __construct(LdapDomain $domain)
+    public function __construct(LdapDomain $domain, LdapScan $scan)
     {
         $this->domain = $domain;
+        $this->scan = $scan;
     }
 
     /**
@@ -58,7 +67,8 @@ class SynchronizeDomain implements ShouldQueue
      */
     public function handle()
     {
-        $scan = $this->getNewScan();
+        // Set the scan start time.
+        $this->scan->fill(['started_at' => now()])->save();
 
         $conn = $this->getNewLdapConnection($this->getLdapConnectionName());
 
@@ -71,6 +81,22 @@ class SynchronizeDomain implements ShouldQueue
                     decrypt($config->get('username')),
                     decrypt($config->get('password'))
                 );
+
+                // Run the import.
+                $this->import();
+
+                // Update our scans completion stats.
+                $this->scan->fill([
+                    'success' => true,
+                    'synchronized' => $this->synchronized,
+                    'completed_at' => now(),
+                ])->save();
+
+                // Update the domains synchronization status.
+                $this->domain->update([
+                    'synchronized_at' => now(),
+                    'status' => LdapDomain::STATUS_ONLINE,
+                ]);
             } catch (LdapRecordException $e) {
                 $status = Str::contains('credentials', $e->getMessage()) ?
                     LdapDomain::STATUS_INVALID_CREDENTIALS :
@@ -78,33 +104,13 @@ class SynchronizeDomain implements ShouldQueue
 
                 $this->domain->update(['status' => $status]);
 
-                $scan->fill([
+                $this->scan->fill([
                     'success' => false,
                     'exception' => $e->getMessage(),
                     'completed_at' => now(),
                 ])->save();
-
-                // Skip the synchronization.
-                return;
             }
         }
-
-        // Run the import on the given connection.
-        $this->import();
-
-        // Update our scans completion stats.
-        $scan->fill([
-            'success' => true,
-            'synchronized' => $this->synchronized,
-            'total_synchronized' => count($this->synchronized),
-            'completed_at' => now(),
-        ])->save();
-
-        // Update the domains synchronization status.
-        $this->domain->update([
-            'synchronized_at' => now(),
-            'status' => LdapDomain::STATUS_ONLINE,
-        ]);
     }
 
     /**
@@ -119,7 +125,7 @@ class SynchronizeDomain implements ShouldQueue
             /** @var LdapObject $object */
             $object = Bus::dispatch(new SynchronizeObject($this->domain, $child, $parent));
 
-            $this->synchronized[] = $object->dn;
+            $this->synchronized++;
 
             // If the object is a container, we will import its descendants.
             if ($object->type == 'container') {
@@ -163,18 +169,6 @@ class SynchronizeDomain implements ShouldQueue
             default:
                 return new UnknownModel();
         }
-    }
-
-    /**
-     * Get a new LDAP scan.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    protected function getNewScan()
-    {
-        return (new LdapScan([
-            'started_at' => now(),
-        ]))->domain()->associate($this->domain);
     }
 
     /**

@@ -31,9 +31,13 @@
                                     @endcomponent
                                 </td>
                                 <td>
-                                    <span title="{{ $scan->started_at }}">
-                                        {{ $scan->started_at->diffForHumans() }}
-                                    </span>
+                                    @if($scan->started_at)
+                                        <span title="{{ $scan->started_at }}">
+                                            {{ $scan->started_at->diffForHumans() }}
+                                        </span>
+                                    @else
+                                        <em class="text-muted">Not Started</em>
+                                    @endif
                                 </td>
                                 <td>
                                     @if($scan->completed_at)
@@ -41,10 +45,10 @@
                                             {{ $scan->completed_at->diffForHumans() }}
                                         </span>
                                     @else
-                                        <em class="text-muted">Not completed.</em>
+                                        <em class="text-muted">Not completed</em>
                                     @endif
                                 </td>
-                                <td class="text-center">{{ $scan->total_synchronized }}</td>
+                                <td class="text-center">{{ $scan->synchronized }}</td>
                             </tr>
                         @empty
                             <tr></tr>

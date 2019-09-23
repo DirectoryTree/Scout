@@ -121,12 +121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord.git",
-                "reference": "d45984b4830704511bb0d09e27ce7c9d46ef2af5"
+                "reference": "e8874271a9f20888bdcec3aef02dc6e8a04bb3d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/d45984b4830704511bb0d09e27ce7c9d46ef2af5",
-                "reference": "d45984b4830704511bb0d09e27ce7c9d46ef2af5",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/e8874271a9f20888bdcec3aef02dc6e8a04bb3d8",
+                "reference": "e8874271a9f20888bdcec3aef02dc6e8a04bb3d8",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +171,7 @@
                 "ldaprecord",
                 "windows"
             ],
-            "time": "2019-09-17T20:21:44+00:00"
+            "time": "2019-09-23T15:33:40+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

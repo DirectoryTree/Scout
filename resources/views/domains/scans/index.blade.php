@@ -20,17 +20,18 @@
                             <th>Started</th>
                             <th>Completed</th>
                             <th class="text-center">Synchronized</th>
+                            <th>Message</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($scans as $scan)
                             <tr>
-                                <td class="pl-4">
+                                <td class="pl-4 align-middle">
                                     @component('components.status', ['status' => $scan->success])
 
                                     @endcomponent
                                 </td>
-                                <td>
+                                <td class="align-middle text-nowrap">
                                     @if($scan->started_at)
                                         <span title="{{ $scan->started_at }}">
                                             {{ $scan->started_at->diffForHumans() }}
@@ -39,7 +40,7 @@
                                         <em class="text-muted">Not Started</em>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="align-middle text-nowrap">
                                     @if($scan->completed_at)
                                         <span title="{{ $scan->completed_at }}">
                                             {{ $scan->completed_at->diffForHumans() }}
@@ -48,7 +49,16 @@
                                         <em class="text-muted">Not completed</em>
                                     @endif
                                 </td>
-                                <td class="text-center">{{ $scan->synchronized }}</td>
+                                <td class="text-center align-middle">{{ $scan->synchronized }}</td>
+                                <td class="align-middle">
+                                    @if($scan->message)
+                                        <pre class="mb-0 text-wrap">
+                                            <code>{{ $scan->message }}</code>
+                                        </pre>
+                                    @else
+                                        <em class="text-muted">None</em>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr></tr>

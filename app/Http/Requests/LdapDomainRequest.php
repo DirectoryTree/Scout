@@ -79,6 +79,10 @@ class LdapDomainRequest extends FormRequest
     public function withValidator(Validator $validator)
     {
         $validator->after(function (Validator $validator) {
+            // Here we will attempt to bind to the configured LDAP server.
+            // Upon failure, we will add the exception message directly
+            // to the hosts validation error messages so the user has
+            // a clear indicator of any issues binding.
             $config = $this->getLdapConfiguration($validator->validated());
 
             try {
@@ -102,7 +106,8 @@ class LdapDomainRequest extends FormRequest
         $validated['use_ssl'] = $validated['encryption'] == 'ssl';
         $validated['use_tls'] = $validated['encryption'] == 'tls';
 
-        // Override the timeout for testing connectivity.
+        // Here we will override the configured timeout for
+        // testing connectivity to the LDAP server.
         $validated['timeout'] = 5;
 
         return Arr::only($validated, [

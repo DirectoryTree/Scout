@@ -39,7 +39,7 @@ class SyncDomains extends Command
 
         $bar->start();
 
-        LdapDomain::all()->each(function (LdapDomain $domain) use ($bar) {
+        $domains->each(function (LdapDomain $domain) use ($bar) {
             Bus::dispatch(new QueueSynchronization($domain));
 
             $bar->advance();

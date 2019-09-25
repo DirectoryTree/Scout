@@ -21,7 +21,7 @@ class CreateLdapScansTable extends Migration
             $table->unsignedBigInteger('domain_id');
             $table->boolean('success')->default(false);
             $table->integer('synchronized')->default(0);
-            $table->text('exception')->nullable();
+            $table->text('message')->nullable();
         });
     }
 

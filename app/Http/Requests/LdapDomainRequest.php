@@ -7,6 +7,7 @@ use LdapRecord\Connection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
+use App\Rules\LdapSearchFilter;
 use App\Rules\DistinguishedName;
 use LdapRecord\LdapRecordException;
 use Illuminate\Validation\Validator;
@@ -32,6 +33,7 @@ class LdapDomainRequest extends FormRequest
             'username' => 'required',
             'password' => 'required',
             'base_dn' => ['required', new DistinguishedName()],
+            'filter' => ['nullable', new LdapSearchFilter()],
             'port' => 'required|integer',
             'timeout' => 'required|integer|max:50',
             'encryption' => 'nullable|in:tls,ssl',
@@ -57,6 +59,7 @@ class LdapDomainRequest extends FormRequest
         $domain->hosts = explode(',', $this->hosts);
         $domain->port = $this->port;
         $domain->base_dn = $this->base_dn;
+        $domain->filter = $this->filter;
         $domain->username = $this->username;
         $domain->password = $this->password;
         $domain->encryption = $this->encryption ?? null;

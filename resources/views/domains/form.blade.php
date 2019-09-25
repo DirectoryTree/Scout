@@ -152,26 +152,54 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label for="base_dn">{{ __('Search Base DN') }}</label>
-    <input
-        name="base_dn"
-        type="text"
-        value="{{ old('base_dn', $domain->base_dn) }}"
-        class="form-control{{ $errors->has('base_dn') ? ' is-invalid' : '' }}"
-        id="base_dn"
-        placeholder="dc=local,dc=com"
-    >
+<div class="form-row">
+    <div class="col">
+        <div class="form-group">
+            <label for="base_dn">{{ __('Search Base DN') }}</label>
+            <input
+                name="base_dn"
+                type="text"
+                value="{{ old('base_dn', $domain->base_dn) }}"
+                class="form-control{{ $errors->has('base_dn') ? ' is-invalid' : '' }}"
+                id="base_dn"
+                placeholder="dc=local,dc=com"
+            >
 
-    @error('base_dn')
-        <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
-    @enderror
+            @error('base_dn')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
 
-    <small class="form-text text-muted">
-        The <strong>Search Base DN</strong> is critical to scanning your directory.
-    </small>
+            <small class="form-text text-muted">
+                The <strong>Search Base DN</strong> is critical to scanning your directory.
+            </small>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <label for="base_dn">{{ __('Global Search Filter') }}</label>
+            <input
+                name="filter"
+                type="text"
+                value="{{ old('filter', $domain->filter) }}"
+                class="form-control{{ $errors->has('filter') ? ' is-invalid' : '' }}"
+                id="filter"
+                placeholder="(example=value)"
+            >
+
+            @error('filter')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+
+            <small class="form-text text-muted">
+                This filter is applied on <strong>every scan</strong> on your directory.
+            </small>
+        </div>
+    </div>
 </div>
 
 <hr/>

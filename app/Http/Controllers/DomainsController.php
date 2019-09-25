@@ -59,11 +59,13 @@ class DomainsController extends Controller
      */
     public function show(LdapDomain $domain)
     {
+        $synchronizedAt = $domain->scans()->latest()->first();
+
         $changesToday = $domain->objects()->withCount(['changes' => function ($query) {
             $query->whereBetween('ldap_updated_at', [now()->subDay(), now()]);
         }])->get()->sum('changes_count');
 
-        return view('domains.show', compact('domain', 'changesToday'));
+        return view('domains.show', compact('domain', 'synchronizedAt', 'changesToday'));
     }
 
     /**

@@ -22,7 +22,7 @@ class LdapDomain extends Model
      * @var array
      */
     protected $fillable = [
-        'synchronized_at',
+        'attempted_at',
         'status',
     ];
 
@@ -41,7 +41,7 @@ class LdapDomain extends Model
      *
      * @var array
      */
-    protected $dates = ['synchronized_at'];
+    protected $dates = ['attempted_at'];
 
     /**
      * The "booting" method of the model.

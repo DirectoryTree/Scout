@@ -17,7 +17,7 @@ class CreateLdapDomainsTable extends Migration
         Schema::create('ldap_domains', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->timestamp('synchronized_at')->nullable();
+            $table->timestamp('attempted_at')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('name')->unique();
             $table->string('slug')->unique();

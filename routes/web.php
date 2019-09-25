@@ -19,9 +19,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('domains', 'DomainsController');
 
+    Route::get('/domains/{domain}/delete', 'DomainsController@delete')->name('domains.delete');
+
     Route::post('/domains/{domain}/synchronize', 'DomainsController@synchronize')->name('domains.synchronize');
 
     Route::get('/domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
+
+    Route::resource('domains.notifiers', 'DomainNotifiersController');
 
     Route::resource('domains.scans', 'DomainScansController', [
         'only' => ['index', 'show'],

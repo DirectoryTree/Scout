@@ -17,42 +17,12 @@
         <div class="col">
             @forelse($domains as $domain)
                 @component('components.card', ['class' => 'bg-white'])
-                    <div class="d-flex justify-content-between">
-                        <a class="h4" href="{{ route('domains.show', $domain) }}">
-                            {{ $domain->name }}
-                        </a>
-
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('domains.edit', $domain) }}">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
-
-                                <div class="dropdown-divider"></div>
-
-                                <form-confirm
-                                    action="{{ route('domains.destroy', $domain) }}"
-                                    method="post"
-                                    title="Delete domain?"
-                                    message="You cannot undo this action."
-                                >
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="dropdown-item no-loading">
-                                        <i class="fa fa-trash"></i> Delete
-                                    </button>
-                                </form-confirm>
-                            </div>
-                        </div>
-                    </div>
+                    <a class="h4" href="{{ route('domains.show', $domain) }}">
+                        {{ $domain->name }}
+                    </a>
 
                     <hr/>
-                        Test
+
                     <hr/>
 
                     <small>

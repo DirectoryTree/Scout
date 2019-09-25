@@ -112,6 +112,18 @@ class DomainsController extends Controller
     }
 
     /**
+     * Displays the form for deleting a domain.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return \Illuminate\View\View
+     */
+    public function delete(LdapDomain $domain)
+    {
+        return view('domains.delete', compact('domain'));
+    }
+
+    /**
      * Deletes the domain and all of its data.
      *
      * @param LdapDomain $domain

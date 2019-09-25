@@ -11,18 +11,6 @@
 
     <div class="row">
         <div class="col-md-3">
-            <form-confirm
-                action="{{ route('domains.destroy', $domain) }}"
-                method="post"
-                title="Delete domain?"
-                message="You cannot undo this action."
-            >
-                @csrf
-                @method('DELETE')
-
-                <button id="delete-domain-btn" type="submit" class="d-none"></button>
-            </form-confirm>
-
             @isset($object)
                 @component('components.card', ['class' => 'mb-4', 'flush' => true])
                     <div class="list-group list-group-flush">
@@ -135,9 +123,9 @@
                     </a>
 
                     <a
-                        href="#"
+                        href="{{ route('domains.delete', $domain) }}"
                         class="list-group-item list-group-item-action font-weight-bold"
-                        onclick="event.preventDefault();document.getElementById('delete-domain-btn').click();">
+                    >
                         <i class="far fa-trash-alt"></i> {{ __('Delete') }}
                     </a>
                 </div>

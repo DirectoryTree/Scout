@@ -6,7 +6,7 @@ use App\LdapScan;
 use App\LdapDomain;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
-class QueueSynchronization
+class QueueSync
 {
     use DispatchesJobs;
 
@@ -38,6 +38,6 @@ class QueueSynchronization
             $scan->domain()->associate($this->domain)->save();
         });
 
-        $this->dispatch(new SynchronizeDomain($this->domain, $scan));
+        $this->dispatch(new SyncDomain($this->domain, $scan));
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
 use LdapRecord\Models\Types\ActiveDirectory;
 
-class SynchronizeObject
+class SyncObject
 {
     /**
      * The global attribute blacklist.
@@ -33,7 +33,7 @@ class SynchronizeObject
      *
      * @var Model
      */
-    protected $model;
+    protected $object;
 
     /**
      * The parent LDAP object.
@@ -46,13 +46,13 @@ class SynchronizeObject
      * Create a new job instance.
      *
      * @param LdapDomain      $domain
-     * @param Model           $model
+     * @param Model           $object
      * @param LdapObject|null $parent
      */
-    public function __construct(LdapDomain $domain, Model $model, LdapObject $parent = null)
+    public function __construct(LdapDomain $domain, Model $object, LdapObject $parent = null)
     {
         $this->domain = $domain;
-        $this->model = $model;
+        $this->object = $object;
         $this->parent = $parent;
     }
 
@@ -116,7 +116,7 @@ class SynchronizeObject
      */
     protected function getObjectGuid()
     {
-        return $this->model->getConvertedGuid();
+        return $this->object->getConvertedGuid();
     }
 
     /**
@@ -126,7 +126,7 @@ class SynchronizeObject
      */
     protected function getObjectDn()
     {
-        return $this->model->getDn();
+        return $this->object->getDn();
     }
 
     /**
@@ -136,7 +136,7 @@ class SynchronizeObject
      */
     protected function getObjectName()
     {
-        $parts = Utilities::explodeDn($this->model->getDn(), true);
+        $parts = Utilities::explodeDn($this->object->getDn(), true);
 
         return Arr::first(Arr::except($parts, 'count'));
     }
@@ -150,11 +150,11 @@ class SynchronizeObject
     {
         $attribute = 'modifytimestamp';
 
-        if ($this->model instanceof ActiveDirectory) {
+        if ($this->object instanceof ActiveDirectory) {
             $attribute = 'whenchanged';
         }
 
-        $timestamp = $this->model->{$attribute};
+        $timestamp = $this->object->{$attribute};
 
         return $timestamp instanceof Carbon ?
             $timestamp->setTimezone(config('app.timezone')) :
@@ -168,7 +168,7 @@ class SynchronizeObject
      */
     protected function getObjectType()
     {
-        return (new TypeGuesser($this->model->objectclass ?? []))->get();
+        return (new TypeGuesser($this->object->objectclass ?? []))->get();
     }
 
     /**
@@ -179,10 +179,10 @@ class SynchronizeObject
     protected function getFilteredAttributes()
     {
         if (count($this->blacklist) === 0) {
-            return $this->model->jsonSerialize();
+            return $this->object->jsonSerialize();
         }
 
-        return array_filter($this->model->jsonSerialize(), function ($key) {
+        return array_filter($this->object->jsonSerialize(), function ($key) {
             return ! in_array($key, $this->blacklist);
         }, ARRAY_FILTER_USE_KEY);
     }

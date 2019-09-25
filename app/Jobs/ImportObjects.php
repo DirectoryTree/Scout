@@ -58,7 +58,7 @@ class ImportObjects
     {
         $this->query($model)->each(function (Model $child) use ($model, $parent) {
             /** @var LdapObject $object */
-            $object = Bus::dispatch(new SynchronizeObject($this->domain, $child, $parent));
+            $object = Bus::dispatch(new SyncObject($this->domain, $child, $parent));
 
             $this->synchronized++;
 

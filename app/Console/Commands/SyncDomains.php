@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\LdapDomain;
 use Illuminate\Console\Command;
-use App\Jobs\QueueSynchronization;
+use App\Jobs\QueueSync;
 use Illuminate\Support\Facades\Bus;
 
 class SyncDomains extends Command
@@ -40,7 +40,7 @@ class SyncDomains extends Command
         $bar->start();
 
         $domains->each(function (LdapDomain $domain) use ($bar) {
-            Bus::dispatch(new QueueSynchronization($domain));
+            Bus::dispatch(new QueueSync($domain));
 
             $bar->advance();
         });

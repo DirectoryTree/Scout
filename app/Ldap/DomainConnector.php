@@ -2,7 +2,9 @@
 
 namespace App\Ldap;
 
+use Exception;
 use App\LdapDomain;
+use Illuminate\Support\Str;
 use LdapRecord\Container;
 use LdapRecord\Connection;
 use LdapRecord\ContainerException;
@@ -49,10 +51,31 @@ class DomainConnector
         if (! $this->connection->getLdapConnection()->isBound()) {
             $config = $this->connection->getConfiguration();
 
-            $this->connection->connect(
-                decrypt($config->get('username')),
-                decrypt($config->get('password'))
-            );
+            try {
+                $this->connection->connect(
+                    decrypt($config->get('username')),
+                    decrypt($config->get('password'))
+                );
+
+                // Update the domains connection status.
+                $this->domain->update([
+                    'attempted_at' => now(),
+                    'status' => LdapDomain::STATUS_ONLINE,
+                ]);
+            } catch (Exception $ex) {
+                // Determine if the error is due to invalid credentials.
+                $status = Str::contains('credentials', $ex->getMessage()) ?
+                    LdapDomain::STATUS_INVALID_CREDENTIALS :
+                    LdapDomain::STATUS_OFFLINE;
+
+                $this->domain->update([
+                    'attempted_at' => now(),
+                    'status' => $status,
+                ]);
+
+                // Rethrow the exception.
+                throw $ex;
+            }
         }
 
         return true;

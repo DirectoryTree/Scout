@@ -6,8 +6,6 @@ use Exception;
 use App\LdapScan;
 use App\LdapDomain;
 use App\Ldap\DomainConnector;
-use LdapRecord\LdapRecordException;
-use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Queue\SerializesModels;
@@ -70,36 +68,12 @@ class SynchronizeDomain implements ShouldQueue
                 'synchronized' => $synchronized,
                 'completed_at' => now(),
             ])->save();
-
-            // Update the domains synchronization status.
-            $this->domain->update([
-                'synchronized_at' => now(),
-                'status' => LdapDomain::STATUS_ONLINE,
-            ]);
         } catch (Exception $ex) {
-            $this->handleException($ex);
+            $this->scan->fill([
+                'success' => false,
+                'message' => $ex->getMessage(),
+                'completed_at' => now(),
+            ])->save();
         }
-    }
-
-    /**
-     * Handle the given exception and update the scan record.
-     *
-     * @param Exception $ex
-     */
-    protected function handleException(Exception $ex)
-    {
-        if ($ex instanceof LdapRecordException) {
-            $status = Str::contains('credentials', $ex->getMessage()) ?
-                LdapDomain::STATUS_INVALID_CREDENTIALS :
-                LdapDomain::STATUS_OFFLINE;
-
-            $this->domain->update(['status' => $status]);
-        }
-
-        $this->scan->fill([
-            'success' => false,
-            'message' => $ex->getMessage(),
-            'completed_at' => now(),
-        ])->save();
     }
 }

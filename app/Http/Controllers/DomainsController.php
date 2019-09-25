@@ -61,7 +61,11 @@ class DomainsController extends Controller
      */
     public function show(LdapDomain $domain)
     {
-        return view('domains.show', compact('domain'));
+        $changesToday = $domain->objects()->withCount(['changes' => function ($query) {
+            $query->whereBetween('ldap_updated_at', [now()->subDay(), now()]);
+        }])->get()->sum('changes_count');
+
+        return view('domains.show', compact('domain', 'changesToday'));
     }
 
     /**

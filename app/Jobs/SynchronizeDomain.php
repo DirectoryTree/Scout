@@ -5,8 +5,7 @@ namespace App\Jobs;
 use Exception;
 use App\LdapScan;
 use App\LdapDomain;
-use LdapRecord\Container;
-use LdapRecord\Connection;
+use App\Ldap\DomainConnector;
 use LdapRecord\LdapRecordException;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
@@ -58,35 +57,27 @@ class SynchronizeDomain implements ShouldQueue
         // Set the scan start time.
         $this->scan->fill(['started_at' => now()])->save();
 
-        $conn = $this->getNewLdapConnection();
+        $connector = new DomainConnector($this->domain);
 
-        // Bind to the LDAP server if not yet bound.
-        if (! $conn->getLdapConnection()->isBound()) {
-            $config = $conn->getConfiguration();
+        try {
+            $connector->connect();
 
-            try {
-                $conn->connect(
-                    decrypt($config->get('username')),
-                    decrypt($config->get('password'))
-                );
+            $synchronized = Bus::dispatch(new ImportObjects($this->domain));
 
-                $synchronized = Bus::dispatch(new ImportObjects($this->domain));
+            // Update our scans completion stats.
+            $this->scan->fill([
+                'success' => true,
+                'synchronized' => $synchronized,
+                'completed_at' => now(),
+            ])->save();
 
-                // Update our scans completion stats.
-                $this->scan->fill([
-                    'success' => true,
-                    'synchronized' => $synchronized,
-                    'completed_at' => now(),
-                ])->save();
-
-                // Update the domains synchronization status.
-                $this->domain->update([
-                    'synchronized_at' => now(),
-                    'status' => LdapDomain::STATUS_ONLINE,
-                ]);
-            } catch (Exception $ex) {
-                $this->handleException($ex);
-            }
+            // Update the domains synchronization status.
+            $this->domain->update([
+                'synchronized_at' => now(),
+                'status' => LdapDomain::STATUS_ONLINE,
+            ]);
+        } catch (Exception $ex) {
+            $this->handleException($ex);
         }
     }
 
@@ -110,22 +101,5 @@ class SynchronizeDomain implements ShouldQueue
             'message' => $ex->getMessage(),
             'completed_at' => now(),
         ])->save();
-    }
-
-    /**
-     * Get a new LDAP connection.
-     *
-     * @return Connection
-     */
-    protected function getNewLdapConnection()
-    {
-        $conn = new Connection(
-            $this->domain->getConnectionAttributes()
-        );
-
-        // Add the connection to the container.
-        Container::getInstance()->add($conn, $this->domain->slug);
-
-        return $conn;
     }
 }

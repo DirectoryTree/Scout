@@ -15,9 +15,8 @@ class LdapScan extends Model
         'started_at',
         'completed_at',
         'success',
-        'exception',
+        'message',
         'synchronized',
-        'total_synchronized',
     ];
 
     /**
@@ -35,10 +34,7 @@ class LdapScan extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'success' => 'boolean',
-        'synchronized' => 'array'
-    ];
+    protected $casts = ['success' => 'boolean'];
 
     /**
      * The belongsTo domain relationship.

@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
+use Exception;
 use App\LdapScan;
 use App\LdapDomain;
-use App\LdapObject;
-use LdapRecord\Ldap;
 use LdapRecord\Container;
 use LdapRecord\Connection;
+use LdapRecord\LdapRecordException;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Bus;
@@ -15,11 +15,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use LdapRecord\LdapRecordException;
-use LdapRecord\Models\Model;
-use LdapRecord\Models\Entry as UnknownModel;
-use LdapRecord\Models\OpenLdap\Entry as OpenLdapModel;
-use LdapRecord\Models\ActiveDirectory\Entry as ActiveDirectoryModel;
 
 class SynchronizeDomain implements ShouldQueue
 {
@@ -38,13 +33,6 @@ class SynchronizeDomain implements ShouldQueue
      * @var LdapScan
      */
     protected $scan;
-
-    /**
-     * The number of LDAP objects synchronized.
-     *
-     * @var array
-     */
-    protected $synchronized = 0;
 
     /**
      * Create a new job instance.
@@ -70,7 +58,7 @@ class SynchronizeDomain implements ShouldQueue
         // Set the scan start time.
         $this->scan->fill(['started_at' => now()])->save();
 
-        $conn = $this->getNewLdapConnection($this->getLdapConnectionName());
+        $conn = $this->getNewLdapConnection();
 
         // Bind to the LDAP server if not yet bound.
         if (! $conn->getLdapConnection()->isBound()) {
@@ -82,13 +70,12 @@ class SynchronizeDomain implements ShouldQueue
                     decrypt($config->get('password'))
                 );
 
-                // Run the import.
-                $this->import();
+                $synchronized = Bus::dispatch(new ImportObjects($this->domain));
 
                 // Update our scans completion stats.
                 $this->scan->fill([
                     'success' => true,
-                    'synchronized' => $this->synchronized,
+                    'synchronized' => $synchronized,
                     'completed_at' => now(),
                 ])->save();
 
@@ -97,107 +84,48 @@ class SynchronizeDomain implements ShouldQueue
                     'synchronized_at' => now(),
                     'status' => LdapDomain::STATUS_ONLINE,
                 ]);
-            } catch (LdapRecordException $e) {
-                $status = Str::contains('credentials', $e->getMessage()) ?
-                    LdapDomain::STATUS_INVALID_CREDENTIALS :
-                    LdapDomain::STATUS_OFFLINE;
-
-                $this->domain->update(['status' => $status]);
-
-                $this->scan->fill([
-                    'success' => false,
-                    'exception' => $e->getMessage(),
-                    'completed_at' => now(),
-                ])->save();
+            } catch (Exception $ex) {
+                $this->handleException($ex);
             }
         }
     }
 
     /**
-     * Import the LDAP objects on the given connection.
+     * Handle the given exception and update the scan record.
      *
-     * @param Model|null      $model
-     * @param LdapObject|null $parent
+     * @param Exception $ex
      */
-    protected function import(Model $model = null, LdapObject $parent = null)
+    protected function handleException(Exception $ex)
     {
-        $this->query($model)->each(function (Model $child) use ($model, $parent) {
-            /** @var LdapObject $object */
-            $object = Bus::dispatch(new SynchronizeObject($this->domain, $child, $parent));
+        if ($ex instanceof LdapRecordException) {
+            $status = Str::contains('credentials', $ex->getMessage()) ?
+                LdapDomain::STATUS_INVALID_CREDENTIALS :
+                LdapDomain::STATUS_OFFLINE;
 
-            $this->synchronized++;
-
-            // If the object is a container, we will import its descendants.
-            if ($object->type == 'container') {
-                $this->import($child, $object);
-            }
-        });
-    }
-
-    /**
-     * Queries the LDAP directory.
-     *
-     * If an entry is supplied, it will query leaf LDAP entries.
-     *
-     * @param Model|null $model
-     *
-     * @return \LdapRecord\Query\Collection
-     */
-    protected function query(Model $model = null)
-    {
-        $query = $model ?
-            $model->in($model->getDn()) :
-            $this->getDomainLdapModel()->setConnection($this->getLdapConnectionName());
-
-        return $query->listing()
-            ->select('*')
-            ->paginate(1000);
-    }
-
-    /**
-     * Get a new LDAP model for the current domains type.
-     *
-     * @return ActiveDirectoryModel|UnknownModel|OpenLdapModel
-     */
-    protected function getDomainLdapModel()
-    {
-        switch($this->domain->type) {
-            case LdapDomain::TYPE_ACTIVE_DIRECTORY:
-                return new ActiveDirectoryModel();
-            case LdapDomain::TYPE_OPEN_LDAP:
-                return new OpenLdapModel();
-            default:
-                return new UnknownModel();
+            $this->domain->update(['status' => $status]);
         }
+
+        $this->scan->fill([
+            'success' => false,
+            'message' => $ex->getMessage(),
+            'completed_at' => now(),
+        ])->save();
     }
 
     /**
      * Get a new LDAP connection.
      *
-     * @param string $name
-     *
      * @return Connection
      */
-    protected function getNewLdapConnection($name)
+    protected function getNewLdapConnection()
     {
         $conn = new Connection(
-            $this->domain->getConnectionAttributes(),
-            new Ldap($name)
+            $this->domain->getConnectionAttributes()
         );
 
         // Add the connection to the container.
-        Container::getInstance()->add($conn, $name);
+        Container::getInstance()->add($conn, $this->domain->slug);
 
         return $conn;
-    }
-
-    /**
-     * Get the LDAP connection name.
-     *
-     * @return string
-     */
-    protected function getLdapConnectionName()
-    {
-        return $this->domain->slug;
     }
 }

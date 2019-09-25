@@ -56,6 +56,9 @@ class LdapDomain extends Model
             // Delete any scans that have been performed.
             $domain->scans()->delete();
 
+            // Delete any LDAP notifiers.
+            $domain->notifiers()->delete();
+
             // The domain may have a large amount of objects. We
             // will chunk our results to keep memory usage low
             // and so object deletion events are fired.
@@ -106,6 +109,16 @@ class LdapDomain extends Model
     public function objects()
     {
         return $this->hasMany(LdapObject::class, 'domain_id');
+    }
+
+    /**
+     * The morphMany LDAP notifiers relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function notifiers()
+    {
+        return $this->morphMany(LdapNotifier::class, 'notifiable');
     }
 
     /**

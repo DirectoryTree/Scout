@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLdapNotificationsTable extends Migration
+class CreateLdapNotifiersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLdapNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ldap_notifications', function (Blueprint $table) {
+        Schema::create('ldap_notifiers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
@@ -32,6 +32,6 @@ class CreateLdapNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ldap_notifications');
+        Schema::dropIfExists('ldap_notifiers');
     }
 }

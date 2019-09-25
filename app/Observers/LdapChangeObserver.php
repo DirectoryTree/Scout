@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\LdapChange;
-use App\LdapNotification;
+use App\LdapNotifier;
 use App\Notifications\LdapObjectHasChanged;
 
 class LdapChangeObserver
@@ -17,9 +17,9 @@ class LdapChangeObserver
     {
         logger("Change: {$change->getKey()} created.");
 
-        LdapNotification::where('attribute', '=', $change->attribute)
+        LdapNotifier::where('attribute', '=', $change->attribute)
             ->get()
-            ->each(function (LdapNotification $notification) use ($change) {
+            ->each(function (LdapNotifier $notification) use ($change) {
                 if (($notifiable = $notification->notifiable) && $this->isNotifiable($notifiable)) {
                     $notifiable->notify(new LdapObjectHasChanged($change));
                 }

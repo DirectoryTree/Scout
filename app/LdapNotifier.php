@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LdapNotification extends Model
+class LdapNotifier extends Model
 {
     /**
      * The belongsTo creator relationship.

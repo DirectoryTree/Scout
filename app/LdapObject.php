@@ -42,6 +42,7 @@ class LdapObject extends Model
         // for change records. We'll bulk delete the changes.
         static::deleting(function(LdapObject $object) {
             $object->changes()->delete();
+            $object->notifiers()->delete();
         });
     }
 
@@ -93,6 +94,16 @@ class LdapObject extends Model
     public function changes()
     {
         return $this->hasMany(LdapChange::class, 'object_id');
+    }
+
+    /**
+     * The morphMany LDAP notifiers relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function notifiers()
+    {
+        return $this->morphMany(LdapNotifier::class, 'notifiable');
     }
 
     /**

@@ -68,7 +68,13 @@ class SynchronizeObject
         ksort($newAttributes);
 
         /** @var LdapObject $object */
-        $object = LdapObject::firstOrNew(['guid' => $this->getObjectGuid()]);
+        $object = LdapObject::withTrashed()->firstOrNew(['guid' => $this->getObjectGuid()]);
+
+        // If the object has been deleted but the relating
+        // LDAP object exists, we must restore it.
+        if ($object->trashed()) {
+            $object->restore();
+        }
 
         $oldAttributes = $object->attributes ?? [];
 

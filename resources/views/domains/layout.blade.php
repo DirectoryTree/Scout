@@ -83,6 +83,10 @@
                         <i class="far fa-eye"></i> {{ __('Overview') }}
                     </a>
 
+                    <a href="#" class="list-group-item list-group-item-action font-weight-bold">
+                        <i class="far fa-bell"></i> Notifications
+                    </a>
+
                     <a
                         href="{{ route('domains.search.index', $domain) }}"
                         class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.search.*') ? 'active' : null }}"

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\QueueSynchronization;
 use App\LdapDomain;
-use App\Jobs\SynchronizeDomain;
-use App\LdapScan;
+use App\Jobs\QueueSynchronization;
 use Illuminate\Support\Facades\Bus;
 use App\Http\Requests\LdapDomainRequest;
 

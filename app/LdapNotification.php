@@ -17,12 +17,12 @@ class LdapNotification extends Model
     }
 
     /**
-     * The belongsTo object relationship.
+     * The owning notifiable models relationship.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function object()
+    public function notifiable()
     {
-        return $this->belongsTo(LdapObject::class, 'object_id');
+        return $this->morphTo();
     }
 }

@@ -24,6 +24,18 @@ class LdapObjectHasChanged extends Notification
     }
 
     /**
+     * Get the notification's delivery channels.
+     *
+     * @param mixed $notifiable
+     *
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return ['database'];
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * Returns the modified attributes names.
@@ -36,8 +48,9 @@ class LdapObjectHasChanged extends Notification
     {
         return [
             'change_id' => $this->change->id,
-            'object' => $notifiable->toArray(),
-            'modified' => array_keys($this->change->attributes),
+            'attribute' => $this->change->attribute,
+            'before' => $this->change->before,
+            'after' => $this->change->after,
         ];
     }
 }

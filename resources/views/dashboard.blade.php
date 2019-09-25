@@ -1,23 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+    @component('components.card', ['class' => 'bg-white'])
+        @slot('header')
+            <h4 class="mb-0">Dashboard</h4>
+        @endslot
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        Welcome to Scout!
+    @endcomponent
 @endsection

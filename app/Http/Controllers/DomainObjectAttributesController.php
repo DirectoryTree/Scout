@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LdapDomain;
+use App\Ldap\Transformers\AttributeTransformer;
 
 class DomainObjectAttributesController extends Controller
 {
@@ -18,6 +19,8 @@ class DomainObjectAttributesController extends Controller
     {
         $object = $domain->objects()->findOrFail($objectId);
 
-        return view('domains.objects.attributes.index', compact('domain', 'object'));
+        $attributes = (new AttributeTransformer($object->attributes))->transform();
+
+        return view('domains.objects.attributes.index', compact('domain', 'object', 'attributes'));
     }
 }

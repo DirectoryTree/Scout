@@ -82,11 +82,21 @@ class DomainConnector
     }
 
     /**
+     * Get the domains LDAP connection name.
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return $this->domain->slug;
+    }
+
+    /**
      * Get the LDAP connection for the domain.
      *
      * @return Connection
      */
-    public function getLdapConnection()
+    protected function getLdapConnection()
     {
         $container = Container::getInstance();
 
@@ -114,15 +124,5 @@ class DomainConnector
         return new Connection(
             $this->domain->getConnectionAttributes()
         );
-    }
-
-    /**
-     * Get the domains LDAP connection name.
-     *
-     * @return string
-     */
-    protected function getConnectionName()
-    {
-        return $this->domain->slug;
     }
 }

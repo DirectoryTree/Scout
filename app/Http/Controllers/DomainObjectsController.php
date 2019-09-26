@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\LdapDomain;
 use App\LdapObject;
+use App\Jobs\SyncSingleObject;
+use Illuminate\Support\Facades\Bus;
 
 class DomainObjectsController extends Controller
 {
@@ -42,5 +45,29 @@ class DomainObjectsController extends Controller
             ->paginate(25);
 
         return view('domains.objects.show', compact('domain', 'object', 'objects'));
+    }
+
+    /**
+     * Synchronizes the object.
+     *
+     * @param LdapDomain $domain
+     * @param int        $objectId
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sync(LdapDomain $domain, $objectId)
+    {
+        /** @var LdapObject $object */
+        $object = $domain->objects()->with('parent')->findOrFail($objectId);
+
+        try {
+            Bus::dispatch(new SyncSingleObject($domain, $object));
+
+            flash()->success('Synchronized object');
+        } catch (Exception $ex) {
+            flash()->error($ex->getMessage());
+        }
+
+        return redirect()->back();
     }
 }

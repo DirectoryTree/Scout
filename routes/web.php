@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth'], function () {
         'only' => ['index', 'show'],
     ]);
 
+    Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectsController@sync')
+        ->name('domains.objects.sync');
+
     Route::resource('domains.objects.attributes', 'DomainObjectAttributesController', [
         'only' => ['index', 'show'],
     ]);

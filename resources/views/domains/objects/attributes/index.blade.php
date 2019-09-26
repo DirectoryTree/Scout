@@ -6,16 +6,27 @@
     @component('components.card', ['class' => 'bg-white', 'flush' => true])
         <div class="list-group list-group-flush">
             <div class="list-group-item">
-                <div class="d-flex justify-content-between">
-                    <h5 class="mb-0">Attributes</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column">
+                        <h5 class="mb-0">Attributes</h5>
 
-                    <div class="text-muted">
-                        Updated
+                        <small class="text-muted">
+                            Updated
 
-                        <span class="badge badge-secondary" title="{{ $object->updated_at }}">
-                            {{ $object->updated_at->diffForHumans() }}
-                        </span>
+                            <span class="badge badge-secondary" title="{{ $object->updated_at }}">
+                                {{ $object->updated_at->diffForHumans() }}
+                            </span>
+                        </small>
                     </div>
+
+                    <form method="post" action="{{ route('domains.objects.sync', [$domain, $object]) }}">
+                        @csrf
+                        @method('patch')
+
+                        <button type="submit" class="btn btn-sm btn-primary" data-size="xs">
+                            <i class="fas fa-sync"></i> Sync
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -28,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($object->attributes as $name => $values)
+                    @forelse($attributes as $name => $values)
                         <tr>
                             <td class="pl-4 align-middle">{{ $name }}</td>
                             <td class="bg-light">
@@ -37,7 +48,11 @@
                                         {{ $value }}{{ !$loop->last ? ',' : null }}
                                     @endforeach
                                 @else
-                                    {{ $values[0] }}
+                                    @if($values[0] instanceof \Carbon\Carbon)
+                                        {{ $values[0]->diffForHumans() }} - {{ $values[0]->toDateTimeString() }}
+                                    @else
+                                        {{ $values[0] }}
+                                    @endif
                                 @endif
                             </td>
                         </tr>

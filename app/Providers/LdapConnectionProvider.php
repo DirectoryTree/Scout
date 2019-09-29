@@ -2,28 +2,30 @@
 
 namespace App\Providers;
 
+use App\LdapDomain;
 use LdapRecord\Container;
+use LdapRecord\Connection;
 use Illuminate\Support\ServiceProvider;
 
 class LdapConnectionProvider extends ServiceProvider
 {
     /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
-
-    /**
-     * Bootstrap services.
+     * Bootstrap LDAP services.
      *
      * @return void
      */
     public function boot()
     {
         Container::setLogger(logger());
+
+        $container = Container::getInstance();
+
+        // Here we will create each domain connection so it can be easily
+        // retrieved throughout the lifecycle of the application.
+        LdapDomain::all()->each(function (LdapDomain $domain) use ($container) {
+            $connection = new Connection($domain->getLdapConnectionAttributes());
+
+            $container->add($connection, $domain->getLdapConnectionName());
+        });
     }
 }

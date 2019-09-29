@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class LdapDomain extends Model
 {
+    use Notifiable;
+
     // The LDAP connection types.
     const TYPE_UNKNOWN = 1;
     const TYPE_ACTIVE_DIRECTORY = 2;
@@ -122,11 +125,21 @@ class LdapDomain extends Model
     }
 
     /**
+     * Returns the domains connection name.
+     *
+     * @return string
+     */
+    public function getLdapConnectionName()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Returns the domains connection attributes.
      *
      * @return array
      */
-    public function getConnectionAttributes()
+    public function getLdapConnectionAttributes()
     {
         $attributes = $this->only([
             'username',

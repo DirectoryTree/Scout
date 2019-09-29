@@ -49,7 +49,9 @@
                                     @endforeach
                                 @else
                                     @if($values[0] instanceof \Carbon\Carbon)
-                                        {{ $values[0]->diffForHumans() }} - {{ $values[0]->toDateTimeString() }}
+                                        {{ $values[0]->diffForHumans() }}
+
+                                        <small class="text-muted">{{ $values[0]->toDateTimeString() }}</small>
                                     @else
                                         {{ $values[0] }}
                                     @endif

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col">
             @forelse($domains as $domain)
-                @component('components.card', ['class' => 'bg-white'])
+                @component('components.card', ['class' => 'bg-white mb-4'])
                     <a class="h4" href="{{ route('domains.show', $domain) }}">
                         {{ $domain->name }}
                     </a>

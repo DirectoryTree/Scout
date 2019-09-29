@@ -12,6 +12,8 @@ class AttributeTransformer extends Transformer
     protected $map = [
         'objectsid' => ObjectSid::class,
         'pwdlastset' => WindowsIntTimestamp::class,
+        'lockouttime' => WindowsIntTimestamp::class,
+        'badpasswordtime' => WindowsIntTimestamp::class,
         'whenchanged' => WindowsTimestamp::class,
         'whencreated' => WindowsTimestamp::class,
         'dscorepropagationdata' => WindowsTimestamp::class,

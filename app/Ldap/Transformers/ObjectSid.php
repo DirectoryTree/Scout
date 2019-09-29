@@ -14,7 +14,7 @@ class ObjectSid extends Transformer
     public function transform(): array
     {
         if ($value = $this->getFirstValue()) {
-            return [Utilities::binarySidToString($value)];
+            return Utilities::isValidSid($value) ? [$value] : [Utilities::binarySidToString($value)];
         }
 
         return $this->value;

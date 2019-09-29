@@ -52,6 +52,12 @@
                                 </a>
                             </li>
                         @else
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-bell"></i> {{ $counts['notifications'] }}
+                                </a>
+                            </li>
+
                             <li class="nav-item dropdown">
                                 <a id="user-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <i class="fa fa-user-circle"></i>

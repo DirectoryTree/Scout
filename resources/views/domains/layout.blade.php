@@ -71,7 +71,10 @@
                         <i class="far fa-eye"></i> {{ __('Overview') }}
                     </a>
 
-                    <a href="#" class="list-group-item list-group-item-action font-weight-bold">
+                    <a
+                        href="{{ route('domains.notifiers.index', $domain) }}"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.notifiers.*') ? 'active' : null }}"
+                    >
                         <i class="far fa-bell"></i> Notifications
                     </a>
 

@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Http\View\Composers\AppLayoutComposer;
 use App\Http\View\Composers\DomainFormComposer;
 use App\Http\View\Composers\DomainLayoutComposer;
+use App\Http\View\Composers\NotifierFormComposer;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class ComposerServiceProvider extends ServiceProvider
         AppLayoutComposer::class => ['layouts.app'],
         DomainFormComposer::class => ['domains.form'],
         DomainLayoutComposer::class => ['domains.layout'],
+        NotifierFormComposer::class => ['domains.notifiers.form']
     ];
 
     /**

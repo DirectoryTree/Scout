@@ -34,6 +34,18 @@ Breadcrumbs::for('domains.search.index', function ($trail, $domain) {
     $trail->push('Search', route('domains.search.index', $domain));
 });
 
+Breadcrumbs::for('domains.notifiers.index', function ($trail, $domain) {
+    $trail->parent('domains.show', $domain);
+
+    $trail->push('Notifiers', route('domains.notifiers.index', $domain));
+});
+
+Breadcrumbs::for('domains.notifiers.create', function ($trail, $domain) {
+    $trail->parent('domains.notifiers.index', $domain);
+
+    $trail->push('Add', route('domains.notifiers.create', $domain));
+});
+
 Breadcrumbs::for('domains.changes.index', function ($trail, $domain) {
     $trail->parent('domains.show', $domain);
 

@@ -4,10 +4,8 @@ namespace App\Ldap;
 
 use Exception;
 use App\LdapDomain;
-use Illuminate\Support\Str;
 use LdapRecord\Container;
-use LdapRecord\Connection;
-use LdapRecord\ContainerException;
+use Illuminate\Support\Str;
 
 class DomainConnector
 {
@@ -19,13 +17,6 @@ class DomainConnector
     protected $domain;
 
     /**
-     * The LDAP connection.
-     *
-     * @var Connection
-     */
-    protected $connection;
-
-    /**
      * Constructor.
      *
      * @param LdapDomain $domain
@@ -33,7 +24,6 @@ class DomainConnector
     public function __construct(LdapDomain $domain)
     {
         $this->domain = $domain;
-        $this->connection = $this->getLdapConnection();
     }
 
     /**
@@ -41,18 +31,19 @@ class DomainConnector
      *
      * @return bool
      *
-     * @throws \LdapRecord\Auth\BindException
-     * @throws \LdapRecord\ConnectionException
+     * @throws Exception
      */
     public function connect()
     {
+        $connection = Container::getInstance()->get($this->domain->getLdapConnectionName());
+
         // Before connecting, we will ensure we're not already bound
         // to the LDAP server as to prevent needlessly rebinding.
-        if (! $this->connection->getLdapConnection()->isBound()) {
-            $config = $this->connection->getConfiguration();
+        if (! $connection->getLdapConnection()->isBound()) {
+            $config = $connection->getConfiguration();
 
             try {
-                $this->connection->connect(
+                $connection->connect(
                     decrypt($config->get('username')),
                     decrypt($config->get('password'))
                 );
@@ -79,50 +70,5 @@ class DomainConnector
         }
 
         return true;
-    }
-
-    /**
-     * Get the domains LDAP connection name.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return $this->domain->slug;
-    }
-
-    /**
-     * Get the LDAP connection for the domain.
-     *
-     * @return Connection
-     */
-    protected function getLdapConnection()
-    {
-        $container = Container::getInstance();
-
-        try {
-            // Try to retrieve the connection from the container.
-            $conn = $container->get($this->getConnectionName());
-        } catch (ContainerException $ex) {
-            // Connection does not exist. Create and add it here so
-            // it is available throughout the current request.
-            $conn = $this->getNewLdapConnection();
-
-            $container->add($conn, $this->getConnectionName());
-        }
-
-        return $conn;
-    }
-
-    /**
-     * Get a new LDAP connection.
-     *
-     * @return Connection
-     */
-    protected function getNewLdapConnection()
-    {
-        return new Connection(
-            $this->domain->getConnectionAttributes()
-        );
     }
 }

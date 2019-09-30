@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="pr-2">Connection Encryption</label>
+    <label class="pr-2 font-weight-bold">Connection Encryption</label>
 
     <div class="custom-control custom-radio d-inline pr-2">
         <input
@@ -47,7 +47,7 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            <label for="type">{{ __('Connection Type') }}</label>
+            <label for="type" class="font-weight-bold">{{ __('Connection Type') }}</label>
 
             <select name="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" id="type">
                 @foreach($types as $value => $name)
@@ -67,7 +67,7 @@
 
     <div class="col">
         <div class="form-group">
-            <label for="name">{{ __('Connection Name') }}</label>
+            <label for="name" class="font-weight-bold">{{ __('Connection Name') }}</label>
             <input
                 name="name"
                 type="text"
@@ -89,7 +89,7 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            <label for="hosts">{{ __('Hosts / Controllers') }}</label>
+            <label for="hosts" class="font-weight-bold">{{ __('Hosts / Controllers') }}</label>
             <input
                 name="hosts"
                 type="text"
@@ -113,7 +113,7 @@
 
     <div class="col">
         <div class="form-group">
-            <label for="port">{{ __('Port') }}</label>
+            <label for="port" class="font-weight-bold">{{ __('Port') }}</label>
             <input
                 name="port"
                 type="text"
@@ -133,7 +133,7 @@
 
     <div class="col">
         <div class="form-group">
-            <label for="timeout">{{ __('Timeout') }}</label>
+            <label for="timeout" class="font-weight-bold">{{ __('Timeout') }}</label>
             <input
                 name="timeout"
                 type="text"
@@ -155,7 +155,7 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            <label for="base_dn">{{ __('Search Base DN') }}</label>
+            <label for="base_dn" class="font-weight-bold">{{ __('Search Base DN') }}</label>
             <input
                 name="base_dn"
                 type="text"
@@ -179,7 +179,7 @@
 
     <div class="col">
         <div class="form-group">
-            <label for="base_dn">{{ __('Global Search Filter') }}</label>
+            <label for="base_dn" class="font-weight-bold">{{ __('Global Search Filter') }}</label>
             <input
                 name="filter"
                 type="text"
@@ -213,7 +213,7 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            <label for="username">{{ __('Username') }}</label>
+            <label for="username" class="font-weight-bold">{{ __('Username') }}</label>
             <input
                 name="username"
                 type="text"
@@ -233,7 +233,7 @@
 
     <div class="col">
         <div class="form-group">
-            <label for="password">{{ __('Password') }}</label>
+            <label for="password" class="font-weight-bold">{{ __('Password') }}</label>
             <input
                 name="password"
                 type="password"

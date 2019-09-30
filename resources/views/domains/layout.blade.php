@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center">
-        <h3 class="flex-shrink-1 pr-2">{{ $domain->name }}</h3>
+    <div class="d-flex flex-column justify-content-between mb-2">
+        <h3 class="mb-0">
+            @isset($object)
+                @include('domains.objects.partials.icon', ['object' => $object])
 
-        <div class="flex-grow-1 text-muted">
-            {{ $domain->base_dn }}
+                {{ $object->name }}
+            @else
+                {{ $domain->name }}
+            @endif
+        </h3>
+
+        <div class="text-muted">
+            @isset($object) {{ $object->dn }} @else {{ $domain->base_dn }} @endif
         </div>
     </div>
 
@@ -15,7 +23,7 @@
                 @component('components.card', ['class' => 'mb-4', 'flush' => true])
                     <div class="list-group list-group-flush">
                         <div class="list-group-item font-weight-bold">
-                            <h5 class="mb-0">{{ $object->name }}</h5>
+                            <h5 class="mb-0">Object</h5>
                         </div>
 
                         <a

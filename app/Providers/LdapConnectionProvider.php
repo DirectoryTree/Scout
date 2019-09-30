@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use PDOException;
 use App\LdapDomain;
 use LdapRecord\Container;
 use LdapRecord\Connection;
@@ -20,12 +21,16 @@ class LdapConnectionProvider extends ServiceProvider
 
         $container = Container::getInstance();
 
-        // Here we will create each domain connection so it can be easily
-        // retrieved throughout the lifecycle of the application.
-        LdapDomain::all()->each(function (LdapDomain $domain) use ($container) {
-            $connection = new Connection($domain->getLdapConnectionAttributes());
+        try {
+            // Here we will create each domain connection so it can be easily
+            // retrieved throughout the lifecycle of the application.
+            LdapDomain::all()->each(function (LdapDomain $domain) use ($container) {
+                $connection = new Connection($domain->getLdapConnectionAttributes());
 
-            $container->add($connection, $domain->getLdapConnectionName());
-        });
+                $container->add($connection, $domain->getLdapConnectionName());
+            });
+        } catch (PDOException $e) {
+            // Migrations haven't been ran yet.
+        }
     }
 }

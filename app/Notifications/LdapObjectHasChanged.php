@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\LdapChange;
-use App\LdapObject;
 use Illuminate\Notifications\Notification;
 
 class LdapObjectHasChanged extends Notification
@@ -40,11 +39,11 @@ class LdapObjectHasChanged extends Notification
      *
      * Returns the modified attributes names.
      *
-     * @param LdapObject $notifiable
+     * @param mixed $notifiable
      *
      * @return array
      */
-    public function toArray(LdapObject $notifiable)
+    public function toArray($notifiable)
     {
         return [
             'change_id' => $this->change->id,

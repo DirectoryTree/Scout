@@ -18,7 +18,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-4 col-12">
             @isset($object)
                 @component('components.card', ['class' => 'mb-4', 'flush' => true])
                     <div class="list-group list-group-flush">
@@ -143,7 +143,7 @@
             @endcomponent
         </div>
 
-        <div class="col-md-9">
+        <div class="col-lg-9 col-md-8 col-12">
             @yield('page')
         </div>
     </div>

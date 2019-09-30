@@ -4,7 +4,7 @@
 
 @section('page')
     <div class="row">
-        <div class="col-md-4 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-md-0">
             @component('components.card')
                 @slot('header')
                     <h5 class="mb-0">Domain Status</h5>
@@ -44,7 +44,7 @@
             @endcomponent
         </div>
 
-        <div class="col-md-4 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-md-0">
             @component('components.card')
                 @slot('header')
                     <h5 class="mb-0">Last Synchronization</h5>
@@ -72,7 +72,7 @@
             @endcomponent
         </div>
 
-        <div class="col-md-4 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-md-0">
             @component('components.card')
                 @slot('header')
                     <h5 class="mb-0">Changes Today</h5>

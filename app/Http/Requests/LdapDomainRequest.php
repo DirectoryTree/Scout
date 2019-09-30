@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\LdapDomain;
-use LdapRecord\Connection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -11,6 +10,7 @@ use App\Rules\LdapSearchFilter;
 use App\Rules\DistinguishedName;
 use LdapRecord\LdapRecordException;
 use Illuminate\Validation\Validator;
+use App\Ldap\Connectors\ConfigConnector;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LdapDomainRequest extends FormRequest
@@ -89,8 +89,11 @@ class LdapDomainRequest extends FormRequest
             // a clear indicator of any issues binding.
             $config = $this->getLdapConfiguration($validator->validated());
 
+            /** @var \App\Ldap\Connectors\ConfigConnector $connector */
+            $connector = app(ConfigConnector::class)->with($config);
+
             try {
-                (new Connection($config))->connect();
+                $connector->connect();
             } catch (LdapRecordException $ex) {
                 $validator->errors()->add('hosts', $ex->getMessage());
             }

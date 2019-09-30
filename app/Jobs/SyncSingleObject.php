@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
-use Exception;
 use App\LdapDomain;
 use App\LdapObject;
-use App\Ldap\DomainConnector;
 use LdapRecord\Models\Entry;
 use Illuminate\Support\Facades\Bus;
+use App\Ldap\Connectors\DomainConnector;
 
 class SyncSingleObject
 {
-
     /**
      * The domain the entry is being imported from.
      *

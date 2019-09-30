@@ -19,6 +19,14 @@ $teal: #4dc0b5;
 $cyan: #39afd1;
 $dark: #322867;
 
+// Expand default container widths.
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1280px,
+) !default;
+
 // Dropdowns
 $dropdown-bg: $dark;
 $dropdown-color:#fff;
@@ -29,6 +37,9 @@ $card-border-width:0;
 $card-border-radius:.35rem;
 $card-cap-bg:#fff;
 
+// Form control modifications.
+$input-border-width: 2px;
 $border-radius: .35rem;
 
+// Swal
 $swal2-confirm-button-background-color: $dark;

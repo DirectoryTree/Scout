@@ -24,6 +24,7 @@
         "sweetalert2": "^8.17.1",
         "turbolinks": "^5.2.0",
         "vue": "^2.5.17",
+        "vue-flatpickr-component": "^8.1.3",
         "vue-template-compiler": "^2.6.10"
     }
 }

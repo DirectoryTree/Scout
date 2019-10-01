@@ -8,6 +8,9 @@ window.Vue = require('vue');
 // Register components...
 Vue.component('notification', require('./components/Notification.vue').default);
 Vue.component('form-confirm', require('./components/FormConfirm.vue').default);
+Vue.component('date-picker', require('./components/Datepicker.vue').default);
+Vue.component('date-time-picker', require('./components/DateTimePicker.vue').default);
+Vue.component('input-selector', require('./components/InputSelector.vue').default);
 
 // Construct a new Vue instance when turbolinks loads...
 $(document).on('turbolinks:load', () => {

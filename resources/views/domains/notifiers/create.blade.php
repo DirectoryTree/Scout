@@ -8,7 +8,7 @@
 
         @component('components.card')
             @slot('header')
-                <h4 class="mb-0">Add Domain Notifier</h4>
+                <h5 class="mb-0">Add Domain Notifier</h5>
             @endslot
 
             @include('domains.notifiers.form')

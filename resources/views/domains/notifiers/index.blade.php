@@ -4,20 +4,42 @@
 
 @section('page')
     @component('components.card', ['flush' => true])
-        @slot('header')
-            <div class="d-flex justify-content-between">
-                <h4 class="mb-0">Domain Notifiers</h4>
+        <div class="list-group list-group-flush">
+            <div class="d-flex justify-content-between list-group-item font-weight-bold">
+                <h5 class="mb-0">Domain Notifiers</h5>
 
                 <a href="{{ route('domains.notifiers.create', $domain) }}" class="btn btn-sm btn-success">
                     <i class="fas fa-plus-circle"></i> Add
                 </a>
             </div>
-        @endslot
 
-        <div class="list-group list-group-flush">
             @forelse($notifiers as $notifier)
-                <div class="list-group-item">
-                    
+                <div class="list-group-item h5">
+                    <span class="badge badge-light">
+                        Notify me when:
+                    </span>
+
+                    <span class="badge badge-primary">
+                        {{ $notifier->attribute }}
+                    </span>
+
+                    <span class="badge badge-secondary">
+                        @if ($notifier->operator == \App\LdapNotifier::OPERATOR_CONTAINS)
+                            @if ($notifier->value)
+                                {{ __('contains') }}
+                            @else
+                                {{ __('exists') }}
+                            @endif
+                        @elseif ($notifier->operator == \App\LdapNotifier::OPERATOR_PAST)
+                            {{ __('is past') }}
+                        @else
+                            {{ $notifier->operator }}
+                        @endif
+                    </span>
+
+                    <span class="badge badge-warning">
+                         {{ $notifier->value }}
+                    </span>
                 </div>
             @empty
                 <div class="list-group-item text-muted text-center">

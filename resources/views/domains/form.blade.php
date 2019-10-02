@@ -3,7 +3,7 @@
 
     <div class="custom-control custom-radio d-inline pr-2">
         <input
-            class="custom-control-input"
+            class="custom-control-input{{ $errors->has('encryption') ? ' is-invalid' : '' }}"
             type="radio"
             name="encryption"
             id="none"
@@ -17,7 +17,7 @@
 
     <div class="custom-control custom-radio d-inline pr-2">
         <input
-            class="custom-control-input"
+            class="custom-control-input{{ $errors->has('encryption') ? ' is-invalid' : '' }}"
             type="radio"
             name="encryption"
             id="radio-use-tls"
@@ -31,7 +31,7 @@
 
     <div class="custom-control custom-radio d-inline pr-2">
         <input
-            class="custom-control-input"
+            class="custom-control-input{{ $errors->has('encryption') ? ' is-invalid' : '' }}"
             type="radio"
             name="encryption"
             id="radio-use-ssl"
@@ -42,6 +42,16 @@
             Use SSL
         </label>
     </div>
+
+    @error('encryption')
+        <span class="invalid-feedback d-block" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+
+    <small class="form-text text-muted">
+        <strong>Note:</strong> You must select TLS or SSL encryption to be able to perform all password related LDAP tasks.
+    </small>
 </div>
 
 <div class="form-row">
@@ -241,6 +251,12 @@
                 id="password"
                 placeholder="secret"
             >
+
+            @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
     </div>
 </div>

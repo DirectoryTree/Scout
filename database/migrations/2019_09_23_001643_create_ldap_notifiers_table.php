@@ -18,10 +18,12 @@ class CreateLdapNotifiersTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->morphs('notifiable');
+            $table->string('name');
             $table->string('type');
             $table->string('attribute');
             $table->string('operator');
             $table->string('value')->nullable();
+            $table->boolean('enabled')->default(false);
         });
     }
 

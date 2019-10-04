@@ -2,6 +2,7 @@
 
 namespace App\Ldap\Transformers;
 
+use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Attributes\Timestamp as LdapTimestamp;
 
 abstract class Timestamp extends Transformer
@@ -16,7 +17,7 @@ abstract class Timestamp extends Transformer
     /**
      * Transforms an LDAP timestamp.
      *
-     * @return array
+     * @return \Carbon\Carbon[]|null
      *
      * @throws \LdapRecord\LdapRecordException
      */
@@ -25,8 +26,15 @@ abstract class Timestamp extends Transformer
         if ($value = $this->getFirstValue()) {
             $timestamp = new LdapTimestamp($this->type);
 
-            if ($converted = $timestamp->toDateTime($value)) {
-                return [$converted];
+            try {
+                // We will attempt to convert the attribute value to
+                // a Carbon instance. If it fails we'll report the
+                // error so it can be investigated by the user.
+                $converted = $timestamp->toDateTime($value);
+
+                return $converted ? [$converted] : $converted;
+            } catch (LdapRecordException $ex) {
+                report($ex);
             }
         }
 

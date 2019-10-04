@@ -23,10 +23,12 @@ class AttributeTransformer extends Transformer
     /**
      * Transform the value.
      *
-     * @return mixed
+     * @return array
      */
     public function transform(): array
     {
+        // Here we will go through each LDAP attribute and attempt
+        // converting the value depending on the attribute map.
         foreach ($this->value as $attribute => $value) {
             if (array_key_exists($attribute, $this->map)) {
                 $transformer = $this->map[$attribute];

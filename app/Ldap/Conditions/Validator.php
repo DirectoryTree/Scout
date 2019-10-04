@@ -47,7 +47,7 @@ class Validator
     }
 
     /**
-     * Determine if the conditions pass.
+     * Determine if all of the conditions pass.
      *
      * @return bool
      */
@@ -67,7 +67,7 @@ class Validator
     }
 
     /**
-     * Get the transformed changed value.
+     * Get the transformed value.
      *
      * @param LdapNotifierCondition $condition
      *

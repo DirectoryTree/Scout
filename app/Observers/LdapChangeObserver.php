@@ -19,9 +19,7 @@ class LdapChangeObserver
         logger("Change: {$change->getKey()} created.");
 
         // Here we will retrieve all the notifiers that contain conditions for the changed attribute.
-        LdapNotifier::query()->whereHas('conditions', function ($query) use ($change) {
-             return $query->where('attribute', '=', $change->attribute);
-        })->with('conditions')->get()->each(function (LdapNotifier $notification) use ($change) {
+        $this->getNotifiersForAttribute($change->attribute)->each(function (LdapNotifier $notification) use ($change) {
             if (
                 ($notifiable = $notification->notifiable) &&
                 $this->isNotifiable($notifiable) &&
@@ -30,6 +28,20 @@ class LdapChangeObserver
                 $notifiable->notify(new LdapObjectHasChanged($change));
             }
         });
+    }
+
+    /**
+     * Get the LDAP notifiers for the changes attribute.
+     *
+     * @param string $attribute
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getNotifiersForAttribute($attribute)
+    {
+        return LdapNotifier::query()->whereHas('conditions', function ($query) use ($attribute) {
+            return $query->where('attribute', '=', $attribute);
+        })->with('conditions')->get();
     }
 
     /**

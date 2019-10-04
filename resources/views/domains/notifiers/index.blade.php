@@ -3,10 +3,24 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.index', $domain))
 
 @section('page')
+    @component('components.card', ['flush' => true, 'class' => 'mb-4'])
+        <div class="list-group list-group-flush">
+            <div class="list-group-item">
+                <h5 class="mb-0">Domain Notifiers</h5>
+            </div>
+
+            <div class="list-group-item">
+                <div class="alert alert-primary">
+
+                </div>
+            </div>
+        </div>
+    @endcomponent
+
     @component('components.card', ['flush' => true])
         <div class="list-group list-group-flush">
-            <div class="d-flex justify-content-between list-group-item font-weight-bold">
-                <h5 class="mb-0">Domain Notifiers</h5>
+            <div class="d-flex justify-content-between list-group-item">
+                <h5 class="mb-0">Custom Domain Notifiers</h5>
 
                 <a href="{{ route('domains.notifiers.create', $domain) }}" class="btn btn-sm btn-success">
                     <i class="fas fa-plus-circle"></i> Add

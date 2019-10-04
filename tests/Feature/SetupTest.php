@@ -82,7 +82,6 @@ class SetupTest extends TestCase
         $this->signIn();
 
         $this->get('/')
-            ->assertDontSee('Welcome')
             ->assertDontSee('Thanks for installing Scout')
             ->assertDontSee('Register');
     }

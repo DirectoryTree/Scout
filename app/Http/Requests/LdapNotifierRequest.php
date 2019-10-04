@@ -105,7 +105,7 @@ class LdapNotifierRequest extends FormRequest
     protected function isNullableOperator($operator)
     {
         return in_array($operator, [
-            LdapNotifierCondition::OPERATOR_CONTAINS,
+            LdapNotifierCondition::OPERATOR_HAS,
             LdapNotifierCondition::OPERATOR_PAST
         ]);
     }

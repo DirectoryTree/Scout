@@ -17,7 +17,8 @@ class LdapNotifierCondition extends Model
     const OPERATOR_NOT_EQUALS = '!=';
     const OPERATOR_GREATER_THAN = '>';
     const OPERATOR_LESS_THAN = '<';
-    const OPERATOR_CONTAINS = '*';
+    const OPERATOR_CONTAINS = '%';
+    const OPERATOR_HAS = '*';
     const OPERATOR_PAST = '>>';
 
     /**
@@ -39,7 +40,8 @@ class LdapNotifierCondition extends Model
             static::OPERATOR_NOT_EQUALS => 'Does not equal',
             static::OPERATOR_GREATER_THAN => 'Greater than',
             static::OPERATOR_LESS_THAN => 'Less than',
-            static::OPERATOR_CONTAINS => 'Contains / Exists',
+            static::OPERATOR_CONTAINS => 'Contains',
+            static::OPERATOR_HAS => 'Has',
             static::OPERATOR_PAST => 'Is Past',
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use LdapRecord\Utilities;
 use Tests\TestCase;
 use App\LdapChange;
 use App\LdapDomain;
@@ -62,9 +63,15 @@ class ChangeNotificationTest extends TestCase
         $domain = factory(LdapDomain::class)->create();
 
         // Create a domain notifier.
-        factory(LdapNotifier::class)->state('domain')->create([
+        $notifier = factory(LdapNotifier::class)->create([
             'notifiable_id' => $domain->id,
             'notifiable_type' => get_class($domain),
+        ]);
+
+        factory(LdapNotifierCondition::class)->create([
+            'notifier_id' => $notifier->id,
+            'type' => 'string',
+            'operator' => LdapNotifierCondition::OPERATOR_EQUALS,
             'attribute' => 'foo',
             'value' => 'bar',
         ]);
@@ -82,6 +89,41 @@ class ChangeNotificationTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('notifications', [
+            'notifiable_id' => $domain->id,
+            'notifiable_type' => get_class($domain),
+        ]);
+    }
+
+    public function test_notification_is_past()
+    {
+        $domain = factory(LdapDomain::class)->create();
+
+        // Create a domain notifier.
+        $notifier = factory(LdapNotifier::class)->create([
+            'notifiable_id' => $domain->id,
+            'notifiable_type' => get_class($domain),
+        ]);
+
+        factory(LdapNotifierCondition::class)->create([
+            'notifier_id' => $notifier->id,
+            'type' => 'string',
+            'attribute' => 'accountexpires',
+            'operator' => LdapNotifierCondition::OPERATOR_PAST,
+        ]);
+
+        $object = factory(LdapObject::class)->create([
+            'domain_id' => $domain->id,
+        ]);
+
+        // Generate the change.
+        factory(LdapChange::class)->create([
+            'object_id' => $object->id,
+            'attribute' => 'accountexpires',
+            'before' => [],
+            'after' => [Utilities::convertUnixTimeToWindowsTime(now()->subDay()->timestamp)]
+        ]);
+
+        $this->assertDatabaseHas('notifications', [
             'notifiable_id' => $domain->id,
             'notifiable_type' => get_class($domain),
         ]);

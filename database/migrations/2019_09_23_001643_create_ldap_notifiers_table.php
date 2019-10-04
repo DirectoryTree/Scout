@@ -16,7 +16,7 @@ class CreateLdapNotifiersTable extends Migration
         Schema::create('ldap_notifiers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->morphs('notifiable');
             $table->string('name');
             $table->boolean('system')->default(false);

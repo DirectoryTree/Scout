@@ -7,6 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class LdapNotifier extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'system',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'system' => 'boolean',
+        'enabled' => 'boolean',
+    ];
+
+    /**
      * The belongsTo creator relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

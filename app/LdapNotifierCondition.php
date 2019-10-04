@@ -29,6 +29,18 @@ class LdapNotifierCondition extends Model
     public $timestamps = false;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type',
+        'operator',
+        'attribute',
+        'value',
+    ];
+
+    /**
      * Get the notifier operators.
      *
      * @return array

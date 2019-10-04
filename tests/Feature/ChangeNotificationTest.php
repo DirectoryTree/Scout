@@ -8,6 +8,7 @@ use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
 use App\Notification;
+use App\LdapNotifierCondition;
 
 class ChangeNotificationTest extends TestCase
 {
@@ -16,10 +17,16 @@ class ChangeNotificationTest extends TestCase
         $domain = factory(LdapDomain::class)->create();
 
         // Create a domain notifier.
-        factory(LdapNotifier::class)->state('domain')->create([
+        $notifier = factory(LdapNotifier::class)->create([
             'notifiable_id' => $domain->id,
             'notifiable_type' => get_class($domain),
+        ]);
+
+        factory(LdapNotifierCondition::class)->create([
+            'notifier_id' => $notifier->id,
+            'type' => 'string',
             'attribute' => 'foo',
+            'operator' => LdapNotifierCondition::OPERATOR_EQUALS,
             'value' => 'bar',
         ]);
 

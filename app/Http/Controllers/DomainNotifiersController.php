@@ -17,7 +17,10 @@ class DomainNotifiersController
      */
     public function index(LdapDomain $domain)
     {
-        $notifiers = $domain->notifiers()->latest()->paginate(25);
+        $notifiers = $domain->notifiers()
+            ->with('conditions')
+            ->latest()
+            ->paginate(25);
 
         return view('domains.notifiers.index', compact('domain', 'notifiers'));
     }
@@ -52,9 +55,18 @@ class DomainNotifiersController
         return redirect()->route('domains.notifiers.index', $domain);
     }
 
-    public function edit()
+    /**
+     * Displays the form for editing the domain notifier.
+     *
+     * @param LdapDomain $domain
+     * @param string     $notifierId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(LdapDomain $domain, $notifierId)
     {
-        //
+        $notifier = $domain->notifiers()->findOrFail($notifierId);
+
+        return view('domains.notifiers.edit', compact('domain', 'notifier'));
     }
 
     public function update()

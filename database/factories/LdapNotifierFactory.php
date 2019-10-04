@@ -5,6 +5,7 @@
 use App\User;
 use App\LdapDomain;
 use App\LdapNotifier;
+use App\LdapNotifierCondition;
 use Faker\Generator as Faker;
 
 $factory->define(LdapNotifier::class, function (Faker $faker) {
@@ -12,22 +13,27 @@ $factory->define(LdapNotifier::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(User::class)->create()->id;
         },
+        'name' => 'Notifier',
+    ];
+});
+
+$factory->define(LdapNotifierCondition::class, function (Faker $faker) {
+    return [
+        'notifier_id' => function() {
+            return factory(LdapNotifier::class)->create()->id;
+        },
+        'type' => $faker->randomElement(array_keys(LdapNotifierCondition::types())),
+        'attribute' => $faker->word,
+        'operator' => $faker->randomElement(array_keys(LdapNotifierCondition::operators())),
+        'value' => $faker->word,
     ];
 });
 
 $factory->state(LdapNotifier::class, 'domain', function (Faker $faker) {
     return [
-        'attribute' => $faker->word,
-        'type' => $faker->randomElement(array_keys(LdapNotifier::types())),
-        'operator' => $faker->randomElement(array_keys(LdapNotifier::operators())),
-        'value' => $faker->word,
+        'notifiable_id' => function () {
+            return factory(LdapDomain::class)->create()->id;
+        },
+        'notifiable_type' => LdapDomain::class,
     ];
-});
-
-$factory->afterMakingState(LdapNotifier::class, 'domain', function (LdapNotifier $notifier, Faker $faker) {
-    if (!$notifier->notifiable_id) {
-        $notifier->notifiable()->associate(
-            factory(LdapDomain::class)->create()
-        );
-    }
 });

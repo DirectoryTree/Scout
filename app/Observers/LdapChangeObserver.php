@@ -17,13 +17,13 @@ class LdapChangeObserver
     {
         logger("Change: {$change->getKey()} created.");
 
-        LdapNotifier::where('attribute', '=', $change->attribute)
-            ->get()
-            ->each(function (LdapNotifier $notification) use ($change) {
-                if (($notifiable = $notification->notifiable) && $this->isNotifiable($notifiable)) {
-                    $notifiable->notify(new LdapObjectHasChanged($change));
-                }
-            });
+        LdapNotifier::query()->whereHas('conditions', function ($query) use ($change) {
+             return $query->where('attribute', '=', $change->attribute);
+        })->get()->each(function (LdapNotifier $notification) use ($change) {
+            if (($notifiable = $notification->notifiable) && $this->isNotifiable($notifiable)) {
+                $notifiable->notify(new LdapObjectHasChanged($change));
+            }
+        });
     }
 
     /**

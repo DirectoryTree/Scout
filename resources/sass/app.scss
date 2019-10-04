@@ -63,3 +63,12 @@ hr {
         border-radius: 0 0 $border-radius $border-radius;
     }
 }
+
+.notifications {
+    min-width:400px;
+    background: #fff;
+    .dropdown-item {
+        background: #fff;
+        color:black;
+    }
+}

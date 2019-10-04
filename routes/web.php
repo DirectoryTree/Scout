@@ -50,4 +50,10 @@ Route::group(['middleware' => 'auth'], function () {
         'only' => ['index', 'show'],
     ]);
 
+    Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
+
+        Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
+
+    });
+
 });

@@ -12329,3 +12329,13 @@ hr {
   border-radius: 0 0 0.35rem 0.35rem;
 }
 
+.notifications {
+  min-width: 400px;
+  background: #fff;
+}
+
+.notifications .dropdown-item {
+  background: #fff;
+  color: black;
+}
+

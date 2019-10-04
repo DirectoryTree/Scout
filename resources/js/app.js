@@ -7,6 +7,7 @@ window.Vue = require('vue');
 
 // Register components...
 Vue.component('notification', require('./components/Notification.vue').default);
+Vue.component('notifications', require('./components/Notifications.vue').default);
 Vue.component('form-confirm', require('./components/FormConfirm.vue').default);
 Vue.component('date-picker', require('./components/Datepicker.vue').default);
 Vue.component('date-time-picker', require('./components/DateTimePicker.vue').default);

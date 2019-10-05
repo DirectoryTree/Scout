@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class LdapNotifierCondition extends Model
 {
+    /**
+     * The notifier condition types.
+     */
     const TYPE_DN = 'dn';
     const TYPE_BOOL = 'bool';
     const TYPE_INT = 'integer';
     const TYPE_STRING = 'string';
     const TYPE_TIMESTAMP = 'timestamp';
 
+    /**
+     * The notifier condition operators.
+     */
     const OPERATOR_EQUALS = '=';
     const OPERATOR_NOT_EQUALS = '!=';
     const OPERATOR_GREATER_THAN = '>';

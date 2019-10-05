@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class LdapNotifier extends Model
 {
     /**
+     * The notifier types.
+     *
+     * When the notifier should be executed (on changes, attributes, deletes).
+     */
+    const TYPE_ATTRIBUTES = 'attributes';
+    const TYPE_CHANGES = 'changes';
+    const TYPE_DELETES = 'deletes';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

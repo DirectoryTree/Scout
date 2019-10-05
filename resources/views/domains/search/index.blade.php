@@ -8,7 +8,7 @@
             <h5 class="mb-0">Search Domain</h5>
         @endslot
 
-        <form>
+        <form method="get" action="{{ route('domains.search.index', $domain) }}">
             <div class="form-group">
                 <div class="input-group">
                     <input
@@ -26,6 +26,25 @@
                     </div>
                 </div>
             </div>
+
+            <details>
+                <summary onselectstart="return false">Search Options</summary>
+
+                <div class="ml-3 mt-2">
+                    <div class="custom-control custom-checkbox">
+                        <input
+                            type="checkbox"
+                            name="deleted"
+                            value="1"
+                            class="custom-control-input"
+                            id="checkbox-include-deleted"
+                            {{ request('deleted') == '1' ? 'checked' : null }}
+                        >
+
+                        <label class="custom-control-label" for="checkbox-include-deleted">Include Deleted</label>
+                    </div>
+                </div>
+            </details>
         </form>
     @endcomponent
 

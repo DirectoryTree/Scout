@@ -20,11 +20,11 @@ class ImportObjects
     protected $domain;
 
     /**
-     * The number of LDAP objects synchronized.
+     * The guids of the LDAP objects synchronized.
      *
-     * @var int
+     * @var array
      */
-    protected $synchronized = 0;
+    protected $guids = [];
 
     /**
      * Create a new job instance.
@@ -45,7 +45,10 @@ class ImportObjects
     {
         $this->import();
 
-        return $this->synchronized;
+        // Soft-delete all LDAP objects not imported.
+        LdapObject::whereNotIn('guid', $this->guids)->delete();
+
+        return count($this->guids);
     }
 
     /**
@@ -60,7 +63,7 @@ class ImportObjects
             /** @var LdapObject $object */
             $object = Bus::dispatch(new SyncObject($this->domain, $child, $parent));
 
-            $this->synchronized++;
+            $this->guids[] = $object->guid;
 
             // If the object is a container, we will import its descendants.
             if ($object->type == 'container') {

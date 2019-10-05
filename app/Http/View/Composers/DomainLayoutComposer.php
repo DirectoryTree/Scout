@@ -28,7 +28,7 @@ class DomainLayoutComposer
         ]];
 
         if ($objectId = request()->object) {
-            $object = $domain->objects()->findOrFail($objectId);
+            $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
             $data['counts']['object'] = [
                 'attributes' => count($object->attributes),

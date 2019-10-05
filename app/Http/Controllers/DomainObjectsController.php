@@ -38,7 +38,10 @@ class DomainObjectsController extends Controller
     public function show(LdapDomain $domain, $objectId)
     {
         /** @var LdapObject $object */
-        $object = $domain->objects()->with('parent')->findOrFail($objectId);
+        $object = $domain->objects()
+            ->with('parent')
+            ->withTrashed()
+            ->find($objectId);
 
         $objects = $object->descendants()
             ->orderBy('name')
@@ -58,7 +61,9 @@ class DomainObjectsController extends Controller
     public function sync(LdapDomain $domain, $objectId)
     {
         /** @var LdapObject $object */
-        $object = $domain->objects()->with('parent')->findOrFail($objectId);
+        $object = $domain->objects()
+            ->with('parent')
+            ->findOrFail($objectId);
 
         try {
             Bus::dispatch(new SyncSingleObject($domain, $object));

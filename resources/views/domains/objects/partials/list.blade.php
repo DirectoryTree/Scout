@@ -13,7 +13,7 @@
         </div>
 
         @forelse($objects as $object)
-            <div class="list-group-item">
+            <div class="list-group-item {{ $object->trashed() ? 'bg-light' : null }}">
                 <div class="row">
                     <div class="col">
                         @include('domains.objects.partials.icon')
@@ -21,6 +21,10 @@
                         <a href="{{ route('domains.objects.show', [$domain, $object]) }}" class="font-weight-bold">
                             {{ $object->name }}
                         </a>
+
+                        @if($object->trashed())
+                            <small class="text-muted">(deleted)</small>
+                        @endif
                     </div>
                 </div>
 

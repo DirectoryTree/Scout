@@ -20,10 +20,15 @@ class DomainSearchController
         $objects = null;
 
         if ($term = $request->term) {
-            $objects = $domain->objects()
+            $query = $domain->objects()
                 ->where('name', 'like', "%{$term}%")
-                ->orderBy('name')
-                ->paginate(25);
+                ->orderBy('name');
+
+            if ($request->deleted) {
+                $query->withTrashed();
+            }
+
+            $objects = $query->paginate(25);
         }
 
         return view('domains.search.index', compact('domain', 'objects'));

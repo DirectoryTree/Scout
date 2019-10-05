@@ -17,7 +17,7 @@ class DomainObjectAttributesController extends Controller
      */
     public function index(LdapDomain $domain, $objectId)
     {
-        $object = $domain->objects()->findOrFail($objectId);
+        $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
         $attributes = (new AttributeTransformer($object->attributes))->transform();
 

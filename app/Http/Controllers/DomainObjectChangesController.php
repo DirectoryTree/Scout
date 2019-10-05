@@ -17,7 +17,7 @@ class DomainObjectChangesController extends Controller
      */
     public function index(LdapDomain $domain, $objectId)
     {
-        $object = $domain->objects()->findOrFail($objectId);
+        $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
         $changes = $object->changes()
             ->select(DB::raw('COUNT(*) as count, attribute, max(ldap_updated_at) as ldap_updated_at'))
@@ -43,7 +43,7 @@ class DomainObjectChangesController extends Controller
      */
     public function show(LdapDomain $domain, $objectId, $attribute)
     {
-        $object = $domain->objects()->findOrFail($objectId);
+        $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
         $changes = $object->changes()
             ->where('attribute', '=', $attribute)

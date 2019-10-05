@@ -7,6 +7,10 @@
                 @include('domains.objects.partials.icon', ['object' => $object])
 
                 {{ $object->name }}
+
+                @if($object->trashed())
+                    <small class="text-muted">(deleted)</small>
+                @endif
             @else
                 {{ $domain->name }}
             @endif

@@ -23,7 +23,12 @@
                         @csrf
                         @method('patch')
 
-                        <button type="submit" class="btn btn-sm btn-primary" data-size="xs">
+                        <button
+                            type="submit"
+                            class="btn btn-sm btn-primary"
+                            data-size="xs"
+                            {{ $object->trashed() ? 'disabled' : null }}
+                        >
                             <i class="fas fa-sync"></i> Sync
                         </button>
                     </form>

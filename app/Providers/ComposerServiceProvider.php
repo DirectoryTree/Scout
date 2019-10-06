@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\InstallFormComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Http\View\Composers\AppLayoutComposer;
@@ -20,7 +21,8 @@ class ComposerServiceProvider extends ServiceProvider
         AppLayoutComposer::class => ['layouts.app'],
         DomainFormComposer::class => ['domains.form'],
         DomainLayoutComposer::class => ['domains.layout'],
-        NotifierFormComposer::class => ['domains.notifiers.form']
+        NotifierFormComposer::class => ['domains.notifiers.form'],
+        InstallFormComposer::class => ['installer.form'],
     ];
 
     /**

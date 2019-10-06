@@ -13,6 +13,9 @@
 
 Auth::routes();
 
+Route::get('install', 'InstallController@index')->name('install.index');
+Route::post('install', 'InstallController@store')->name('install.store');
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');

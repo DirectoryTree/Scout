@@ -10,7 +10,7 @@ class CanRegister
     /**
      * Handle an incoming request.
      *
-     * Determines whether the user can register an account.
+     * Determines whether the user can register an admin account.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next

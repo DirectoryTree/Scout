@@ -15,6 +15,8 @@ Auth::routes();
 
 Route::get('install', 'InstallController@index')->name('install.index');
 Route::post('install', 'InstallController@store')->name('install.store');
+Route::get('install/migrate', 'InstallController@migrations')->name('install.migrations');
+Route::post('install/migrate', 'InstallController@migrate')->name('install.migrate');
 
 Route::group(['middleware' => 'auth'], function () {
 

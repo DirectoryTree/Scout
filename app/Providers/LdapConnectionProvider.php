@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use PDOException;
+use Exception;
 use App\LdapDomain;
 use LdapRecord\Container;
 use LdapRecord\Connection;
@@ -29,7 +29,7 @@ class LdapConnectionProvider extends ServiceProvider
 
                 $container->add($connection, $domain->getLdapConnectionName());
             });
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             // Migrations haven't been ran yet.
         }
     }

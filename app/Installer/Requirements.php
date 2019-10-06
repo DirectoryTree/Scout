@@ -11,6 +11,7 @@ class Requirements
      */
     protected $requirements = [
         PhpRequirement::class,
+        LdapRequirement::class,
         StorageRequirement::class,
     ];
 

@@ -3,9 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Artisan;
+use App\Installer\Installer;
 
 class IsInstalled
 {
@@ -19,69 +17,49 @@ class IsInstalled
      */
     public function handle($request, Closure $next)
     {
-        if (Cache::get('scout.installed', false)) {
+        $visitingInstallPage = $request->routeIs('install.*');
+
+        /** @var \App\Installer\Installer $installer */
+        $installer = app(Installer::class);
+
+        if ($installer->installed()) {
+            if (!$installer->migrated()) {
+                if (
+                    $request->routeIs('install.migrate') ||
+                    $request->routeIs('install.migrations')
+                ) {
+                    return $next($request);
+                }
+
+                // We must enforce users to run migrations if they have not done so yet.
+                return redirect()->route('install.migrations');
+            }
+
+            // If the application is installed and the user is
+            // trying to visit the installation page, we
+            // will redirect them to the home URL.
+            if ($visitingInstallPage) {
+                return redirect()->to('/');
+            }
+
             return $next($request);
         }
 
-        if (File::exists($this->envFilePath())) {
-            Cache::forever('scout.installed', true);
+        $installer->prepare();
 
-            return $next($request);
-        } else {
-            $this->prepareForInstallation();
+        if ($installer->wasRecentlyPrepared()) {
+            // If the installer was recently prepared, we must refresh the
+            // application to ensure the application key is set.
+            // Otherwise, we will receive an exception.
+            return redirect()->route('install.index');
         }
 
-        if (request()->is('install')) {
+        if ($visitingInstallPage) {
             return $next($request);
         }
 
+        // We need to ensure users are always redirected to the
+        // install page, regardless of which route they hit.
         return redirect()->route('install.index');
-    }
-
-    /**
-     * Prepare the application for installation.
-     *
-     * @return void
-     */
-    protected function prepareForInstallation()
-    {
-        if (!$this->createEnvFile()) {
-            abort(500, 'Unable to create application .env file.');
-        }
-
-        Artisan::call('key:generate');
-
-        // We need to refresh the page after generating the application key.
-        redirect(request()->url());
-    }
-
-    /**
-     * Create the application .env file.
-     *
-     * @return bool
-     */
-    protected function createEnvFile()
-    {
-        return File::put($this->envFilePath(), File::get($this->envStubFilePath()));
-    }
-
-    /**
-     * The .env file path.
-     *
-     * @return string
-     */
-    protected function envFilePath()
-    {
-        return base_path('.env');
-    }
-
-    /**
-     * The .env stub file path.
-     *
-     * @return string
-     */
-    protected function envStubFilePath()
-    {
-        return base_path('.env.example');
     }
 }

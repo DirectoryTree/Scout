@@ -1,7 +1,7 @@
 <div class="form-group">
     @component('components.form.select', [
-        'label' =>  __('Database'),
-        'name' => 'database_type',
+        'label' =>  __('Driver'),
+        'name' => 'driver',
         'options' => $databases
     ])
     @endcomponent
@@ -10,7 +10,7 @@
 <div class="form-group">
     @component('components.form.input', [
        'label' =>  __('Host'),
-       'name' => 'database_host',
+       'name' => 'host',
        'placeholder' => '127.0.0.1'
    ])
     @endcomponent
@@ -19,7 +19,7 @@
 <div class="form-group">
     @component('components.form.input', [
        'label' =>  __('Port'),
-       'name' => 'database_port',
+       'name' => 'port',
        'default' => '3306',
        'placeholder' => '3306'
    ])
@@ -28,8 +28,17 @@
 
 <div class="form-group">
     @component('components.form.input', [
+       'label' =>  __('Database'),
+       'name' => 'database',
+       'placeholder' => 'scout'
+   ])
+    @endcomponent
+</div>
+
+<div class="form-group">
+    @component('components.form.input', [
        'label' =>  __('Username'),
-       'name' => 'database_username',
+       'name' => 'username',
        'default' => 'root',
        'placeholder' => 'Username'
    ])
@@ -40,7 +49,7 @@
     @component('components.form.input', [
        'label' =>  __('Password'),
        'type' => 'password',
-       'name' => 'database_password',
+       'name' => 'password',
        'placeholder' => 'Password'
    ])
     @endcomponent

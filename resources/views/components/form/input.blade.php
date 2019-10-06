@@ -7,6 +7,7 @@
 @endisset
 
 <input
+    name="{{ $name }}"
     type="{{ isset($type) ? $type : 'text' }}"
     value="{{ old($name, isset($default) ? $default : null) }}"
     class="form-control {{ $errors->has($name) ? 'is-invalid' : '' }}"

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Installer\Installer;
 use App\Installer\Requirements;
 use App\Http\Requests\InstallRequest;
+use Illuminate\Support\Facades\Artisan;
 
 class InstallController extends Controller
 {
@@ -15,12 +18,56 @@ class InstallController extends Controller
     public function index()
     {
         return view('installer.index', [
-            'requirements' => (new Requirements())->get(),
+            'requirements' => app(Requirements::class),
         ]);
     }
 
+    /**
+     * Store the application configuration.
+     *
+     * @param InstallRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(InstallRequest $request)
     {
-        redirect()->back();
+        if (!app(Requirements::class)->passes()) {
+            return redirect()->route('install.index')
+                ->with('error', __('Your server does not pass all of the application requirements.'));
+        }
+
+        /** @var Installer $installer */
+        $installer = app(Installer::class);
+
+        try {
+            $installer->install($request->validated());
+        } catch (Exception $ex) {
+            return redirect()->route('install.index')
+                ->with('error', "Error: " . $ex->getMessage());
+        }
+
+        return redirect()->route('install.migrations');
+    }
+
+    /**
+     * Displays the form for running the application migrations.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function migrations()
+    {
+        return view('installer/migrations');
+    }
+
+    /**
+     * Run the application migrations.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function migrate()
+    {
+        Artisan::call('migrate');
+
+        return redirect()->route('/login');
     }
 }

@@ -2164,6 +2164,122 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notifications.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_simple_spinner__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-simple-spinner */ "./node_modules/vue-simple-spinner/dist/vue-simple-spinner.js");
+/* harmony import */ var vue_simple_spinner__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_simple_spinner__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var event_source_polyfill__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! event-source-polyfill */ "./node_modules/event-source-polyfill/src/eventsource.js");
+/* harmony import */ var event_source_polyfill__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(event_source_polyfill__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+var EventSource = event_source_polyfill__WEBPACK_IMPORTED_MODULE_1__["NativeEventSource"] || event_source_polyfill__WEBPACK_IMPORTED_MODULE_1__["EventSourcePolyfill"];
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Spinner: vue_simple_spinner__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  data: function data() {
+    return {
+      notifications: [],
+      initialLoad: true,
+      notification: false
+    };
+  },
+  created: function created() {
+    this.initStream();
+  },
+  methods: {
+    /**
+     * Initializes the event stream.
+     */
+    initStream: function initStream() {
+      var _this = this;
+
+      var url = route('api.notifications.index');
+      var es = new EventSource(url);
+      es.addEventListener('message', function (event) {
+        var events = JSON.parse(event.data); // Since our beginning events won't be loaded yet, we don't
+        // want to display a notification of new events being
+        // added until this actually occurs.
+
+        if (_this.initialLoad === false && _this.notifications.length > 0) {
+          if (_this.notifications.length < events.length) {
+            _this.showNotification('New notification!', 'info');
+          }
+        }
+
+        _this.notifications = events;
+        _this.initialLoad = false;
+      }, false);
+      es.addEventListener('error', function (event) {
+        if (event.readyState === EventSource.CLOSED) {
+          console.log('EventSource was closed');
+          console.log(EventSource);
+        }
+      }, false);
+    },
+
+    /**
+     * Displays a flash notification.
+     *
+     * @param {String} message
+     * @param {String} level
+     */
+    showNotification: function showNotification(message, level) {
+      var _this2 = this;
+
+      this.notification = {
+        message: message,
+        level: level
+      }; // Clear the notification after 2 seconds.
+
+      setTimeout(function () {
+        return _this2.notification = false;
+      }, 2000);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -6711,6 +6827,979 @@ function toComment(sourceMap) {
 
 	return '/*# ' + data + ' */';
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/event-source-polyfill/src/eventsource.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/event-source-polyfill/src/eventsource.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/** @license
+ * eventsource.js
+ * Available under MIT License (MIT)
+ * https://github.com/Yaffle/EventSource/
+ */
+
+/*jslint indent: 2, vars: true, plusplus: true */
+/*global setTimeout, clearTimeout */
+
+(function (global) {
+  "use strict";
+
+  var setTimeout = global.setTimeout;
+  var clearTimeout = global.clearTimeout;
+  var XMLHttpRequest = global.XMLHttpRequest;
+  var XDomainRequest = global.XDomainRequest;
+  var NativeEventSource = global.EventSource;
+
+  var document = global.document;
+  var Promise = global.Promise;
+  var fetch = global.fetch;
+  var Response = global.Response;
+  var TextDecoder = global.TextDecoder;
+  var TextEncoder = global.TextEncoder;
+  var AbortController = global.AbortController;
+
+  if (Object.create == undefined) {
+    Object.create = function (C) {
+      function F(){}
+      F.prototype = C;
+      return new F();
+    };
+  }
+
+  // ?
+  if (Promise != undefined && Promise.prototype["finally"] == undefined) {
+    Promise.prototype["finally"] = function (callback) {
+      return this.then(function (result) {
+        return Promise.resolve(callback()).then(function () {
+          return result;
+        });
+      }, function (error) {
+        return Promise.resolve(callback()).then(function () {
+          throw error;
+        });
+      });
+    };
+  }
+
+  // see #118 (Promise#finally with polyfilled Promise)
+  // see #123 (data URLs crash Edge)
+  // see #125 (CSP violations)
+  if (fetch != undefined && true) {
+    var originalFetch = fetch;
+    fetch = function (url, options) {
+      return Promise.resolve(originalFetch(url, options));
+    };
+  }
+
+  if (AbortController == undefined) {
+    var originalFetch2 = fetch;
+    fetch = function (url, options) {
+      var signal = options.signal;
+      return originalFetch2(url, {headers: options.headers, credentials: options.credentials, cache: options.cache}).then(function (response) {
+        var reader = response.body.getReader();
+        signal._reader = reader;
+        if (signal._aborted) {
+          signal._reader.cancel();
+        }
+        return {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+          body: {
+            getReader: function () {
+              return reader;
+            }
+          }
+        };
+      });
+    };
+    AbortController = function () {
+      this.signal = {
+        _reader: null,
+        _aborted: false
+      };
+      this.abort = function () {
+        if (this.signal._reader != null) {
+          this.signal._reader.cancel();
+        }
+        this.signal._aborted = true;
+      };
+    };
+  }
+
+  function TextDecoderPolyfill() {
+    this.bitsNeeded = 0;
+    this.codePoint = 0;
+  }
+
+  TextDecoderPolyfill.prototype.decode = function (octets) {
+    function valid(codePoint, shift, octetsCount) {
+      if (octetsCount === 1) {
+        return codePoint >= 0x0080 >> shift && codePoint << shift <= 0x07FF;
+      }
+      if (octetsCount === 2) {
+        return codePoint >= 0x0800 >> shift && codePoint << shift <= 0xD7FF || codePoint >= 0xE000 >> shift && codePoint << shift <= 0xFFFF;
+      }
+      if (octetsCount === 3) {
+        return codePoint >= 0x010000 >> shift && codePoint << shift <= 0x10FFFF;
+      }
+      throw new Error();
+    }
+    function octetsCount(bitsNeeded, codePoint) {
+      if (bitsNeeded === 6 * 1) {
+        return codePoint >> 6 > 15 ? 3 : codePoint > 31 ? 2 : 1;
+      }
+      if (bitsNeeded === 6 * 2) {
+        return codePoint > 15 ? 3 : 2;
+      }
+      if (bitsNeeded === 6 * 3) {
+        return 3;
+      }
+      throw new Error();
+    }
+    var REPLACER = 0xFFFD;
+    var string = "";
+    var bitsNeeded = this.bitsNeeded;
+    var codePoint = this.codePoint;
+    for (var i = 0; i < octets.length; i += 1) {
+      var octet = octets[i];
+      if (bitsNeeded !== 0) {
+        if (octet < 128 || octet > 191 || !valid(codePoint << 6 | octet & 63, bitsNeeded - 6, octetsCount(bitsNeeded, codePoint))) {
+          bitsNeeded = 0;
+          codePoint = REPLACER;
+          string += String.fromCharCode(codePoint);
+        }
+      }
+      if (bitsNeeded === 0) {
+        if (octet >= 0 && octet <= 127) {
+          bitsNeeded = 0;
+          codePoint = octet;
+        } else if (octet >= 192 && octet <= 223) {
+          bitsNeeded = 6 * 1;
+          codePoint = octet & 31;
+        } else if (octet >= 224 && octet <= 239) {
+          bitsNeeded = 6 * 2;
+          codePoint = octet & 15;
+        } else if (octet >= 240 && octet <= 247) {
+          bitsNeeded = 6 * 3;
+          codePoint = octet & 7;
+        } else {
+          bitsNeeded = 0;
+          codePoint = REPLACER;
+        }
+        if (bitsNeeded !== 0 && !valid(codePoint, bitsNeeded, octetsCount(bitsNeeded, codePoint))) {
+          bitsNeeded = 0;
+          codePoint = REPLACER;
+        }
+      } else {
+        bitsNeeded -= 6;
+        codePoint = codePoint << 6 | octet & 63;
+      }
+      if (bitsNeeded === 0) {
+        if (codePoint <= 0xFFFF) {
+          string += String.fromCharCode(codePoint);
+        } else {
+          string += String.fromCharCode(0xD800 + (codePoint - 0xFFFF - 1 >> 10));
+          string += String.fromCharCode(0xDC00 + (codePoint - 0xFFFF - 1 & 0x3FF));
+        }
+      }
+    }
+    this.bitsNeeded = bitsNeeded;
+    this.codePoint = codePoint;
+    return string;
+  };
+
+  // Firefox < 38 throws an error with stream option
+  var supportsStreamOption = function () {
+    try {
+      return new TextDecoder().decode(new TextEncoder().encode("test"), {stream: true}) === "test";
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  };
+
+  // IE, Edge
+  if (TextDecoder == undefined || TextEncoder == undefined || !supportsStreamOption()) {
+    TextDecoder = TextDecoderPolyfill;
+  }
+
+  var k = function () {
+  };
+
+  function XHRWrapper(xhr) {
+    this.withCredentials = false;
+    this.responseType = "";
+    this.readyState = 0;
+    this.status = 0;
+    this.statusText = "";
+    this.responseText = "";
+    this.onprogress = k;
+    this.onreadystatechange = k;
+    this._contentType = "";
+    this._xhr = xhr;
+    this._sendTimeout = 0;
+    this._abort = k;
+  }
+
+  XHRWrapper.prototype.open = function (method, url) {
+    this._abort(true);
+
+    var that = this;
+    var xhr = this._xhr;
+    var state = 1;
+    var timeout = 0;
+
+    this._abort = function (silent) {
+      if (that._sendTimeout !== 0) {
+        clearTimeout(that._sendTimeout);
+        that._sendTimeout = 0;
+      }
+      if (state === 1 || state === 2 || state === 3) {
+        state = 4;
+        xhr.onload = k;
+        xhr.onerror = k;
+        xhr.onabort = k;
+        xhr.onprogress = k;
+        xhr.onreadystatechange = k;
+        // IE 8 - 9: XDomainRequest#abort() does not fire any event
+        // Opera < 10: XMLHttpRequest#abort() does not fire any event
+        xhr.abort();
+        if (timeout !== 0) {
+          clearTimeout(timeout);
+          timeout = 0;
+        }
+        if (!silent) {
+          that.readyState = 4;
+          that.onreadystatechange();
+        }
+      }
+      state = 0;
+    };
+
+    var onStart = function () {
+      if (state === 1) {
+        //state = 2;
+        var status = 0;
+        var statusText = "";
+        var contentType = undefined;
+        if (!("contentType" in xhr)) {
+          try {
+            status = xhr.status;
+            statusText = xhr.statusText;
+            contentType = xhr.getResponseHeader("Content-Type");
+          } catch (error) {
+            // IE < 10 throws exception for `xhr.status` when xhr.readyState === 2 || xhr.readyState === 3
+            // Opera < 11 throws exception for `xhr.status` when xhr.readyState === 2
+            // https://bugs.webkit.org/show_bug.cgi?id=29121
+            status = 0;
+            statusText = "";
+            contentType = undefined;
+            // Firefox < 14, Chrome ?, Safari ?
+            // https://bugs.webkit.org/show_bug.cgi?id=29658
+            // https://bugs.webkit.org/show_bug.cgi?id=77854
+          }
+        } else {
+          status = 200;
+          statusText = "OK";
+          contentType = xhr.contentType;
+        }
+        if (status !== 0) {
+          state = 2;
+          that.readyState = 2;
+          that.status = status;
+          that.statusText = statusText;
+          that._contentType = contentType;
+          that.onreadystatechange();
+        }
+      }
+    };
+    var onProgress = function () {
+      onStart();
+      if (state === 2 || state === 3) {
+        state = 3;
+        var responseText = "";
+        try {
+          responseText = xhr.responseText;
+        } catch (error) {
+          // IE 8 - 9 with XMLHttpRequest
+        }
+        that.readyState = 3;
+        that.responseText = responseText;
+        that.onprogress();
+      }
+    };
+    var onFinish = function () {
+      // Firefox 52 fires "readystatechange" (xhr.readyState === 4) without final "readystatechange" (xhr.readyState === 3)
+      // IE 8 fires "onload" without "onprogress"
+      onProgress();
+      if (state === 1 || state === 2 || state === 3) {
+        state = 4;
+        if (timeout !== 0) {
+          clearTimeout(timeout);
+          timeout = 0;
+        }
+        that.readyState = 4;
+        that.onreadystatechange();
+      }
+    };
+    var onReadyStateChange = function () {
+      if (xhr != undefined) { // Opera 12
+        if (xhr.readyState === 4) {
+          onFinish();
+        } else if (xhr.readyState === 3) {
+          onProgress();
+        } else if (xhr.readyState === 2) {
+          onStart();
+        }
+      }
+    };
+    var onTimeout = function () {
+      timeout = setTimeout(function () {
+        onTimeout();
+      }, 500);
+      if (xhr.readyState === 3) {
+        onProgress();
+      }
+    };
+
+    // XDomainRequest#abort removes onprogress, onerror, onload
+    xhr.onload = onFinish;
+    xhr.onerror = onFinish;
+    // improper fix to match Firefox behaviour, but it is better than just ignore abort
+    // see https://bugzilla.mozilla.org/show_bug.cgi?id=768596
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=880200
+    // https://code.google.com/p/chromium/issues/detail?id=153570
+    // IE 8 fires "onload" without "onprogress
+    xhr.onabort = onFinish;
+
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=736723
+    if (!("sendAsBinary" in XMLHttpRequest.prototype) && !("mozAnon" in XMLHttpRequest.prototype)) {
+      xhr.onprogress = onProgress;
+    }
+
+    // IE 8 - 9 (XMLHTTPRequest)
+    // Opera < 12
+    // Firefox < 3.5
+    // Firefox 3.5 - 3.6 - ? < 9.0
+    // onprogress is not fired sometimes or delayed
+    // see also #64 (significant lag in IE 11)
+    xhr.onreadystatechange = onReadyStateChange;
+
+    if ("contentType" in xhr) {
+      url += (url.indexOf("?") === -1 ? "?" : "&") + "padding=true";
+    }
+    xhr.open(method, url, true);
+
+    if ("readyState" in xhr) {
+      // workaround for Opera 12 issue with "progress" events
+      // #91 (XMLHttpRequest onprogress not fired for streaming response in Edge 14-15-?)
+      timeout = setTimeout(function () {
+        onTimeout();
+      }, 0);
+    }
+  };
+  XHRWrapper.prototype.abort = function () {
+    this._abort(false);
+  };
+  XHRWrapper.prototype.getResponseHeader = function (name) {
+    return this._contentType;
+  };
+  XHRWrapper.prototype.setRequestHeader = function (name, value) {
+    var xhr = this._xhr;
+    if ("setRequestHeader" in xhr) {
+      xhr.setRequestHeader(name, value);
+    }
+  };
+  XHRWrapper.prototype.getAllResponseHeaders = function () {
+    return this._xhr.getAllResponseHeaders != undefined ? this._xhr.getAllResponseHeaders() : "";
+  };
+  XHRWrapper.prototype.send = function () {
+    // loading indicator in Safari < ? (6), Chrome < 14, Firefox
+    if (!("ontimeout" in XMLHttpRequest.prototype) &&
+        document != undefined &&
+        document.readyState != undefined &&
+        document.readyState !== "complete") {
+      var that = this;
+      that._sendTimeout = setTimeout(function () {
+        that._sendTimeout = 0;
+        that.send();
+      }, 4);
+      return;
+    }
+
+    var xhr = this._xhr;
+    // withCredentials should be set after "open" for Safari and Chrome (< 19 ?)
+    xhr.withCredentials = this.withCredentials;
+    xhr.responseType = this.responseType;
+    try {
+      // xhr.send(); throws "Not enough arguments" in Firefox 3.0
+      xhr.send(undefined);
+    } catch (error1) {
+      // Safari 5.1.7, Opera 12
+      throw error1;
+    }
+  };
+
+  function toLowerCase(name) {
+    return name.replace(/[A-Z]/g, function (c) {
+      return String.fromCharCode(c.charCodeAt(0) + 0x20);
+    });
+  }
+
+  function HeadersPolyfill(all) {
+    // Get headers: implemented according to mozilla's example code: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/getAllResponseHeaders#Example
+    var map = Object.create(null);
+    var array = all.split("\r\n");
+    for (var i = 0; i < array.length; i += 1) {
+      var line = array[i];
+      var parts = line.split(": ");
+      var name = parts.shift();
+      var value = parts.join(": ");
+      map[toLowerCase(name)] = value;
+    }
+    this._map = map;
+  }
+  HeadersPolyfill.prototype.get = function (name) {
+    return this._map[toLowerCase(name)];
+  };
+
+  function XHRTransport() {
+  }
+
+  XHRTransport.prototype.open = function (xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers) {
+    xhr.open("GET", url);
+    var offset = 0;
+    xhr.onprogress = function () {
+      var responseText = xhr.responseText;
+      var chunk = responseText.slice(offset);
+      offset += chunk.length;
+      onProgressCallback(chunk);
+    };
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+        var status = xhr.status;
+        var statusText = xhr.statusText;
+        var contentType = xhr.getResponseHeader("Content-Type");
+        var headers = xhr.getAllResponseHeaders();
+        onStartCallback(status, statusText, contentType, new HeadersPolyfill(headers));
+      } else if (xhr.readyState === XMLHttpRequest.DONE) {
+        onFinishCallback();
+      }
+    };
+    xhr.withCredentials = withCredentials;
+    xhr.responseType = "text";
+    for (var name in headers) {
+      if (Object.prototype.hasOwnProperty.call(headers, name)) {
+        xhr.setRequestHeader(name, headers[name]);
+      }
+    }
+    xhr.send();
+    return xhr;
+  };
+
+  function HeadersWrapper(headers) {
+    this._headers = headers;
+  }
+  HeadersWrapper.prototype.get = function (name) {
+    return this._headers.get(name);
+  };
+
+  function FetchTransport() {
+  }
+
+  FetchTransport.prototype.open = function (xhr, onStartCallback, onProgressCallback, onFinishCallback, url, withCredentials, headers) {
+    var reader = null;
+    var controller = new AbortController();
+    var signal = controller.signal;
+    var textDecoder = new TextDecoder();
+    fetch(url, {
+      headers: headers,
+      credentials: withCredentials ? "include" : "same-origin",
+      signal: signal,
+      cache: "no-store"
+    }).then(function (response) {
+      reader = response.body.getReader();
+      onStartCallback(response.status, response.statusText, response.headers.get("Content-Type"), new HeadersWrapper(response.headers));
+      return new Promise(function (resolve, reject) {
+        var readNextChunk = function () {
+          reader.read().then(function (result) {
+            if (result.done) {
+              //Note: bytes in textDecoder are ignored
+              resolve(undefined);
+            } else {
+              var chunk = textDecoder.decode(result.value, {stream: true});
+              onProgressCallback(chunk);
+              readNextChunk();
+            }
+          })["catch"](function (error) {
+            reject(error);
+          });
+        };
+        readNextChunk();
+      });
+    })["catch"](function (error) {
+      if (error.name === "AbortError") {
+        return undefined;
+      } else {
+        throw error;
+      }
+    })["finally"](function () {
+      onFinishCallback();
+    });
+    return {
+      abort: function () {
+        if (reader != null) {
+          reader.cancel(); // https://bugzilla.mozilla.org/show_bug.cgi?id=1583815
+        }
+        controller.abort();
+      }
+    };
+  };
+
+  function EventTarget() {
+    this._listeners = Object.create(null);
+  }
+
+  function throwError(e) {
+    setTimeout(function () {
+      throw e;
+    }, 0);
+  }
+
+  EventTarget.prototype.dispatchEvent = function (event) {
+    event.target = this;
+    var typeListeners = this._listeners[event.type];
+    if (typeListeners != undefined) {
+      var length = typeListeners.length;
+      for (var i = 0; i < length; i += 1) {
+        var listener = typeListeners[i];
+        try {
+          if (typeof listener.handleEvent === "function") {
+            listener.handleEvent(event);
+          } else {
+            listener.call(this, event);
+          }
+        } catch (e) {
+          throwError(e);
+        }
+      }
+    }
+  };
+  EventTarget.prototype.addEventListener = function (type, listener) {
+    type = String(type);
+    var listeners = this._listeners;
+    var typeListeners = listeners[type];
+    if (typeListeners == undefined) {
+      typeListeners = [];
+      listeners[type] = typeListeners;
+    }
+    var found = false;
+    for (var i = 0; i < typeListeners.length; i += 1) {
+      if (typeListeners[i] === listener) {
+        found = true;
+      }
+    }
+    if (!found) {
+      typeListeners.push(listener);
+    }
+  };
+  EventTarget.prototype.removeEventListener = function (type, listener) {
+    type = String(type);
+    var listeners = this._listeners;
+    var typeListeners = listeners[type];
+    if (typeListeners != undefined) {
+      var filtered = [];
+      for (var i = 0; i < typeListeners.length; i += 1) {
+        if (typeListeners[i] !== listener) {
+          filtered.push(typeListeners[i]);
+        }
+      }
+      if (filtered.length === 0) {
+        delete listeners[type];
+      } else {
+        listeners[type] = filtered;
+      }
+    }
+  };
+
+  function Event(type) {
+    this.type = type;
+    this.target = undefined;
+  }
+
+  function MessageEvent(type, options) {
+    Event.call(this, type);
+    this.data = options.data;
+    this.lastEventId = options.lastEventId;
+  }
+
+  MessageEvent.prototype = Object.create(Event.prototype);
+
+  function ConnectionEvent(type, options) {
+    Event.call(this, type);
+    this.status = options.status;
+    this.statusText = options.statusText;
+    this.headers = options.headers;
+  }
+
+  ConnectionEvent.prototype = Object.create(Event.prototype);
+
+  var WAITING = -1;
+  var CONNECTING = 0;
+  var OPEN = 1;
+  var CLOSED = 2;
+
+  var AFTER_CR = -1;
+  var FIELD_START = 0;
+  var FIELD = 1;
+  var VALUE_START = 2;
+  var VALUE = 3;
+
+  var contentTypeRegExp = /^text\/event\-stream;?(\s*charset\=utf\-8)?$/i;
+
+  var MINIMUM_DURATION = 1000;
+  var MAXIMUM_DURATION = 18000000;
+
+  var parseDuration = function (value, def) {
+    var n = parseInt(value, 10);
+    if (n !== n) {
+      n = def;
+    }
+    return clampDuration(n);
+  };
+  var clampDuration = function (n) {
+    return Math.min(Math.max(n, MINIMUM_DURATION), MAXIMUM_DURATION);
+  };
+
+  var fire = function (that, f, event) {
+    try {
+      if (typeof f === "function") {
+        f.call(that, event);
+      }
+    } catch (e) {
+      throwError(e);
+    }
+  };
+
+  function EventSourcePolyfill(url, options) {
+    EventTarget.call(this);
+
+    this.onopen = undefined;
+    this.onmessage = undefined;
+    this.onerror = undefined;
+
+    this.url = undefined;
+    this.readyState = undefined;
+    this.withCredentials = undefined;
+
+    this._close = undefined;
+
+    start(this, url, options);
+  }
+
+  function getBestXHRTransport() {
+    return (XMLHttpRequest != undefined && ("withCredentials" in XMLHttpRequest.prototype)) || XDomainRequest == undefined
+      ? new XMLHttpRequest()
+      : new XDomainRequest();
+  }
+
+  var isFetchSupported = fetch != undefined && Response != undefined && "body" in Response.prototype;
+
+  function start(es, url, options) {
+    url = String(url);
+    var withCredentials = options != undefined && Boolean(options.withCredentials);
+
+    var initialRetry = clampDuration(1000);
+    var heartbeatTimeout = options != undefined && options.heartbeatTimeout != undefined ? parseDuration(options.heartbeatTimeout, 45000) : clampDuration(45000);
+
+    var lastEventId = "";
+    var retry = initialRetry;
+    var wasActivity = false;
+    var headers = options != undefined && options.headers != undefined ? JSON.parse(JSON.stringify(options.headers)) : undefined;
+    var TransportOption = options != undefined && options.Transport != undefined ? options.Transport : undefined;
+    var xhr = isFetchSupported && TransportOption == undefined ? undefined : new XHRWrapper(TransportOption != undefined ? new TransportOption() : getBestXHRTransport());
+    var transport = xhr == undefined ? new FetchTransport() : new XHRTransport();
+    var abortController = undefined;
+    var timeout = 0;
+    var currentState = WAITING;
+    var dataBuffer = "";
+    var lastEventIdBuffer = "";
+    var eventTypeBuffer = "";
+
+    var textBuffer = "";
+    var state = FIELD_START;
+    var fieldStart = 0;
+    var valueStart = 0;
+
+    var onStart = function (status, statusText, contentType, headers) {
+      if (currentState === CONNECTING) {
+        if (status === 200 && contentType != undefined && contentTypeRegExp.test(contentType)) {
+          currentState = OPEN;
+          wasActivity = true;
+          retry = initialRetry;
+          es.readyState = OPEN;
+          var event = new ConnectionEvent("open", {
+            status: status,
+            statusText: statusText,
+            headers: headers
+          });
+          es.dispatchEvent(event);
+          fire(es, es.onopen, event);
+        } else {
+          var message = "";
+          if (status !== 200) {
+            if (statusText) {
+              statusText = statusText.replace(/\s+/g, " ");
+            }
+            message = "EventSource's response has a status " + status + " " + statusText + " that is not 200. Aborting the connection.";
+          } else {
+            message = "EventSource's response has a Content-Type specifying an unsupported type: " + (contentType == undefined ? "-" : contentType.replace(/\s+/g, " ")) + ". Aborting the connection.";
+          }
+          throwError(new Error(message));
+          close();
+          var event = new ConnectionEvent("error", {
+            status: status,
+            statusText: statusText,
+            headers: headers
+          });
+          es.dispatchEvent(event);
+          fire(es, es.onerror, event);
+        }
+      }
+    };
+
+    var onProgress = function (textChunk) {
+      if (currentState === OPEN) {
+        var n = -1;
+        for (var i = 0; i < textChunk.length; i += 1) {
+          var c = textChunk.charCodeAt(i);
+          if (c === "\n".charCodeAt(0) || c === "\r".charCodeAt(0)) {
+            n = i;
+          }
+        }
+        var chunk = (n !== -1 ? textBuffer : "") + textChunk.slice(0, n + 1);
+        textBuffer = (n === -1 ? textBuffer : "") + textChunk.slice(n + 1);
+        if (chunk !== "") {
+          wasActivity = true;
+        }
+        for (var position = 0; position < chunk.length; position += 1) {
+          var c = chunk.charCodeAt(position);
+          if (state === AFTER_CR && c === "\n".charCodeAt(0)) {
+            state = FIELD_START;
+          } else {
+            if (state === AFTER_CR) {
+              state = FIELD_START;
+            }
+            if (c === "\r".charCodeAt(0) || c === "\n".charCodeAt(0)) {
+              if (state !== FIELD_START) {
+                if (state === FIELD) {
+                  valueStart = position + 1;
+                }
+                var field = chunk.slice(fieldStart, valueStart - 1);
+                var value = chunk.slice(valueStart + (valueStart < position && chunk.charCodeAt(valueStart) === " ".charCodeAt(0) ? 1 : 0), position);
+                if (field === "data") {
+                  dataBuffer += "\n";
+                  dataBuffer += value;
+                } else if (field === "id") {
+                  lastEventIdBuffer = value;
+                } else if (field === "event") {
+                  eventTypeBuffer = value;
+                } else if (field === "retry") {
+                  initialRetry = parseDuration(value, initialRetry);
+                  retry = initialRetry;
+                } else if (field === "heartbeatTimeout") {
+                  heartbeatTimeout = parseDuration(value, heartbeatTimeout);
+                  if (timeout !== 0) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                      onTimeout();
+                    }, heartbeatTimeout);
+                  }
+                }
+              }
+              if (state === FIELD_START) {
+                if (dataBuffer !== "") {
+                  lastEventId = lastEventIdBuffer;
+                  if (eventTypeBuffer === "") {
+                    eventTypeBuffer = "message";
+                  }
+                  var event = new MessageEvent(eventTypeBuffer, {
+                    data: dataBuffer.slice(1),
+                    lastEventId: lastEventIdBuffer
+                  });
+                  es.dispatchEvent(event);
+                  if (eventTypeBuffer === "message") {
+                    fire(es, es.onmessage, event);
+                  }
+                  if (currentState === CLOSED) {
+                    return;
+                  }
+                }
+                dataBuffer = "";
+                eventTypeBuffer = "";
+              }
+              state = c === "\r".charCodeAt(0) ? AFTER_CR : FIELD_START;
+            } else {
+              if (state === FIELD_START) {
+                fieldStart = position;
+                state = FIELD;
+              }
+              if (state === FIELD) {
+                if (c === ":".charCodeAt(0)) {
+                  valueStart = position + 1;
+                  state = VALUE_START;
+                }
+              } else if (state === VALUE_START) {
+                state = VALUE;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var onFinish = function () {
+      if (currentState === OPEN || currentState === CONNECTING) {
+        currentState = WAITING;
+        if (timeout !== 0) {
+          clearTimeout(timeout);
+          timeout = 0;
+        }
+        timeout = setTimeout(function () {
+          onTimeout();
+        }, retry);
+        retry = clampDuration(Math.min(initialRetry * 16, retry * 2));
+
+        es.readyState = CONNECTING;
+        var event = new Event("error");
+        es.dispatchEvent(event);
+        fire(es, es.onerror, event);
+      }
+    };
+
+    var close = function () {
+      currentState = CLOSED;
+      if (abortController != undefined) {
+        abortController.abort();
+        abortController = undefined;
+      }
+      if (timeout !== 0) {
+        clearTimeout(timeout);
+        timeout = 0;
+      }
+      es.readyState = CLOSED;
+    };
+
+    var onTimeout = function () {
+      timeout = 0;
+
+      if (currentState !== WAITING) {
+        if (!wasActivity && abortController != undefined) {
+          throwError(new Error("No activity within " + heartbeatTimeout + " milliseconds. Reconnecting."));
+          abortController.abort();
+          abortController = undefined;
+        } else {
+          wasActivity = false;
+          timeout = setTimeout(function () {
+            onTimeout();
+          }, heartbeatTimeout);
+        }
+        return;
+      }
+
+      wasActivity = false;
+      timeout = setTimeout(function () {
+        onTimeout();
+      }, heartbeatTimeout);
+
+      currentState = CONNECTING;
+      dataBuffer = "";
+      eventTypeBuffer = "";
+      lastEventIdBuffer = lastEventId;
+      textBuffer = "";
+      fieldStart = 0;
+      valueStart = 0;
+      state = FIELD_START;
+
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=428916
+      // Request header field Last-Event-ID is not allowed by Access-Control-Allow-Headers.
+      var requestURL = url;
+      if (url.slice(0, 5) !== "data:" && url.slice(0, 5) !== "blob:") {
+        if (lastEventId !== "") {
+          requestURL += (url.indexOf("?") === -1 ? "?" : "&") + "lastEventId=" + encodeURIComponent(lastEventId);
+        }
+      }
+      var requestHeaders = {};
+      requestHeaders["Accept"] = "text/event-stream";
+      if (headers != undefined) {
+        for (var name in headers) {
+          if (Object.prototype.hasOwnProperty.call(headers, name)) {
+            requestHeaders[name] = headers[name];
+          }
+        }
+      }
+      try {
+        abortController = transport.open(xhr, onStart, onProgress, onFinish, requestURL, withCredentials, requestHeaders);
+      } catch (error) {
+        close();
+        throw error;
+      }
+    };
+
+    es.url = url;
+    es.readyState = CONNECTING;
+    es.withCredentials = withCredentials;
+    es._close = close;
+
+    onTimeout();
+  }
+
+  EventSourcePolyfill.prototype = Object.create(EventTarget.prototype);
+  EventSourcePolyfill.prototype.CONNECTING = CONNECTING;
+  EventSourcePolyfill.prototype.OPEN = OPEN;
+  EventSourcePolyfill.prototype.CLOSED = CLOSED;
+  EventSourcePolyfill.prototype.close = function () {
+    this._close();
+  };
+
+  EventSourcePolyfill.CONNECTING = CONNECTING;
+  EventSourcePolyfill.OPEN = OPEN;
+  EventSourcePolyfill.CLOSED = CLOSED;
+  EventSourcePolyfill.prototype.withCredentials = undefined;
+
+  (function (factory) {
+    if ( true && typeof module.exports === "object") {
+      var v = factory(exports);
+      if (v !== undefined) module.exports = v;
+    }
+    else if (true) {
+      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    }
+    else {}
+  })(function (exports) {
+    exports.EventSourcePolyfill = EventSourcePolyfill;
+    exports.NativeEventSource = NativeEventSource;
+    if (XMLHttpRequest != undefined && (NativeEventSource == undefined || !("withCredentials" in NativeEventSource.prototype))) {
+      // Why replace a native EventSource ?
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=444328
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=831392
+      // https://code.google.com/p/chromium/issues/detail?id=260144
+      // https://code.google.com/p/chromium/issues/detail?id=225654
+      // ...
+      exports.EventSource = EventSourcePolyfill;
+    }
+  });
+}(typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : this));
 
 
 /***/ }),
@@ -44359,6 +45448,115 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "nav-item dropdown" }, [
+    _c(
+      "a",
+      {
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          href: "#",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("i", { staticClass: "far fa-bell" }),
+        _vm._v(" " + _vm._s(_vm.notifications.length) + " "),
+        _c("span", { staticClass: "caret" })
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "dropdown-menu dropdown-menu-right notifications" },
+      [
+        _c("h6", { staticClass: "dropdown-header bg-white" }, [
+          _vm._v("Notifications")
+        ]),
+        _vm._v(" "),
+        _vm.notification
+          ? _c("notification", {
+              attrs: {
+                message: _vm.notification.message,
+                level: _vm.notification.level
+              }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._l(_vm.notifications, function(notification) {
+          return _c(
+            "a",
+            {
+              staticClass: "dropdown-item",
+              attrs: { href: "#" },
+              domProps: { innerHTML: _vm._s(notification) }
+            },
+            [_vm._v("\n            Test\n        ")]
+          )
+        }),
+        _vm._v(" "),
+        _vm.initialLoad
+          ? _c(
+              "div",
+              { staticClass: "dropdown-item text-center" },
+              [_c("spinner")],
+              1
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.initialLoad === false && _vm.notifications.length === 0
+          ? _c("div", [
+              _vm._v("\n            You have no notifications.\n        ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-divider" }),
+        _vm._v(" "),
+        _vm._m(0)
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "p-2 px-3" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-block btn-sm btn-primary",
+          attrs: { href: "#" }
+        },
+        [_vm._v("View All")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -44463,6 +45661,694 @@ function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-simple-spinner/dist/vue-simple-spinner.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-simple-spinner/dist/vue-simple-spinner.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * vue-simple-spinner v1.2.8 (https://github.com/dzwillia/vue-simple-spinner)
+ * (c) 2017 David Z. Williams
+ * Released under the MIT License.
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory();
+	else {}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VueSimpleSpinner = undefined;
+
+var _Spinner = __webpack_require__(1);
+
+var _Spinner2 = _interopRequireDefault(_Spinner);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (typeof window !== 'undefined' && window.Vue) {
+  Vue.component('vue-simple-spinner', _Spinner2.default);
+}
+
+exports.VueSimpleSpinner = _Spinner2.default;
+exports.default = _Spinner2.default;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(2)
+
+var Component = __webpack_require__(7)(
+  /* script */
+  __webpack_require__(8),
+  /* template */
+  __webpack_require__(9),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(3);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("d89557e4", content, true);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
+// imports
+
+
+// module
+exports.push([module.i, ".vue-simple-spinner{transition:all .3s linear}@keyframes vue-simple-spinner-spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(6)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+var isNumber = function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+exports.default = {
+  name: 'vue-simple-spinner',
+  props: {
+    'size': {
+      default: 32
+    },
+    'line-size': {
+      type: Number,
+      default: 3
+    },
+    'line-bg-color': {
+      type: String,
+      default: '#eee'
+    },
+    'line-fg-color': {
+      type: String,
+      default: '#2196f3' },
+    'speed': {
+      type: Number,
+      default: 0.8
+    },
+    'spacing': {
+      type: Number,
+      default: 4
+    },
+    'message': {
+      type: String,
+      default: ''
+    },
+    'font-size': {
+      type: Number,
+      default: 13
+    },
+    'text-fg-color': {
+      type: String,
+      default: '#555'
+    }
+  },
+  computed: {
+    size_px: function size_px() {
+      switch (this.size) {
+        case 'tiny':
+          return 12;
+        case 'small':
+          return 16;
+        case 'medium':
+          return 32;
+        case 'large':
+          return 48;
+        case 'big':
+          return 64;
+        case 'huge':
+          return 96;
+        case 'massive':
+          return 128;
+      }
+
+      return isNumber(this.size) ? this.size : 32;
+    },
+    line_size_px: function line_size_px() {
+      switch (this.size) {
+        case 'tiny':
+          return 1;
+        case 'small':
+          return 2;
+        case 'medium':
+          return 3;
+        case 'large':
+          return 3;
+        case 'big':
+          return 4;
+        case 'huge':
+          return 4;
+        case 'massive':
+          return 5;
+      }
+
+      return isNumber(this.lineSize) ? this.lineSize : 4;
+    },
+    text_margin_top: function text_margin_top() {
+      switch (this.size) {
+        case 'tiny':
+        case 'small':
+        case 'medium':
+        case 'large':
+        case 'big':
+        case 'huge':
+        case 'massive':
+          return Math.min(Math.max(Math.ceil(this.size_px / 8), 3), 12);
+      }
+
+      return isNumber(this.spacing) ? this.spacing : 4;
+    },
+    text_font_size: function text_font_size() {
+      switch (this.size) {
+        case 'tiny':
+        case 'small':
+        case 'medium':
+        case 'large':
+        case 'big':
+        case 'huge':
+        case 'massive':
+          return Math.min(Math.max(Math.ceil(this.size_px * 0.4), 11), 32);
+      }
+
+      return isNumber(this.fontSize) ? this.fontSize : 13;
+    },
+    spinner_style: function spinner_style() {
+      return {
+        'margin': '0 auto',
+        'border-radius': '100%',
+        'border': this.line_size_px + 'px solid ' + this.lineBgColor,
+        'border-top': this.line_size_px + 'px solid ' + this.lineFgColor,
+        'width': this.size_px + 'px',
+        'height': this.size_px + 'px',
+        'animation': 'vue-simple-spinner-spin ' + this.speed + 's linear infinite'
+      };
+    },
+    text_style: function text_style() {
+      return {
+        'margin-top': this.text_margin_top + 'px',
+        'color': this.textFgColor,
+        'font-size': this.text_font_size + 'px',
+        'text-align': 'center'
+      };
+    }
+  }
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "vue-simple-spinner",
+    style: (_vm.spinner_style)
+  }), _vm._v(" "), (_vm.message.length > 0) ? _c('div', {
+    staticClass: "vue-simple-spinner-text",
+    style: (_vm.text_style)
+  }, [_vm._v(_vm._s(_vm.message))]) : _vm._e()])
+},staticRenderFns: []}
+
+/***/ })
+/******/ ])["default"];
+});
 
 /***/ }),
 
@@ -56515,6 +58401,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // Register components...
 
 Vue.component('notification', __webpack_require__(/*! ./components/Notification.vue */ "./resources/js/components/Notification.vue")["default"]);
+Vue.component('notifications', __webpack_require__(/*! ./components/Notifications.vue */ "./resources/js/components/Notifications.vue")["default"]);
 Vue.component('form-confirm', __webpack_require__(/*! ./components/FormConfirm.vue */ "./resources/js/components/FormConfirm.vue")["default"]);
 Vue.component('date-picker', __webpack_require__(/*! ./components/Datepicker.vue */ "./resources/js/components/Datepicker.vue")["default"]);
 Vue.component('date-time-picker', __webpack_require__(/*! ./components/DateTimePicker.vue */ "./resources/js/components/DateTimePicker.vue")["default"]);
@@ -56956,6 +58843,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/Notifications.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Notifications.vue?vue&type=template&id=d7f806e6& */ "./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&");
+/* harmony import */ var _Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Notifications.vue?vue&type=script&lang=js& */ "./resources/js/components/Notifications.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Notifications.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Notifications.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Notifications.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Notifications.vue?vue&type=template&id=d7f806e6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

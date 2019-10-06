@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             @component('components.card', ['class' => 'bg-white'])
-                @if ($register)
+                @if($register)
                     <h4>Welcome</h4>
 
                     <hr/>

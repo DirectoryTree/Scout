@@ -1,10 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "directorytree/scout",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "An open source LDAP directory monitoring application.",
     "keywords": [
-        "framework",
-        "laravel"
+        "ldap",
+        "monitoring",
+        "auditing"
     ],
     "license": "MIT",
     "require": {

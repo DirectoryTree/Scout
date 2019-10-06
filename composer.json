@@ -10,6 +10,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-ldap": "*",
+        "ext-json": "*",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "directorytree/ldaprecord": "dev-master",
         "fideloper/proxy": "^4.0",

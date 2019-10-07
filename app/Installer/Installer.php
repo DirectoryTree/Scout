@@ -34,6 +34,9 @@ class Installer
      */
     public function install(array $data)
     {
+        // In case our installation fails, we need to
+        // restore the stub so it can be generated
+        // once permissions have been resolved.
         $stub = File::get($this->getEnvStubPath());
 
         try {
@@ -63,7 +66,7 @@ class Installer
             return true;
         }
 
-        $installed = $this->hasSetup() && $this->hasRanMigrations();
+        $installed = $this->hasBeenSetup() && $this->hasRanMigrations();
 
         Cache::forever($this->key, $installed);
 
@@ -75,9 +78,9 @@ class Installer
      *
      * @return bool
      */
-    public function hasSetup()
+    public function hasBeenSetup()
     {
-        return File::exists($this->getEnvFilePath()) && !File::exists($this->getEnvStubPath());
+        return File::exists($this->getEnvPath()) && !File::exists($this->getEnvStubPath());
     }
 
     /**
@@ -101,7 +104,7 @@ class Installer
      */
     public function prepare()
     {
-        if (File::exists($this->getEnvFilePath())) {
+        if (File::exists($this->getEnvPath())) {
             return;
         }
 
@@ -129,7 +132,7 @@ class Installer
      *
      * @return string
      */
-    public function getEnvFilePath()
+    public function getEnvPath()
     {
         return base_path('.env');
     }
@@ -151,7 +154,7 @@ class Installer
      */
     protected function configureDatabase(array $data)
     {
-        $contents = strtr(File::get($this->getEnvFilePath()), [
+        $contents = strtr(File::get($this->getEnvPath()), [
             '{{DB_DRIVER}}' => Arr::get($data, 'driver'),
             '{{DB_HOST}}' => Arr::get($data, 'host'),
             '{{DB_PORT}}' => Arr::get($data, 'port'),
@@ -161,7 +164,7 @@ class Installer
         ]);
 
         // Save the env configuration.
-        File::put($this->getEnvFilePath(), $contents);
+        File::put($this->getEnvPath(), $contents);
     }
 
     /**
@@ -179,6 +182,6 @@ class Installer
      */
     protected function createEnvFile()
     {
-        return File::put($this->getEnvFilePath(), File::get($this->getEnvStubPath()));
+        return File::put($this->getEnvPath(), File::get($this->getEnvStubPath()));
     }
 }

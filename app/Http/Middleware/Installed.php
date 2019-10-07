@@ -20,11 +20,7 @@ class Installed
         /** @var \App\Installer\Installer $installer */
         $installer = app(Installer::class);
 
-        if ($installer->installed()) {
-            return $next($request);
-        }
-
-        if ($request->routeIs('install.*')) {
+        if ($installer->installed() || $request->routeIs('install.*')) {
             return $next($request);
         }
 

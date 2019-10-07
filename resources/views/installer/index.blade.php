@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
-    @if($installer->hasSetup())
+    @if($installer->hasBeenSetup())
         @include('installer.migrate')
     @else
         @include('installer.setup')

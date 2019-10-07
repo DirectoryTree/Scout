@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use Exception;
 use Tests\TestCase;
@@ -18,7 +18,7 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        $this->assertFalse($installer->hasSetup());
+        $this->assertFalse($installer->hasBeenSetup());
         $this->assertFalse($installer->hasRanMigrations());
     }
 
@@ -45,6 +45,8 @@ class InstallerTest extends TestCase
         File::shouldReceive('exists')->withArgs([$installer->getEnvPath()])->once()->andReturnFalse();
         File::shouldReceive('get')->withArgs([$installer->getEnvStubPath()])->once()->andReturn('content');
         File::shouldReceive('put')->withArgs([$installer->getEnvPath(), 'content'])->once()->andReturnTrue();
+
+        Artisan::shouldReceive('call')->withArgs(['key:generate'])->once();
 
         $installer->prepare();
 

@@ -2,10 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Support\Arr;
 
-class SetupTest extends TestCase
+class SetupTest extends InstalledTestCase
 {
     public function test_user_is_redirected_upon_first_visit()
     {

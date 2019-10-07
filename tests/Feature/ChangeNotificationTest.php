@@ -2,16 +2,15 @@
 
 namespace Tests\Feature;
 
-use LdapRecord\Utilities;
-use Tests\TestCase;
 use App\LdapChange;
 use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
 use App\Notification;
+use LdapRecord\Utilities;
 use App\LdapNotifierCondition;
 
-class ChangeNotificationTest extends TestCase
+class ChangeNotificationTest extends InstalledTestCase
 {
     public function test_notification_is_created_with_domain_notifier()
     {

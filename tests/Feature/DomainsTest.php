@@ -4,11 +4,10 @@ namespace Tests\Feature;
 
 use Mockery as m;
 use App\LdapDomain;
-use Tests\TestCase;
 use LdapRecord\LdapRecordException;
 use App\Ldap\Connectors\ConfigConnector;
 
-class DomainsTest extends TestCase
+class DomainsTest extends InstalledTestCase
 {
     public function test_viewing_all_initial_domains()
     {

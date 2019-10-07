@@ -27,8 +27,6 @@
     <link rel="manifest" href="{{ asset('favicon/manifest.json') }}">
     <meta name="theme-color" content="#ffffff">
 
-    @routes
-
     @yield('head')
     @stack('scripts')
     @stack('styles')

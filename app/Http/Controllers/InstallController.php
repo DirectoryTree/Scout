@@ -18,6 +18,7 @@ class InstallController extends Controller
     public function index()
     {
         return view('installer.index', [
+            'installer' => app(Installer::class),
             'requirements' => app(Requirements::class),
         ]);
     }
@@ -46,17 +47,7 @@ class InstallController extends Controller
                 ->with('error', "Error: " . $ex->getMessage());
         }
 
-        return redirect()->route('install.migrations');
-    }
-
-    /**
-     * Displays the form for running the application migrations.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function migrations()
-    {
-        return view('installer/migrations');
+        return redirect()->route('install.index');
     }
 
     /**
@@ -68,6 +59,6 @@ class InstallController extends Controller
     {
         Artisan::call('migrate');
 
-        return redirect()->route('/login');
+        return redirect()->to('/login');
     }
 }

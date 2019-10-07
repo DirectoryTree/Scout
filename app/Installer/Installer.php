@@ -63,15 +63,21 @@ class Installer
             return true;
         }
 
-        // If the .env file exists and the .env.example file does
-        // not exist, we will consider the application installed.
-        // This ensures if the cache is flushed that we do not
-        // impact a currently installed application.
-        $installed = File::exists($this->getEnvFilePath()) && !File::exists($this->getEnvStubPath());
+        $installed = $this->hasSetup() && $this->hasRanMigrations();
 
         Cache::forever($this->key, $installed);
 
-        return false;
+        return $installed;
+    }
+
+    /**
+     * Determine if the setup has been ran.
+     *
+     * @return bool
+     */
+    public function hasSetup()
+    {
+        return File::exists($this->getEnvFilePath()) && !File::exists($this->getEnvStubPath());
     }
 
     /**
@@ -79,10 +85,10 @@ class Installer
      *
      * @return bool
      */
-    public function migrated()
+    public function hasRanMigrations()
     {
         try {
-            return DB::table('migrations')->count() === 0;
+            return DB::table('migrations')->count() > 0;
         } catch (Exception $ex) {
             return false;
         }

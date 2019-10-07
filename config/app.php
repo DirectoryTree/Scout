@@ -163,10 +163,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
-         */
-
-        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -175,7 +171,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\LdapConnectionProvider::class,
         App\Providers\ComposerServiceProvider::class,
-
+        App\Providers\InstallationServiceProvider::class,
     ],
 
     /*

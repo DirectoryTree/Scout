@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -29,13 +27,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        Event::listen('App\Events\Ldap\*', function ($eventName, array $data) {
-            /** @var \App\Events\Ldap\Event $event */
-            $event = Arr::first($data);
-
-            logger($event->getSubject());
-            logger($event->getDescription());
-        });
     }
 }

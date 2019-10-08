@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Exception;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Installer\Installer;
 use Illuminate\Support\Str;
@@ -17,6 +18,8 @@ class InstallerTest extends TestCase
     {
         /** @var Installer $installer */
         $installer = app(Installer::class);
+
+        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
 
         $this->assertFalse($installer->hasBeenSetup());
         $this->assertFalse($installer->hasRanMigrations());
@@ -42,9 +45,9 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        File::shouldReceive('exists')->withArgs([$installer->getEnvPath()])->once()->andReturnFalse();
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubPath()])->once()->andReturn('content');
-        File::shouldReceive('put')->withArgs([$installer->getEnvPath(), 'content'])->once()->andReturnTrue();
+        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
+        File::shouldReceive('get')->withArgs([$installer->getEnvStubFilePath()])->once()->andReturn('content');
+        File::shouldReceive('put')->withArgs([$installer->getEnvFilePath(), 'content'])->once()->andReturnTrue();
 
         Artisan::shouldReceive('call')->withArgs(['key:generate'])->once();
 
@@ -58,9 +61,9 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        File::shouldReceive('exists')->withArgs([$installer->getEnvPath()])->once()->andReturnFalse();
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubPath()])->once()->andReturn('content');
-        File::shouldReceive('put')->withArgs([$installer->getEnvPath(), 'content'])->once()->andReturnFalse();
+        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
+        File::shouldReceive('get')->withArgs([$installer->getEnvStubFilePath()])->once()->andReturn('content');
+        File::shouldReceive('put')->withArgs([$installer->getEnvFilePath(), 'content'])->once()->andReturnFalse();
 
         $this->expectException(HttpException::class);
 
@@ -74,8 +77,7 @@ class InstallerTest extends TestCase
 
         $stub = file_get_contents(base_path('tests/stubs/.env.stub'));
 
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubPath()])->once()->andReturn($stub);
-        File::shouldReceive('get')->withArgs([$installer->getEnvPath()])->once()->andReturn($stub);
+        File::shouldReceive('get')->withArgs([$installer->getEnvFilePath()])->once()->andReturn($stub);
         File::shouldReceive('put')->withArgs(function ($path, $contents) {
             return Str::containsAll($contents, [
                 'DB_CONNECTION="mysql"',
@@ -87,7 +89,10 @@ class InstallerTest extends TestCase
                 'DB_PASSWORD="secret"',
             ]);
         })->once();
-        File::shouldReceive('delete')->withArgs([$installer->getEnvStubPath()])->once();
+
+        File::shouldReceive('put')->withArgs(function ($path, $contents) use ($installer) {
+            return $path == $installer->getInstallerFilePath() && $contents instanceof Carbon;
+        })->once();
 
         $installer->install([
             'driver' => 'mysql',
@@ -106,14 +111,10 @@ class InstallerTest extends TestCase
 
         $stub = file_get_contents(base_path('tests/stubs/.env.stub'));
 
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubPath()])->once()->andReturn($stub);
-        File::shouldReceive('get')->withArgs([$installer->getEnvPath()])->once()->andReturn($stub);
+        File::shouldReceive('get')->withArgs([$installer->getEnvFilePath()])->once()->andReturn($stub);
         File::shouldReceive('put')->once()->andThrow(new Exception());
 
         Artisan::shouldReceive('call')->withArgs(['cache:clear'])->once();
-        File::shouldReceive('put')->once()->withArgs(function ($path, $contents) use ($installer) {
-             return $installer->getEnvStubPath() == $path;
-        });
 
         $this->expectException(Exception::class);
 

@@ -70,5 +70,9 @@ hr {
     .dropdown-item {
         background: #fff;
         color:black;
+        &:hover {
+            color:black;
+            background: #f3f3f3;
+        }
     }
 }

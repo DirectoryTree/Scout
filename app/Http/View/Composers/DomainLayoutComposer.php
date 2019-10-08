@@ -31,7 +31,7 @@ class DomainLayoutComposer
             $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
             $data['counts']['object'] = [
-                'attributes' => count($object->attributes),
+                'attributes' => count($object->values),
                 'changes' => $object->changes()->count(),
             ];
         }

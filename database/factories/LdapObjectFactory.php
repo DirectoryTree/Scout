@@ -10,7 +10,7 @@ $factory->define(LdapObject::class, function (Faker $faker) {
     return [
         'guid' => $faker->uuid,
         'type' => 'user',
-        'attributes' => [],
+        'values' => [],
     ];
 });
 

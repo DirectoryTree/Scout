@@ -19,7 +19,7 @@ class LdapObject extends Model
         'dn',
         'guid',
         'domain',
-        'attributes',
+        'values',
     ];
 
     /**
@@ -27,7 +27,7 @@ class LdapObject extends Model
      *
      * @var array
      */
-    protected $casts = ['attributes' => 'array'];
+    protected $casts = ['values' => 'array'];
 
     /**
      * The "booting" method of the model.

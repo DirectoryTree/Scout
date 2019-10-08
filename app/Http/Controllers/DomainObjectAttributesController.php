@@ -19,7 +19,7 @@ class DomainObjectAttributesController extends Controller
     {
         $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
-        $attributes = (new AttributeTransformer($object->attributes))->transform();
+        $attributes = (new AttributeTransformer($object->values))->transform();
 
         return view('domains.objects.attributes.index', compact('domain', 'object', 'attributes'));
     }

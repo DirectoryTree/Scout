@@ -76,7 +76,7 @@ class SyncObject
             $object->restore();
         }
 
-        $oldAttributes = $object->attributes ?? [];
+        $oldAttributes = $object->values ?? [];
 
         // Determine any differences from our last sync.
         $modifications = array_diff(
@@ -95,7 +95,7 @@ class SyncObject
         $object->name = $this->getObjectName();
         $object->dn = $this->getObjectDn();
         $object->type = $this->getObjectType();
-        $object->attributes = $newAttributes;
+        $object->values = $newAttributes;
 
         $object->save();
 

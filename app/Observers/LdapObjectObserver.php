@@ -16,10 +16,12 @@ class LdapObjectObserver
      */
     public function updated(LdapObject $object)
     {
+        $attributes = array_keys($object->values);
+
         // Here we will retrieve all the notifiers that contain conditions for the
         // objects attributes, determine if the notifiable model can be notified
         // and if all the conditions pass for the notifier conditions.
-        $this->getNotifiersForAttributes($object->attributes)->each(function (LdapNotifier $notifier) use ($object) {
+        $this->getNotifiersForAttributes($attributes)->each(function (LdapNotifier $notifier) use ($object) {
             if (
                 ($notifiable = $notifier->notifiable) &&
                 $this->isNotifiable($notifiable) &&
@@ -54,7 +56,7 @@ class LdapObjectObserver
      */
     protected function passesConditions($conditions, LdapObject $object)
     {
-        return (new Validator($conditions, $object->after ?? []))->passes();
+        return (new Validator($conditions, $object->values ?? []))->passes();
     }
 
     /**

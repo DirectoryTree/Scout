@@ -2,24 +2,32 @@
 
 namespace App\Notifications;
 
-use App\LdapChange;
+use App\LdapObject;
+use App\LdapNotifier;
 use Illuminate\Notifications\Notification;
 
-class LdapObjectHasChanged extends Notification
+class LdapNotification extends Notification
 {
     /**
-     * @var LdapChange
+     * @var LdapObject
      */
-    protected $change;
+    protected $object;
+
+    /**
+     * @var LdapNotifier
+     */
+    protected $notifier;
 
     /**
      * Constructor.
      *
-     * @param LdapChange $change
+     * @param LdapObject   $object
+     * @param LdapNotifier $notifier
      */
-    public function __construct(LdapChange $change)
+    public function __construct(LdapObject $object, LdapNotifier $notifier)
     {
-        $this->change = $change;
+        $this->object = $object;
+        $this->notifier = $notifier;
     }
 
     /**
@@ -46,10 +54,7 @@ class LdapObjectHasChanged extends Notification
     public function toArray($notifiable)
     {
         return [
-            'change_id' => $this->change->id,
-            'attribute' => $this->change->attribute,
-            'before' => $this->change->before,
-            'after' => $this->change->after,
+            'name' => $this->notifier->name,
         ];
     }
 }

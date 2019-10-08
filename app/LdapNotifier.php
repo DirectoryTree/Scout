@@ -36,6 +36,20 @@ class LdapNotifier extends Model
     ];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function (LdapNotifier $notifier) {
+            $notifier->conditions()->delete();
+        });
+    }
+
+    /**
      * The belongsTo creator relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

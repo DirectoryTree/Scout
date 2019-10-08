@@ -52,7 +52,7 @@
                                 </a>
                             </li>
                         @else
-                            <notifications></notifications>
+                            <notifications url="{{ route('api.notifications') }}"></notifications>
 
                             <li class="nav-item dropdown">
                                 <a id="user-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

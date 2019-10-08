@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
 
-        Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
+        Route::get('notifications', 'NotificationsController@index')->name('notifications');
 
     });
 

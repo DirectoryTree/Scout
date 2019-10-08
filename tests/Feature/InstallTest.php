@@ -18,6 +18,12 @@ class InstallTest extends TestCase
 
     public function test_setup_page_works()
     {
+        $installer = m::mock(Installer::class);
+        $installer->makePartial();
+        $installer->shouldReceive('hasBeenSetup')->andReturnFalse();
+
+        $this->app->instance(Installer::class, $installer);
+
         $this->get(route('install.index'))
             ->assertSuccessful()
             ->assertSee('Welcome');

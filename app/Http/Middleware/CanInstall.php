@@ -24,8 +24,6 @@ class CanInstall
             abort(404);
         }
 
-        $installer->prepare();
-
         if ($installer->wasRecentlyPrepared()) {
             // If the installer was recently prepared, we must refresh the
             // application to ensure the application key is set.

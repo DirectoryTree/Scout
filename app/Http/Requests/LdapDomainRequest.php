@@ -83,6 +83,12 @@ class LdapDomainRequest extends FormRequest
     public function withValidator(Validator $validator)
     {
         $validator->after(function (Validator $validator) {
+            // If the validator still contains errors, we will avoid
+            // checking connectivity until all rules pass.
+            if ($validator->messages()->count() > 0) {
+                return;
+            }
+
             // Here we will attempt to bind to the configured LDAP server.
             // Upon failure, we will add the exception message directly
             // to the hosts validation error messages so the user has

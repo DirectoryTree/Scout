@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\LdapChange;
-use App\Observers\LdapChangeObserver;
+use App\LdapObject;
+use App\Observers\LdapObjectObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        LdapChange::observe(LdapChangeObserver::class);
+       LdapObject::observe(LdapObjectObserver::class);
     }
 }

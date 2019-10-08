@@ -32,11 +32,11 @@ class Validator
     protected $conditions;
 
     /**
-     * The value to validate.
+     * The values to validate.
      *
      * @var array
      */
-    protected $value;
+    protected $values;
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ class Validator
     public function __construct(Collection $conditions, array $values = [])
     {
         $this->conditions = $conditions;
-        $this->value = $this->getTransformedValues($values);
+        $this->values = $this->getTransformedValues($values);
     }
 
     /**
@@ -61,9 +61,9 @@ class Validator
                 // Create the conditions validator and determine if it passes.
                 return transform($this->map[$condition->operator], function ($class) use ($condition) {
                     return new $class(
-                        $this->getAttributeValue($condition->attribute),
+                        $this->getValueForAttribute($condition->attribute),
                         $condition->attribute,
-                        $condition->value
+                        $this->getConditionValue($condition)
                     );
                 })->passes();
             })->count() == $this->conditions->count();
@@ -82,14 +82,26 @@ class Validator
     }
 
     /**
+     * Get the conditions value.
+     *
+     * @param LdapNotifierCondition $condition
+     *
+     * @return array
+     */
+    protected function getConditionValue(LdapNotifierCondition $condition)
+    {
+        return Arr::wrap($condition->value);
+    }
+
+    /**
      * Get the attributes value.
      *
      * @param string $attribute
      *
-     * @return mixed
+     * @return array
      */
-    protected function getAttributeValue($attribute)
+    protected function getValueForAttribute($attribute)
     {
-        return Arr::get($this->value, $attribute);
+        return Arr::wrap(Arr::get($this->values, $attribute));
     }
 }

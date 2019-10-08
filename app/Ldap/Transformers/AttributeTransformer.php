@@ -2,6 +2,8 @@
 
 namespace App\Ldap\Transformers;
 
+use Illuminate\Support\Arr;
+
 class AttributeTransformer extends Transformer
 {
     /**
@@ -34,7 +36,7 @@ class AttributeTransformer extends Transformer
                 $transformer = $this->map[$attribute];
 
                 // Transform and replace the value with the transformed value.
-                $this->value[$attribute] = (new $transformer($value))->transform();
+                $this->value[$attribute] = (new $transformer(Arr::wrap($value)))->transform();
             }
         }
 

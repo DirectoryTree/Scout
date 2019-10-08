@@ -109,9 +109,9 @@ class LdapDomainRequest extends FormRequest
      */
     protected function getLdapConfiguration(array $validated)
     {
-        $validated['hosts'] = explode(',', $validated['hosts']);
-        $validated['use_ssl'] = $validated['encryption'] == 'ssl';
-        $validated['use_tls'] = $validated['encryption'] == 'tls';
+        $validated['hosts'] = explode(',', Arr::get($validated, 'hosts'));
+        $validated['use_ssl'] = Arr::get($validated, 'encryption') == 'ssl';
+        $validated['use_tls'] = Arr::get($validated, 'encryption') == 'tls';
 
         // Here we will override the configured timeout for
         // testing connectivity to the LDAP server.

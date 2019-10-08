@@ -2,8 +2,9 @@
 
 namespace App\Ldap\Conditions;
 
-use App\LdapNotifierCondition;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use App\LdapNotifierCondition;
 use App\Ldap\Transformers\AttributeTransformer;
 
 class Validator
@@ -17,7 +18,10 @@ class Validator
         LdapNotifierCondition::OPERATOR_HAS => Has::class,
         LdapNotifierCondition::OPERATOR_PAST => IsPast::class,
         LdapNotifierCondition::OPERATOR_EQUALS => Equals::class,
+        LdapNotifierCondition::OPERATOR_NOT_EQUALS => NotEquals::class,
         LdapNotifierCondition::OPERATOR_CONTAINS => Contains::class,
+        LdapNotifierCondition::OPERATOR_LESS_THAN => LessThan::class,
+        LdapNotifierCondition::OPERATOR_GREATER_THAN => GreaterThan::class,
     ];
 
     /**
@@ -38,12 +42,12 @@ class Validator
      * Constructor.
      *
      * @param Collection $conditions
-     * @param array      $value
+     * @param array      $values
      */
-    public function __construct(Collection $conditions, array $value = [])
+    public function __construct(Collection $conditions, array $values = [])
     {
         $this->conditions = $conditions;
-        $this->value = $value;
+        $this->value = $this->getTransformedValues($values);
     }
 
     /**
@@ -57,9 +61,8 @@ class Validator
                 // Create the conditions validator and determine if it passes.
                 return transform($this->map[$condition->operator], function ($class) use ($condition) {
                     return new $class(
-                        $this->getTransformedValue($condition),
+                        $this->getAttributeValue($condition->attribute),
                         $condition->attribute,
-                        $condition->operator,
                         $condition->value
                     );
                 })->passes();
@@ -67,28 +70,26 @@ class Validator
     }
 
     /**
-     * Get the transformed value.
+     * Get the transformed values.
      *
-     * @param LdapNotifierCondition $condition
+     * @param array $values
      *
-     * @return mixed
+     * @return array
      */
-    protected function getTransformedValue(LdapNotifierCondition $condition)
+    protected function getTransformedValues(array $values)
     {
-        return $this->transformChangedValue([
-            $condition->attribute => $this->value
-        ])[$condition->attribute];
+        return (new AttributeTransformer($values))->transform();
     }
 
     /**
-     * Transform the changed value for conditional checking.
+     * Get the attributes value.
      *
-     * @param array $value
+     * @param string $attribute
      *
-     * @return array|mixed
+     * @return mixed
      */
-    protected function transformChangedValue(array $value)
+    protected function getAttributeValue($attribute)
     {
-        return (new AttributeTransformer($value))->transform();
+        return Arr::get($this->value, $attribute);
     }
 }

@@ -15,5 +15,7 @@ class IsPast extends Condition
         if (($current = Arr::first($this->current)) && $current instanceof Carbon) {
             return $current->isPast();
         }
+
+        return false;
     }
 }

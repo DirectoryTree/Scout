@@ -19,33 +19,24 @@ abstract class Condition
     protected $attribute;
 
     /**
-     * The conditions operator.
-     *
-     * @var string
-     */
-    protected $operator;
-
-    /**
      * The conditions value.
      *
-     * @var array|string|null
+     * @var array
      */
-    protected $value;
+    protected $values;
 
     /**
      * Constructor.
      *
-     * @param string      $current
+     * @param array       $current
      * @param string      $attribute
-     * @param string      $operator
-     * @param string|null $value
+     * @param array|null  $values
      */
-    public function __construct($current, $attribute, $operator, $value = null)
+    public function __construct(array $current, $attribute, array $values = [])
     {
         $this->current = $current;
         $this->attribute = $attribute;
-        $this->operator = $operator;
-        $this->value = $value;
+        $this->values = $values;
     }
 
     /**

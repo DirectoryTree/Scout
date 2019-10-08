@@ -9,6 +9,12 @@ class Contains extends Condition
      */
     public function passes()
     {
-        return in_array($this->value, $this->current);
+        foreach ($this->current as $value) {
+            if (in_array($value, $this->values)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

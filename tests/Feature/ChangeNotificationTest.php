@@ -34,13 +34,9 @@ class ChangeNotificationTest extends InstalledTestCase
             'domain_id' => $domain->id,
         ]);
 
-        // Generate the change.
-        $change = factory(LdapChange::class)->create([
-            'object_id' => $object->id,
-            'attribute' => 'foo',
-            'before' => ['baz'],
-            'after' => ['bar']
-        ]);
+        // Modify the object.
+        $object->values = ['foo' => 'bar'];
+        $object->save();
 
         $this->assertDatabaseHas('notifications', [
             'notifiable_id' => $domain->id,
@@ -50,10 +46,7 @@ class ChangeNotificationTest extends InstalledTestCase
         $notification = Notification::first();
 
         $this->assertEquals($notification->data, [
-            'change_id' => $change->id,
-            'attribute' => $change->attribute,
-            'before' => $change->before,
-            'after' => $change->after,
+            'name' => $notifier->name,
         ]);
     }
 
@@ -114,13 +107,11 @@ class ChangeNotificationTest extends InstalledTestCase
             'domain_id' => $domain->id,
         ]);
 
-        // Generate the change.
-        factory(LdapChange::class)->create([
-            'object_id' => $object->id,
-            'attribute' => 'accountexpires',
-            'before' => [],
-            'after' => [Utilities::convertUnixTimeToWindowsTime(now()->subDay()->timestamp)]
-        ]);
+        $object->values = [
+            'accountexpires' => Utilities::convertUnixTimeToWindowsTime(now()->subDay()->timestamp)
+        ];
+
+        $object->save();
 
         $this->assertDatabaseHas('notifications', [
             'notifiable_id' => $domain->id,

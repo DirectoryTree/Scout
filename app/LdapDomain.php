@@ -60,7 +60,9 @@ class LdapDomain extends Model
             $domain->scans()->delete();
 
             // Delete any LDAP notifiers.
-            $domain->notifiers()->delete();
+            $domain->notifiers()->each(function (LdapNotifier $notifier) {
+                $notifier->delete();
+            });
 
             // The domain may have a large amount of objects. We
             // will chunk our results to keep memory usage low

@@ -34,21 +34,12 @@ class Installer
      */
     public function install(array $data)
     {
-        // In case our installation fails, we need to
-        // restore the stub so it can be generated
-        // once permissions have been resolved.
-        $stub = File::get($this->getEnvStubPath());
-
         try {
             $this->configureDatabase($data);
 
-            // Delete the stub.
-            File::delete($this->getEnvStubPath());
+            $this->createInstallFile();
         } catch (Exception $ex) {
             $this->clearCache();
-
-            // Restore the stub.
-            File::put($this->getEnvStubPath(), $stub);
 
             // Re-throw the exception.
             throw $ex;
@@ -80,7 +71,7 @@ class Installer
      */
     public function hasBeenSetup()
     {
-        return File::exists($this->getEnvPath()) && !File::exists($this->getEnvStubPath());
+        return File::exists($this->getEnvFilePath()) && File::exists($this->getInstallerFilePath());
     }
 
     /**
@@ -104,7 +95,7 @@ class Installer
      */
     public function prepare()
     {
-        if (File::exists($this->getEnvPath())) {
+        if (File::exists($this->getEnvFilePath())) {
             return;
         }
 
@@ -132,7 +123,7 @@ class Installer
      *
      * @return string
      */
-    public function getEnvPath()
+    public function getEnvFilePath()
     {
         return base_path('.env');
     }
@@ -142,9 +133,27 @@ class Installer
      *
      * @return string
      */
-    public function getEnvStubPath()
+    public function getEnvStubFilePath()
     {
         return base_path('.env.stub');
+    }
+
+    /**
+     * Get the installer file path.
+     *
+     * @return string
+     */
+    public function getInstallerFilePath()
+    {
+        return storage_path('app/installed');
+    }
+
+    /**
+     * Creates an install file containing the installation date.
+     */
+    protected function createInstallFile()
+    {
+        File::put($this->getInstallerFilePath(), now());
     }
 
     /**
@@ -154,7 +163,7 @@ class Installer
      */
     protected function configureDatabase(array $data)
     {
-        $contents = strtr(File::get($this->getEnvPath()), [
+        $contents = strtr(File::get($this->getEnvFilePath()), [
             '{{DB_DRIVER}}' => Arr::get($data, 'driver'),
             '{{DB_HOST}}' => Arr::get($data, 'host'),
             '{{DB_PORT}}' => Arr::get($data, 'port'),
@@ -164,7 +173,7 @@ class Installer
         ]);
 
         // Save the env configuration.
-        File::put($this->getEnvPath(), $contents);
+        File::put($this->getEnvFilePath(), $contents);
     }
 
     /**
@@ -182,6 +191,6 @@ class Installer
      */
     protected function createEnvFile()
     {
-        return File::put($this->getEnvPath(), File::get($this->getEnvStubPath()));
+        return File::put($this->getEnvFilePath(), File::get($this->getEnvStubFilePath()));
     }
 }

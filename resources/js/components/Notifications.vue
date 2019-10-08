@@ -17,7 +17,7 @@
                 <spinner></spinner>
             </div>
 
-            <div v-if="initialLoad === false && notifications.length === 0">
+            <div v-if="initialLoad === false && notifications.length === 0" class="dropdown-item">
                 You have no notifications.
             </div>
 
@@ -39,6 +39,13 @@
     export default {
         components: {Spinner},
 
+        props: {
+            url: {
+                type:String,
+                required:true,
+            }
+        },
+
         data() {
             return {
                 notifications:[],
@@ -56,9 +63,7 @@
              * Initializes the event stream.
              */
             initStream() {
-                let url = route('api.notifications.index');
-
-                let es = new EventSource(url);
+                let es = new EventSource(this.url);
 
                 es.addEventListener('message', event => {
                     let events = JSON.parse(event.data);

@@ -1,5 +1,6 @@
 import * as Ladda from 'ladda';
 import Turbolinks from 'turbolinks';
+import Notifier from './notifier';
 
 require('./bootstrap');
 
@@ -12,6 +13,8 @@ Vue.component('form-confirm', require('./components/FormConfirm.vue').default);
 Vue.component('date-picker', require('./components/Datepicker.vue').default);
 Vue.component('date-time-picker', require('./components/DateTimePicker.vue').default);
 Vue.component('input-selector', require('./components/InputSelector.vue').default);
+
+window.Notifier = new Notifier();
 
 // Construct a new Vue instance when turbolinks loads...
 $(document).on('turbolinks:load', () => {

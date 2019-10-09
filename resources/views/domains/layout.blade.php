@@ -139,7 +139,7 @@
 
                     <a
                         href="{{ route('domains.delete', $domain) }}"
-                        class="list-group-item list-group-item-action font-weight-bold"
+                        class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.delete') ? 'active' : null }}"
                     >
                         <i class="far fa-trash-alt"></i> {{ __('Delete') }}
                     </a>

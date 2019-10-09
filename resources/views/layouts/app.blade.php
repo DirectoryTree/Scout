@@ -3,6 +3,12 @@
 @section('head')
     <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
+
+    @auth
+        <script>
+            Notifier.init('{{ route('api.notifications') }}');
+        </script>
+    @endauth
 @endsection
 
 @section('body')
@@ -52,7 +58,10 @@
                                 </a>
                             </li>
                         @else
-                            <notifications url="{{ route('api.notifications') }}"></notifications>
+                            <notifications
+                                url="{{ route('api.notifications') }}"
+                                :default-notifications="{{ $notifications }}"
+                            ></notifications>
 
                             <li class="nav-item dropdown">
                                 <a id="user-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
-use App\Notification;
+use App\Notifications;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -14,7 +13,7 @@ class NotificationsController
      *
      * @var int
      */
-    protected $refreshInterval = 5;
+    protected $refreshInterval = 10;
 
     /**
      * Returns the notification event stream.
@@ -25,9 +24,11 @@ class NotificationsController
      */
     public function index(Request $request)
     {
-        return new StreamedResponse(function() use ($request) {
+        $notifications = new Notifications($request->user());
+
+        return new StreamedResponse(function() use ($notifications) {
             while(true) {
-                echo 'data: ' . $this->getNotifications($request->user()) . "\n\n";
+                echo 'data: ' . json_encode($notifications->resource()) . "\n\n";
                 ob_flush();
                 flush();
 
@@ -38,22 +39,5 @@ class NotificationsController
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);
-    }
-
-    /**
-     * Get the notifications for the user.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected function getNotifications(User $user)
-    {
-        return $user->notifications()->with('notifiable')->get()->transform(function (Notification $notification) {
-            return [
-                'url' => '#',
-                'test' => 'test',
-            ];
-        });
     }
 }

@@ -1,6 +1,12 @@
 <template>
-    <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <li class="nav-item dropdown" @click="initStream()">
+        <a
+            href="#"
+            class="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+        >
             <i class="far fa-bell"></i> {{ notifications.length }} <span class="caret"></span>
         </a>
 
@@ -9,13 +15,9 @@
 
             <notification v-if="notification" :message="notification.message" :level="notification.level"></notification>
 
-            <a href="#" class="dropdown-item" v-for="notification in notifications" v-html="notification">
+            <a href="#" class="dropdown-item" v-for="notification in notifications">
                 Test
             </a>
-
-            <div class="dropdown-item text-center" v-if="initialLoad">
-                <spinner></spinner>
-            </div>
 
             <div v-if="initialLoad === false && notifications.length === 0" class="dropdown-item">
                 You have no notifications.
@@ -32,9 +34,6 @@
 
 <script>
     import Spinner from 'vue-simple-spinner';
-    import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
-
-    const EventSource = NativeEventSource || EventSourcePolyfill;
 
     export default {
         components: {Spinner},
@@ -43,18 +42,22 @@
             url: {
                 type:String,
                 required:true,
+            },
+            defaultNotifications: {
+                type:Array,
+                default:[],
             }
         },
 
         data() {
             return {
-                notifications:[],
+                notifications:this.defaultNotifications,
                 initialLoad:true,
                 notification:false,
             };
         },
 
-        created() {
+        mounted() {
             this.initStream();
         },
 
@@ -63,31 +66,20 @@
              * Initializes the event stream.
              */
             initStream() {
-                let es = new EventSource(this.url);
-
-                es.addEventListener('message', event => {
-                    let events = JSON.parse(event.data);
+                window.Notifier.onMessage((notifications) => {
+                    this.notifications = notifications;
 
                     // Since our beginning events won't be loaded yet, we don't
                     // want to display a notification of new events being
                     // added until this actually occurs.
                     if (this.initialLoad === false && this.notifications.length > 0) {
-                        if (this.notifications.length < events.length) {
+                        if (this.notifications.length < notifications.length) {
                             this.showNotification('New notification!', 'info');
                         }
                     }
 
-                    this.notifications = events;
-
                     this.initialLoad = false;
-                }, false);
-
-                es.addEventListener('error', event => {
-                    if (event.readyState === EventSource.CLOSED) {
-                        console.log('EventSource was closed');
-                        console.log(EventSource);
-                    }
-                }, false);
+                });
             },
 
             /**

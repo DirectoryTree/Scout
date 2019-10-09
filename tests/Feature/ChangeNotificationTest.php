@@ -6,7 +6,6 @@ use App\LdapChange;
 use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
-use App\Notification;
 use LdapRecord\Utilities;
 use App\LdapNotifierCondition;
 
@@ -41,12 +40,6 @@ class ChangeNotificationTest extends InstalledTestCase
         $this->assertDatabaseHas('notifications', [
             'notifiable_id' => $domain->id,
             'notifiable_type' => get_class($domain),
-        ]);
-
-        $notification = Notification::first();
-
-        $this->assertEquals($notification->data, [
-            'name' => $notifier->name,
         ]);
     }
 

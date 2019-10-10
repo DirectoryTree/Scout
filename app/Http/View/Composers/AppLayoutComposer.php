@@ -21,7 +21,7 @@ class AppLayoutComposer
 
         $view->with([
             'counts' => ['domains' => LdapDomain::count()],
-            'notifications' => json_encode($notifications->resource()),
+            'notifications' => $notifications->get(),
         ]);
     }
 }

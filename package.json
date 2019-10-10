@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^5.1",
@@ -22,6 +23,7 @@
         "resolve-url-loader": "2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "7.*",
+        "stimulus": "^1.1.1",
         "sweetalert2": "^8.17.1",
         "turbolinks": "^5.2.0",
         "vue": "^2.5.17",

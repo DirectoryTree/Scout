@@ -13,7 +13,7 @@ class NotificationsController
      *
      * @var int
      */
-    protected $refreshInterval = 10;
+    protected $refreshInterval = 15;
 
     /**
      * Returns the notification event stream.
@@ -24,11 +24,13 @@ class NotificationsController
      */
     public function index(Request $request)
     {
-        $notifications = new Notifications($request->user());
-
-        return new StreamedResponse(function() use ($notifications) {
+        return new StreamedResponse(function() use ($request) {
             while(true) {
-                echo 'data: ' . json_encode($notifications->resource()) . "\n\n";
+                $notifications = (new Notifications($request->user()))->get()->transform(function ($notification) {
+                    return view('notifications.notification', compact('notification'))->render();
+                });
+
+                echo 'data: ' . $notifications . "\n\n";
                 ob_flush();
                 flush();
 

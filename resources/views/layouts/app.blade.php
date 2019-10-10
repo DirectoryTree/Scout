@@ -3,16 +3,10 @@
 @section('head')
     <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
-
-    @auth
-        <script>
-            Notifier.init('{{ route('api.notifications') }}');
-        </script>
-    @endauth
 @endsection
 
 @section('body')
-    <div id="app" v-cloak>
+    <div id="app">
         @include('layouts.flash')
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
@@ -58,10 +52,7 @@
                                 </a>
                             </li>
                         @else
-                            <notifications
-                                url="{{ route('api.notifications') }}"
-                                :default-notifications="{{ $notifications }}"
-                            ></notifications>
+                            @include('layouts.notifications')
 
                             <li class="nav-item dropdown">
                                 <a id="user-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

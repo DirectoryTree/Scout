@@ -23,11 +23,13 @@
         <p>Once you delete, there is no going back. Please be certain.</p>
 
         @slot('footer')
-            <form-confirm
+            <form
                 method="post"
                 action="{{ route('domains.destroy', $domain) }}"
-                title="Delete domain?"
-                message="This action cannot be undone. All domain data will be deleted."
+                data-controller="form-confirmation"
+                data-action="submit->form-confirmation#confirm"
+                data-form-confirmation-title="Delete domain?"
+                data-form-confirmation-message="This action cannot be undone. All domain data will be deleted."
             >
                 @csrf
                 @method('delete')
@@ -41,7 +43,7 @@
                         <i class="far fa-trash-alt"></i> I'm sure, delete domain
                     </button>
                 </div>
-            </form-confirm>
+            </form>
         @endslot
     @endcomponent
 @endsection

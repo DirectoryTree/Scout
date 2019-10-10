@@ -2,7 +2,7 @@
 
 namespace App\Http\View\Composers;
 
-use App\LdapNotifier;
+use App\LdapNotifierCondition;
 use Illuminate\Contracts\View\View;
 
 class NotifierFormComposer
@@ -17,8 +17,8 @@ class NotifierFormComposer
     public function compose(View $view)
     {
         $view->with([
-            'types' => LdapNotifier::types(),
-            'operators' => LdapNotifier::operators(),
+            'types' => LdapNotifierCondition::types(),
+            'operators' => LdapNotifierCondition::operators(),
         ]);
     }
 }

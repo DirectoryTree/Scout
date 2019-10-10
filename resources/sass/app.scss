@@ -17,11 +17,6 @@
 // Ladda buttons
 @import "~ladda/dist/ladda-themeless.min.css";
 
-// Hide vue elements until loaded.
-[v-cloak] {
-    display:none;
-}
-
 hr {
     border-top:1px dotted rgba(0, 0, 0, 0.1);
 }

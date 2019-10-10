@@ -1,14 +1,14 @@
-<li class="nav-item dropdown" data-controller="notifications" data-notifications-url="{{ route('api.notifications') }}">
+<li class="nav-item dropdown d-flex align-items-center" data-controller="notifications" data-notifications-url="{{ route('api.notifications') }}">
     <a
         href="#"
-        class="nav-link dropdown-toggle"
+        class="nav-link dropdown-toggle d-flex align-items-center"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
     >
-        <i class="far fa-bell"></i>
-        <span data-target="notifications.count">0</span>
-        <span class="caret"></span>
+        <i class="far fa-bell pr-1"></i>
+        <span data-target="notifications.count">{{ $notifications->count() }}</span>
+        <span class="pl-1 caret"></span>
     </a>
 
     <div class="dropdown-menu dropdown-menu-right notifications">

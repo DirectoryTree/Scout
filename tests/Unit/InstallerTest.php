@@ -3,12 +3,12 @@
 namespace Tests\Unit;
 
 use Exception;
-use Carbon\Carbon;
+use Mockery as m;
 use Tests\TestCase;
 use App\Installer\Installer;
+use Spatie\Valuestore\Valuestore;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -25,17 +25,20 @@ class InstallerTest extends TestCase
         $this->assertFalse($installer->hasRanMigrations());
     }
 
-    public function test_uses_cache()
+    public function test_uses_store()
     {
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        Cache::shouldReceive('get')->withArgs(['scout.installed', false])->once()->andReturnFalse();
-        Cache::shouldReceive('forever')->withArgs(['scout.installed', false])->once();
+        $store = m::mock(Valuestore::class);
+        $store->shouldReceive('get')->withArgs(['scout.installed', false])->once()->andReturnFalse();
+        $store->shouldReceive('put')->withArgs(['scout.installed', false])->once();
+
+        $installer->setStore($store);
 
         $this->assertFalse($installer->installed());
 
-        Cache::shouldReceive('get')->withArgs(['scout.installed', false])->once()->andReturnTrue();
+        $store->shouldReceive('get')->withArgs(['scout.installed', false])->once()->andReturnTrue();
 
         $this->assertTrue($installer->installed());
     }
@@ -90,10 +93,6 @@ class InstallerTest extends TestCase
             ]);
         })->once();
 
-        File::shouldReceive('put')->withArgs(function ($path, $contents) use ($installer) {
-            return $path == $installer->getInstallerFilePath() && $contents instanceof Carbon;
-        })->once();
-
         $installer->install([
             'driver' => 'mysql',
             'database' => 'scout',
@@ -104,7 +103,7 @@ class InstallerTest extends TestCase
         ]);
     }
 
-    public function test_install_failure_restores_env_stub_and_clears_cache()
+    public function test_install_failure_rethrows_exception()
     {
         /** @var Installer $installer */
         $installer = app(Installer::class);
@@ -113,8 +112,6 @@ class InstallerTest extends TestCase
 
         File::shouldReceive('get')->withArgs([$installer->getEnvFilePath()])->once()->andReturn($stub);
         File::shouldReceive('put')->once()->andThrow(new Exception());
-
-        Artisan::shouldReceive('call')->withArgs(['cache:clear'])->once();
 
         $this->expectException(Exception::class);
 

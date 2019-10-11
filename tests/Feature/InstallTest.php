@@ -6,6 +6,7 @@ use Exception;
 use Mockery as m;
 use Tests\TestCase;
 use App\Installer\Installer;
+use Spatie\Valuestore\Valuestore;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
@@ -13,14 +14,21 @@ class InstallTest extends TestCase
 {
     public function test_visiting_site_redirects_to_installer()
     {
+        $installer = m::mock(Installer::class);
+        $installer->shouldReceive('installed')->andReturnFalse();
+
+        $this->app->instance(Installer::class, $installer);
+
         $this->get('/')->assertRedirect(route('install.index'));
     }
 
     public function test_setup_page_works()
     {
         $installer = m::mock(Installer::class);
-        $installer->makePartial();
-        $installer->shouldReceive('hasBeenSetup')->andReturnFalse();
+        $installer->shouldReceive('installed')->twice()->andReturnFalse();
+        $installer->shouldReceive('prepare')->once();
+        $installer->shouldReceive('hasBeenSetup')->once()->andReturnFalse();
+        $installer->shouldReceive('wasRecentlyPrepared')->once()->andReturnFalse();
 
         $this->app->instance(Installer::class, $installer);
 
@@ -31,6 +39,13 @@ class InstallTest extends TestCase
 
     public function test_setting_up_requires_values()
     {
+        $installer = m::mock(Installer::class);
+        $installer->shouldReceive('installed')->twice()->andReturnFalse();
+        $installer->shouldReceive('prepare')->once();
+        $installer->shouldReceive('wasRecentlyPrepared')->once()->andReturnFalse();
+
+        $this->app->instance(Installer::class, $installer);
+
         $this->post(route('install.store'))
             ->assertRedirect()
             ->assertSessionHasErrors([
@@ -40,6 +55,13 @@ class InstallTest extends TestCase
 
     public function test_setting_up_requires_database_connection()
     {
+        $installer = m::mock(Installer::class);
+        $installer->shouldReceive('installed')->twice()->andReturnFalse();
+        $installer->shouldReceive('prepare')->once();
+        $installer->shouldReceive('wasRecentlyPrepared')->once()->andReturnFalse();
+
+        $this->app->instance(Installer::class, $installer);
+
         $data = [
             'driver' => 'mysql',
             'host' => 'localhost',
@@ -77,6 +99,11 @@ class InstallTest extends TestCase
     {
         $installer = m::mock(Installer::class);
         $installer->makePartial();
+
+        $store = m::mock(Valuestore::class);
+        $store->shouldReceive('get')->withArgs(['scout.installed', false])->twice()->andReturnFalse();
+
+        $installer->setStore($store);
         $installer->shouldReceive('hasBeenSetup')->andReturnTrue();
         $installer->shouldReceive('hasRanMigrations')->andReturnFalse();
 
@@ -92,6 +119,11 @@ class InstallTest extends TestCase
     {
         $installer = m::mock(Installer::class);
         $installer->makePartial();
+
+        $store = m::mock(Valuestore::class);
+        $store->shouldReceive('get')->withArgs(['scout.installed', false])->twice()->andReturnFalse();
+
+        $installer->setStore($store);
         $installer->shouldReceive('hasBeenSetup')->andReturnTrue();
         $installer->shouldReceive('hasRanMigrations')->andReturnTrue();
 

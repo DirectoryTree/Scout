@@ -97,15 +97,12 @@ class InstallTest extends TestCase
 
     public function test_migrations_are_ran_setting_up_database()
     {
-        $installer = m::mock(Installer::class);
-        $installer->makePartial();
+        $installer = new Installer();
 
         $store = m::mock(Valuestore::class);
         $store->shouldReceive('get')->withArgs(['scout.installed', false])->twice()->andReturnFalse();
 
         $installer->setStore($store);
-        $installer->shouldReceive('hasBeenSetup')->andReturnTrue();
-        $installer->shouldReceive('hasRanMigrations')->andReturnFalse();
 
         $this->app->instance(Installer::class, $installer);
 

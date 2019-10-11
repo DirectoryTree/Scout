@@ -6,6 +6,7 @@ use Exception;
 use Mockery as m;
 use Tests\TestCase;
 use App\Installer\Installer;
+use App\Installer\Configuration;
 use Spatie\Valuestore\Valuestore;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -19,7 +20,7 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
+        File::shouldReceive('exists')->withArgs([Configuration::getEnvFilePath()])->once()->andReturnFalse();
 
         $this->assertFalse($installer->hasBeenSetup());
         $this->assertFalse($installer->hasRanMigrations());
@@ -48,9 +49,9 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubFilePath()])->once()->andReturn('content');
-        File::shouldReceive('put')->withArgs([$installer->getEnvFilePath(), 'content'])->once()->andReturnTrue();
+        File::shouldReceive('exists')->withArgs([Configuration::getEnvFilePath()])->once()->andReturnFalse();
+        File::shouldReceive('get')->withArgs([Configuration::getEnvStubFilePath()])->once()->andReturn('content');
+        File::shouldReceive('put')->withArgs([Configuration::getEnvFilePath(), 'content'])->once()->andReturnTrue();
 
         Artisan::shouldReceive('call')->withArgs(['key:generate'])->once();
 
@@ -64,9 +65,9 @@ class InstallerTest extends TestCase
         /** @var Installer $installer */
         $installer = app(Installer::class);
 
-        File::shouldReceive('exists')->withArgs([$installer->getEnvFilePath()])->once()->andReturnFalse();
-        File::shouldReceive('get')->withArgs([$installer->getEnvStubFilePath()])->once()->andReturn('content');
-        File::shouldReceive('put')->withArgs([$installer->getEnvFilePath(), 'content'])->once()->andReturnFalse();
+        File::shouldReceive('exists')->withArgs([Configuration::getEnvFilePath()])->once()->andReturnFalse();
+        File::shouldReceive('get')->withArgs([Configuration::getEnvStubFilePath()])->once()->andReturn('content');
+        File::shouldReceive('put')->withArgs([Configuration::getEnvFilePath(), 'content'])->once()->andReturnFalse();
 
         $this->expectException(HttpException::class);
 
@@ -80,7 +81,7 @@ class InstallerTest extends TestCase
 
         $stub = file_get_contents(base_path('tests/stubs/.env.stub'));
 
-        File::shouldReceive('get')->withArgs([$installer->getEnvFilePath()])->once()->andReturn($stub);
+        File::shouldReceive('get')->withArgs([Configuration::getEnvFilePath()])->once()->andReturn($stub);
         File::shouldReceive('put')->withArgs(function ($path, $contents) {
             return Str::containsAll($contents, [
                 'DB_CONNECTION="mysql"',
@@ -110,7 +111,7 @@ class InstallerTest extends TestCase
 
         $stub = file_get_contents(base_path('tests/stubs/.env.stub'));
 
-        File::shouldReceive('get')->withArgs([$installer->getEnvFilePath()])->once()->andReturn($stub);
+        File::shouldReceive('get')->withArgs([Configuration::getEnvFilePath()])->once()->andReturn($stub);
         File::shouldReceive('put')->once()->andThrow(new Exception());
 
         $this->expectException(Exception::class);

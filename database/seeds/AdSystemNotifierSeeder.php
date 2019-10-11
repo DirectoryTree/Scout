@@ -15,6 +15,7 @@ class AdSystemNotifierSeeder extends Seeder
      */
     protected $notifiers = [
         [
+            'notifiable_name' => 'Account Expired',
             'name' => 'Notify me when accounts expire',
             'conditions' => [
                 [
@@ -23,7 +24,29 @@ class AdSystemNotifierSeeder extends Seeder
                     'attribute' => 'accountexpires',
                 ]
             ]
-        ]
+        ],
+        [
+            'notifiable_name' => 'Group Members Changed',
+            'name' => 'Notify me when user group memberships change',
+            'conditions' => [
+                [
+                    'type' => LdapNotifierCondition::TYPE_STRING,
+                    'operator' => LdapNotifierCondition::OPERATOR_NOT_EQUALS,
+                    'attribute' => 'member',
+                ]
+            ],
+        ],
+        [
+            'notifiable_name' => 'User Password Changed',
+            'name' => 'Notify me when user passwords are changed',
+            'conditions' => [
+                [
+                    'type' => LdapNotifierCondition::TYPE_STRING,
+                    'operator' => LdapNotifierCondition::OPERATOR_NOT_EQUALS,
+                    'attribute' => 'pwdlastset',
+                ]
+            ],
+        ],
     ];
 
     /**
@@ -39,11 +62,12 @@ class AdSystemNotifierSeeder extends Seeder
         LdapDomain::where('type', '=', LdapDomain::TYPE_ACTIVE_DIRECTORY)->get()->each(function (LdapDomain $domain) {
             foreach ($this->notifiers as $data) {
                 /** @var LdapNotifier $notifier */
-                $notifier = tap(LdapNotifier::firstOrNew(['name' => $data['name']]), function (LdapNotifier $notifier) use ($domain) {
-                    $notifier->notifiable()->associate($domain);
-                    $notifier->system = true;
-                    $notifier->save();
-                });
+                $notifier = LdapNotifier::firstOrNew(['notifiable_name' => $data['notifiable_name']]);
+
+                $notifier->notifiable()->associate($domain);
+                $notifier->name = $data['name'];
+                $notifier->system = true;
+                $notifier->save();
 
                 foreach ($data['conditions'] as $condition) {
                     $notifier->conditions()->firstOrCreate([

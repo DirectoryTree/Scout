@@ -14,6 +14,7 @@ $factory->define(LdapNotifier::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'name' => 'Notifier',
+        'notifiable_name' => 'Short Name',
     ];
 });
 

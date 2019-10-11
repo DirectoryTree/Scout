@@ -19,6 +19,7 @@ class CreateLdapDomainsTable extends Migration
             $table->timestamps();
             $table->timestamp('attempted_at')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->uuid('uuid')->unique();
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->string('username');

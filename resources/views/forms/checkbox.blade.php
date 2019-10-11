@@ -1,5 +1,6 @@
 <div class="custom-control custom-checkbox">
     <input
+        id="{{ $name }}"
         name="{{ $name }}"
         value="{{ $value }}"
         type="checkbox"
@@ -9,5 +10,5 @@
            ], $attributes))
        !!}
     >
-    {{ Form::scoutLabel($name, $label, ['class' => 'custom-control-label', 'for' => $name]) }}
+    {{ Form::scoutLabel($name, $label, ['for' => $name, 'class' => 'custom-control-label']) }}
 </div>

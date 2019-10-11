@@ -41,6 +41,10 @@ class FormServiceProvider extends ServiceProvider
             return FormFacade::scoutInput('email', $name, $value, $attributes);
         });
 
+        FormFacade::macro('scoutSearch', function ($name, $value = '', $attributes = []) {
+            return FormFacade::scoutInput('search', $name, $value, $attributes);
+        });
+
         FormFacade::macro('scoutCheckbox', function ($name, $value = '', $checked = false, $attributes = []) {
             $label = Arr::pull($attributes, 'label');
 

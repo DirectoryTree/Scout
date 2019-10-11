@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class LdapNotifier extends Model
 {
@@ -77,5 +78,29 @@ class LdapNotifier extends Model
     public function notifiable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get system notifiers.
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeSystem(Builder $query)
+    {
+        return $query->where('system', '=', true);
+    }
+
+    /**
+     * Get custom notifiers.
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeCustom(Builder $query)
+    {
+        return $query->where('system', '=', false);
     }
 }

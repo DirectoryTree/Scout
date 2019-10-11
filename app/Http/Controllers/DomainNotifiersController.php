@@ -19,10 +19,13 @@ class DomainNotifiersController
     {
         $notifiers = $domain->notifiers()
             ->with('conditions')
+            ->custom()
             ->latest()
             ->paginate(25);
 
-        return view('domains.notifiers.index', compact('domain', 'notifiers'));
+        $systemNotifiers = $domain->notifiers()->system()->get();
+
+        return view('domains.notifiers.index', compact('domain', 'notifiers', 'systemNotifiers'));
     }
 
     /**

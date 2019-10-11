@@ -19,6 +19,7 @@ class CreateLdapNotifiersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->morphs('notifiable');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->string('type')->default('changes');
             $table->boolean('system')->default(false);
             $table->boolean('enabled')->default(false);

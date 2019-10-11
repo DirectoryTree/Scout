@@ -9,11 +9,13 @@
                 <h5 class="mb-0">Domain Notifiers</h5>
             </div>
 
-            <div class="list-group-item">
-                <div class="alert alert-primary">
-
+            @forelse($systemNotifiers as $notifier)
+                <div class="list-group-item">
+                    {{ $notifier->name }} {{ $notifier->enabled }}
                 </div>
-            </div>
+            @empty
+
+            @endforelse
         </div>
     @endcomponent
 
@@ -57,7 +59,7 @@
                 </div>
             @empty
                 <div class="list-group-item text-muted text-center">
-                    There are no domain notifiers to list.
+                    No custom domain notifiers have been created yet.
                 </div>
             @endforelse
         </div>

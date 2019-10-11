@@ -1,56 +1,47 @@
 <div class="form-group">
-    @component('components.form.select', [
-        'label' =>  __('Driver'),
-        'name' => 'driver',
-        'options' => $databases
-    ])
-    @endcomponent
+    {{ Form::scoutLabel('driver', __('Driver')) }}
+
+    {{ Form::scoutSelect('driver', $databases) }}
+
+    {{ Form::scoutError('driver') }}
 </div>
 
 <div class="form-group">
-    @component('components.form.input', [
-       'label' =>  __('Host'),
-       'name' => 'host',
-       'placeholder' => '127.0.0.1'
-   ])
-    @endcomponent
+    {{ Form::scoutLabel('host', __('Host')) }}
+
+    {{ Form::scoutText('host', null, ['placeholder' => '127.0.0.1']) }}
+
+    {{ Form::scoutError('host') }}
 </div>
 
 <div class="form-group">
-    @component('components.form.input', [
-       'label' =>  __('Port'),
-       'name' => 'port',
-       'default' => '3306',
-       'placeholder' => '3306'
-   ])
-    @endcomponent
+    {{ Form::scoutLabel('port', __('Port')) }}
+
+    {{ Form::scoutText('port', 3306, ['placeholder' => '3306']) }}
+
+    {{ Form::scoutError('port') }}
 </div>
 
 <div class="form-group">
-    @component('components.form.input', [
-       'label' =>  __('Database'),
-       'name' => 'database',
-       'placeholder' => 'scout'
-   ])
-    @endcomponent
+    {{ Form::scoutLabel('database', __('Database')) }}
+
+    {{ Form::scoutText('database', null, ['placeholder' => 'scout']) }}
+
+    {{ Form::scoutError('database') }}
 </div>
 
 <div class="form-group">
-    @component('components.form.input', [
-       'label' =>  __('Username'),
-       'name' => 'username',
-       'default' => 'root',
-       'placeholder' => 'Username'
-   ])
-    @endcomponent
+    {{ Form::scoutLabel('username', __('Username')) }}
+
+    {{ Form::scoutText('username', null, ['placeholder' => 'Username']) }}
+
+    {{ Form::scoutError('username') }}
 </div>
 
 <div class="form-group">
-    @component('components.form.input', [
-       'label' =>  __('Password'),
-       'type' => 'password',
-       'name' => 'password',
-       'placeholder' => 'Password'
-   ])
-    @endcomponent
+    {{ Form::scoutLabel('password', __('Password')) }}
+
+    {{ Form::scoutPassword('password', ['placeholder' => 'Password']) }}
+
+    {{ Form::scoutError('password') }}
 </div>

@@ -23,34 +23,28 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="email" class="font-weight-bold">{{ __('Email Address') }}</label>
+                            {{ Form::scoutLabel('email', __('Email Address')) }}
 
-                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                            {{ Form::scoutText('email', null, ['required', 'autofocus']) }}
 
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            {{ Form::scoutError('email') }}
                         </div>
 
                         <div class="form-group">
-                            <label for="password" class="font-weight-bold">{{ __('Password') }}</label>
+                            {{ Form::scoutLabel('password', __('Password')) }}
 
-                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            {{ Form::scoutPassword('password', ['required']) }}
 
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            {{ Form::scoutError('password') }}
                         </div>
 
                         <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input name="remember" type="checkbox" class="custom-control-input" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="remember">{{ __('Keep me logged in') }}</label>
-                            </div>
+                            {{
+                                Form::scoutCheckbox('remember', true, old('remember') != null, [
+                                    'id' => 'remember',
+                                    'label' => __('Keep me logged in'),
+                                ])
+                            }}
                         </div>
 
                         <div class="form-group {{ Route::has('password.request') ? null : 'mb-0' }}">

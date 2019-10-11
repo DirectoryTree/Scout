@@ -10,8 +10,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "ext-ldap": "*",
         "ext-json": "*",
+        "ext-ldap": "*",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "directorytree/ldaprecord": "dev-master",
         "fideloper/proxy": "^4.0",
@@ -19,8 +19,9 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.0",
+        "laravelcollective/html": "^6.0",
         "spatie/laravel-activitylog": "^3.8",
-        "tightenco/ziggy": "^0.8.0"
+        "spatie/valuestore": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

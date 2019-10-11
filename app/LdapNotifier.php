@@ -8,15 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 class LdapNotifier extends Model
 {
     /**
-     * The notifier types.
-     *
-     * When the notifier should be executed (on changes, attributes, deletes).
-     */
-    const TYPE_ATTRIBUTES = 'attributes';
-    const TYPE_CHANGES = 'changes';
-    const TYPE_DELETES = 'deletes';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -24,6 +15,8 @@ class LdapNotifier extends Model
     protected $fillable = [
         'name',
         'system',
+        'enabled',
+        'notifiable_name',
     ];
 
     /**
@@ -78,6 +71,18 @@ class LdapNotifier extends Model
     public function notifiable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get enabled notifiers.
+     *
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeEnabled(Builder $query)
+    {
+        return $query->where('enabled', '=', true);
     }
 
     /**

@@ -1,4 +1,4 @@
-<div class="custom-control custom-checkbox">
+<div class="custom-control custom-{{ $type }}">
     <input
         id="{{ $name }}"
         name="{{ $name }}"

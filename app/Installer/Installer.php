@@ -3,11 +3,8 @@
 namespace App\Installer;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Artisan;
 use Spatie\Valuestore\Valuestore;
+use Illuminate\Support\Facades\DB;
 
 class Installer
 {
@@ -26,6 +23,13 @@ class Installer
     protected $store;
 
     /**
+     * The configuration installer instance.
+     *
+     * @var Configuration
+     */
+    protected $config;
+
+    /**
      * The installation key.
      *
      * @var string
@@ -38,6 +42,7 @@ class Installer
     public function __construct()
     {
         $this->store = Valuestore::make($this->getInstallerFilePath());
+        $this->config = new Configuration($this->store);
     }
 
     /**
@@ -60,7 +65,7 @@ class Installer
     public function install(array $data)
     {
         try {
-            $this->configureDatabase($data);
+            $this->config->update($data);
         } catch (Exception $ex) {
             // Re-throw the exception.
             throw $ex;
@@ -96,7 +101,7 @@ class Installer
      */
     public function hasBeenSetup()
     {
-        return File::exists($this->getEnvFilePath());
+        return $this->config->hasBeenCreated() && $this->config->hasBeenUpdated();
     }
 
     /**
@@ -120,17 +125,9 @@ class Installer
      */
     public function prepare()
     {
-        if (File::exists($this->getEnvFilePath())) {
-            return;
-        }
+        $this->config->create();
 
-        if (!$this->createEnvFile()) {
-            abort(500, 'Unable to create application .env file.');
-        }
-
-        Artisan::call('key:generate');
-
-        $this->initialPreparation = true;
+        $this->initialPreparation = $this->config->wasRecentlyCreated;
     }
 
     /**
@@ -144,62 +141,12 @@ class Installer
     }
 
     /**
-     * The .env file path.
-     *
-     * @return string
-     */
-    public function getEnvFilePath()
-    {
-        return base_path('.env');
-    }
-
-    /**
-     * The .env stub file path.
-     *
-     * @return string
-     */
-    public function getEnvStubFilePath()
-    {
-        return base_path('.env.stub');
-    }
-
-    /**
      * Get the installer file path.
      *
      * @return string
      */
     public function getInstallerFilePath()
     {
-        return storage_path('app/installed');
-    }
-
-    /**
-     * Configure the application .env file with the given data.
-     *
-     * @param array $data
-     */
-    protected function configureDatabase(array $data)
-    {
-        $contents = strtr(File::get($this->getEnvFilePath()), [
-            '{{DB_DRIVER}}' => Arr::get($data, 'driver'),
-            '{{DB_HOST}}' => Arr::get($data, 'host'),
-            '{{DB_PORT}}' => Arr::get($data, 'port'),
-            '{{DB_DATABASE}}' => Arr::get($data, 'database'),
-            '{{DB_USERNAME}}' => Arr::get($data, 'username'),
-            '{{DB_PASSWORD}}' => Arr::get($data, 'password'),
-        ]);
-
-        // Save the env configuration.
-        File::put($this->getEnvFilePath(), $contents);
-    }
-
-    /**
-     * Create the application .env file.
-     *
-     * @return bool
-     */
-    protected function createEnvFile()
-    {
-        return File::put($this->getEnvFilePath(), File::get($this->getEnvStubFilePath()));
+        return storage_path('app/installer');
     }
 }

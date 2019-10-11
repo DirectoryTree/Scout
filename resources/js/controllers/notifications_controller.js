@@ -4,7 +4,7 @@ import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
 const EventSource = NativeEventSource || EventSourcePolyfill;
 
 export default class extends Controller {
-    static targets = ['count', 'notification', 'list'];
+    static targets = ['count', 'notification', 'list', 'empty'];
 
     eventSource = null;
     eventSourceTimeout = null;
@@ -70,8 +70,12 @@ export default class extends Controller {
 
         if (count > 0) {
             this.countTarget.classList = ['badge badge-primary'];
+
+            this.emptyTarget.classList.add('d-none');
         } else {
             this.countTarget.classList = ['badge badge-secondary'];
+
+            this.emptyTarget.classList.remove('d-none');
         }
 
         // Set the total number of notifications.

@@ -20,6 +20,10 @@
             @endforeach
         </div>
 
+        <div class="dropdown-item" data-target="notifications.empty">
+            You have no notifications.
+        </div>
+
         <div class="dropdown-divider"></div>
 
         <div class="p-2 px-3">

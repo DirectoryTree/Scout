@@ -41,7 +41,7 @@ class LdapObjectObserver
      */
     protected function getNotifiersForAttributes(array $attributes)
     {
-        return LdapNotifier::query()->whereHas('conditions', function ($query) use ($attributes) {
+        return LdapNotifier::enabled()->whereHas('conditions', function ($query) use ($attributes) {
             return $query->whereIn('attribute', $attributes);
         })->with('conditions')->get();
     }

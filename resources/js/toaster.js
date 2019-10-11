@@ -4,7 +4,7 @@ export default class {
     static fire(type, title, message) {
         Swal.fire({
             toast: true,
-            position: 'top-end',
+            position: 'top',
             showConfirmButton: false,
             timer: 3000,
             type: type,

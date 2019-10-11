@@ -54,7 +54,9 @@ class LdapNotification extends Notification
     public function toArray($notifiable)
     {
         return [
+            'on' => $this->object->name,
             'name' => $this->notifier->name,
+            'notifiable_name' => $this->notifier->notifiable_name,
         ];
     }
 }

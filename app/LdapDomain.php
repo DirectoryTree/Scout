@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -57,7 +57,7 @@ class LdapDomain extends Model
         parent::boot();
 
         static::creating(function (LdapDomain $domain) {
-            $domain->uuid = Uuid::uuid4();
+            $domain->token = Str::random(40);
         });
 
         static::deleting(function(LdapDomain $domain) {

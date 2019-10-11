@@ -11,7 +11,7 @@ $factory->define(LdapDomain::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(User::class)->create()->id;
         },
-        'uuid' => $faker->uuid,
+        'token' => $faker->asciify(str_repeat('*', 40)),
         'name' => $faker->domainName,
         'slug' => $faker->slug,
         'username' => $faker->userName,

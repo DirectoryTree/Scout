@@ -12,11 +12,15 @@
             @forelse($systemNotifiers as $notifier)
                 <div class="list-group-item">
                     {{
-                          Form::scoutCheckbox('enabled', true, $notifier->enabled, [
-                              'type' => 'switch',
-                              'label' => $notifier->name
-                          ])
-                      }}
+                        Form::scoutCheckbox('enabled', true, $notifier->enabled, [
+                            'id' => "notifier_$notifier->id",
+                            'type' => 'switch',
+                            'label' => $notifier->name,
+                            'data-controller' => 'toggle',
+                            'data-action' => 'click->toggle#send',
+                            'data-toggle-url' => route('api.notifier.toggle', $notifier)
+                        ])
+                    }}
                 </div>
             @empty
 

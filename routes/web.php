@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
 
+        Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');
+
         Route::get('notifications', 'NotificationsController@index')->name('notifications');
 
     });

@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
+use Spatie\Valuestore\Valuestore;
 
 class Installer
 {
@@ -19,11 +19,36 @@ class Installer
     public $initialPreparation = false;
 
     /**
-     * The installation cache key.
+     * The installer value store.
+     *
+     * @var Valuestore
+     */
+    protected $store;
+
+    /**
+     * The installation key.
      *
      * @var string
      */
     protected $key = 'scout.installed';
+
+    /**
+     * Create a new installer instance.
+     */
+    public function __construct()
+    {
+        $this->store = Valuestore::make($this->getInstallerFilePath());
+    }
+
+    /**
+     * Set the installer value store.
+     *
+     * @param Valuestore $store
+     */
+    public function setStore(Valuestore $store)
+    {
+        $this->store = $store;
+    }
 
     /**
      * Perform the install.
@@ -36,11 +61,7 @@ class Installer
     {
         try {
             $this->configureDatabase($data);
-
-            $this->createInstallFile();
         } catch (Exception $ex) {
-            $this->clearCache();
-
             // Re-throw the exception.
             throw $ex;
         }
@@ -53,13 +74,17 @@ class Installer
      */
     public function installed()
     {
-        if (Cache::get($this->key, false)) {
+        if ($this->store->get($this->key, false)) {
             return true;
         }
 
         $installed = $this->hasBeenSetup() && $this->hasRanMigrations();
 
-        Cache::forever($this->key, $installed);
+        try {
+            $this->store->put($this->key, $installed);
+        } catch (Exception $ex) {
+            // File permission error.
+        }
 
         return $installed;
     }
@@ -71,7 +96,7 @@ class Installer
      */
     public function hasBeenSetup()
     {
-        return File::exists($this->getEnvFilePath()) && File::exists($this->getInstallerFilePath());
+        return File::exists($this->getEnvFilePath());
     }
 
     /**
@@ -149,14 +174,6 @@ class Installer
     }
 
     /**
-     * Creates an install file containing the installation date.
-     */
-    protected function createInstallFile()
-    {
-        File::put($this->getInstallerFilePath(), now());
-    }
-
-    /**
      * Configure the application .env file with the given data.
      *
      * @param array $data
@@ -174,14 +191,6 @@ class Installer
 
         // Save the env configuration.
         File::put($this->getEnvFilePath(), $contents);
-    }
-
-    /**
-     * Clear the application cache.
-     */
-    protected function clearCache()
-    {
-        Artisan::call('cache:clear');
     }
 
     /**

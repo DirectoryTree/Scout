@@ -64,6 +64,16 @@ class LdapNotifier extends Model
     }
 
     /**
+     * The hasMany logs relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(LdapNotifierLog::class, 'notifier_id');
+    }
+
+    /**
      * The owning notifiable models relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

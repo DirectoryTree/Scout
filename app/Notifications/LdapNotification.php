@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\LdapObject;
 use App\LdapNotifier;
+use App\LdapNotifierLog;
 use Illuminate\Support\Arr;
 use Illuminate\Notifications\Notification;
 
@@ -54,20 +55,27 @@ class LdapNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        $attributes = $this->notifier->conditions->pluck('attribute')->transform(function ($attribute) {
-            return [
-                $attribute => [
-                    'original' => $this->getOriginalValue($attribute),
-                    'updated' => $this->getUpdatedValue($attribute),
-                ]
-            ];
+        $logs = collect();
+
+        $this->notifier->conditions->pluck('attribute')->each(function ($attribute) use ($logs) {
+            $log = new LdapNotifierLog();
+
+            $log->object()->associate($this->object);
+            $log->notifier()->associate($this->notifier);
+
+            $log->before = $this->getOriginalValue($attribute);
+            $log->after = $this->getUpdatedValue($attribute);
+
+            $log->save();
+
+            $logs->add($log);
         });
 
         return [
             'on' => $this->object->name,
             'name' => $this->notifier->name,
             'notifiable_name' => $this->notifier->notifiable_name,
-            'attributes' => $attributes,
+            'logs' => $logs->pluck('id'),
         ];
     }
 

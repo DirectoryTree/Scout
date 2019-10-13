@@ -1,20 +1,12 @@
+import toaster from "../toaster";
 import { Controller } from "stimulus"
-import Swal from 'sweetalert2';
 
 export default class extends Controller {
     /**
      * Fire the Swal alert upon connecting.
      */
     connect() {
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            type: this.getLevel(),
-            title: this.getTitle(),
-            text: this.getMessage(),
-        });
+        toaster.fire(this.getLevel(), this.getTitle(), this.getMessage());
 
         this.element.remove();
     }

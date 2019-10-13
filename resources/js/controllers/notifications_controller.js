@@ -66,7 +66,10 @@ export default class extends Controller {
      * Update the notification count.
      */
     updateCount() {
-        let count = this.notificationTargets.length;
+        // We only want to include non-read notifications in our count.
+        let count = this.notificationTargets.filter((target) => {
+            return !target.dataset.read;
+        }).length;
 
         if (count > 0) {
             this.countTarget.classList = ['badge badge-primary'];

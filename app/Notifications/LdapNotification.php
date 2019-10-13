@@ -72,9 +72,8 @@ class LdapNotification extends Notification
         });
 
         return [
-            'on' => $this->object->name,
-            'name' => $this->notifier->name,
-            'notifiable_name' => $this->notifier->notifiable_name,
+            'name' => $this->notifier->notifiable_name,
+            'object_id' => $this->object->id,
             'logs' => $logs->pluck('id'),
         ];
     }

@@ -8,30 +8,68 @@
 
                 <hr/>
 
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" data-controller="forms--register">
                     @csrf
 
                     <div class="form-group row justify-content-center">
                         <div class="col-md-6">
-                            {{ Form::scoutText('name', null, ['required', 'autofocus', 'placeholder' => 'Name']) }}
+                            {{
+                                Form::scoutText('name', null, [
+                                    'required',
+                                    'autofocus',
+                                    'placeholder' => 'Name',
+                                    'data-target' => 'forms--register.input',
+                                    'data-action' => 'keyup->forms--register#clearError'
+                                ])
+                            }}
 
-                            {{ Form::scoutError('name') }}
+                            {{
+                                 Form::scoutError([
+                                     'data-input' => 'name',
+                                     'data-target' => 'forms--register.error'
+                                 ])
+                             }}
                         </div>
                     </div>
 
                     <div class="form-group row justify-content-center">
                         <div class="col-md-6">
-                            {{ Form::scoutEmail('email', null, ['required', 'placeholder' => 'Email']) }}
+                            {{
+                                Form::scoutEmail('email', null, [
+                                    'required',
+                                    'placeholder' => 'Email',
+                                    'data-target' => 'forms--register.input',
+                                    'data-action' => 'keyup->forms--register#clearError'
+                                ])
+                            }}
 
-                            {{ Form::scoutError('email') }}
+                            {{
+                                 Form::scoutError([
+                                     'data-input' => 'email',
+                                     'data-target' => 'forms--register.error'
+                                 ])
+                             }}
                         </div>
                     </div>
 
                     <div class="form-group row justify-content-center">
                         <div class="col-md-6">
-                            {{ Form::scoutPassword('password', ['required', 'autocomplete' => 'new-password', 'placeholder' => 'Password']) }}
+                            {{
+                                Form::scoutPassword('password', [
+                                    'required',
+                                    'placeholder' => 'Password',
+                                    'autocomplete' => 'new-password',
+                                    'data-target' => 'forms--register.input',
+                                    'data-action' => 'keyup->forms--register#clearError'
+                                ])
+                            }}
 
-                            {{ Form::scoutError('password') }}
+                            {{
+                                 Form::scoutError([
+                                     'data-input' => 'password',
+                                     'data-target' => 'forms--register.error'
+                                 ])
+                             }}
                         </div>
                     </div>
 

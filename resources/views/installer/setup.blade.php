@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
     @component('components.card', ['class' => 'bg-white col-lg-8'])
-        <form method="POST" action="{{ route('install.store') }}">
+        <form method="POST" action="{{ route('install.store') }}" data-controller="forms--install">
             @csrf
 
             @if(session('error'))

@@ -3,30 +3,30 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.index', $domain))
 
 @section('page')
-    @component('components.card', ['flush' => true, 'class' => 'mb-4'])
-        <div class="list-group list-group-flush">
-            <div class="list-group-item">
-                <h5 class="mb-0">Domain Notifiers</h5>
-            </div>
-
-            @forelse($systemNotifiers as $notifier)
+    @if ($systemNotifiers->isNotEmpty())
+        @component('components.card', ['flush' => true, 'class' => 'mb-4'])
+            <div class="list-group list-group-flush">
                 <div class="list-group-item">
-                    {{
-                        Form::scoutCheckbox('enabled', true, $notifier->enabled, [
-                            'id' => "notifier_$notifier->id",
-                            'type' => 'switch',
-                            'label' => $notifier->name,
-                            'data-controller' => 'toggle',
-                            'data-action' => 'click->toggle#send',
-                            'data-toggle-url' => route('api.notifier.toggle', $notifier)
-                        ])
-                    }}
+                    <h5 class="mb-0">Domain Notifiers</h5>
                 </div>
-            @empty
 
-            @endforelse
-        </div>
-    @endcomponent
+                @foreach($systemNotifiers as $notifier)
+                    <div class="list-group-item">
+                        {{
+                            Form::scoutCheckbox('enabled', true, $notifier->enabled, [
+                                'id' => "notifier_$notifier->id",
+                                'switch' => true,
+                                'label' => $notifier->name,
+                                'data-controller' => 'toggle',
+                                'data-action' => 'click->toggle#update',
+                                'data-toggle-url' => route('api.notifier.toggle', $notifier)
+                            ])
+                        }}
+                    </div>
+                @endforeach
+            </div>
+        @endcomponent
+    @endif
 
     @component('components.card', ['flush' => true])
         <div class="list-group list-group-flush">

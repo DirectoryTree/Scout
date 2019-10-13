@@ -2,7 +2,12 @@ import toaster from '../toaster';
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-    send(event) {
+    /**
+     * Updates the toggled status.
+     *
+     * @param {Event} event
+     */
+    update(event) {
         let enabled = event.target.checked;
 
         axios.post(this.data.get('url'), {
@@ -12,6 +17,8 @@ export default class extends Controller {
             let message = enabled ? 'Enabled notifier' : 'Disabled notifier';
 
             toaster.fire('success', 'Saved', message);
+        }).catch(() => {
+            event.target.checked = false;
         })
     }
 }

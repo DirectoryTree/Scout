@@ -35,7 +35,33 @@ export default class extends Controller {
      * @param {Object} response
      */
     success(response) {
-        Turbolinks.visit(response.headers['turbolinks-location']);
+        // If the form indicates that a redirect must occur, we
+        // will execute the after closure when turbolinks has
+        // finished loading the redirect to properly execute.
+        if (this.data.has('redirect')) {
+            let after = () => {
+                this.after(response);
+
+                document.removeEventListener('turbolinks:load', after, false);
+            };
+
+            document.addEventListener('turbolinks:load', after, false);
+
+            Turbolinks.visit(response.headers['turbolinks-location'], { action: 'replace' });
+        }
+        // Otherwise, we will execute the after closure now.
+        else {
+            this.after(response);
+        }
+    }
+
+    /**
+     * Additional operations to run after a successful form response.
+     *
+     * @param {Object} response
+     */
+    after(response) {
+        //
     }
 
     /**
@@ -57,7 +83,7 @@ export default class extends Controller {
     setErrors(errors) {
         for (let input in errors) {
             document.getElementsByName(input).forEach((element) => {
-                this.setError(element, errors[input]);
+                this.setError(element, _.first(errors[input]));
             });
         }
     }

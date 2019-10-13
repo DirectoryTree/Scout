@@ -14,6 +14,8 @@
     <div class="dropdown-menu dropdown-menu-right notifications">
         <h6 class="dropdown-header bg-white">Notifications</h6>
 
+        <div class="dropdown-divider m-0"></div>
+
         <div data-target="notifications.list">
             @foreach($notifications as $notification)
                 @include('notifications.notification')
@@ -24,7 +26,7 @@
             You have no notifications.
         </div>
 
-        <div class="dropdown-divider"></div>
+        <div class="dropdown-divider m-0"></div>
 
         <div class="p-2 px-3">
             <a class="btn btn-block btn-sm btn-primary" href="#">View All</a>

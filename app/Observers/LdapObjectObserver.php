@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\LdapObject;
 use App\LdapNotifier;
+use App\LdapNotifierLog;
+use Illuminate\Support\Arr;
 use App\Ldap\Conditions\Validator;
 use App\Notifications\LdapNotification;
 
@@ -22,14 +24,41 @@ class LdapObjectObserver
         // objects attributes, determine if the notifiable model can be notified
         // and if all the conditions pass for the notifier conditions.
         $this->getNotifiersForAttributes($attributes)->each(function (LdapNotifier $notifier) use ($object) {
-            if (
-                ($notifiable = $notifier->notifiable) &&
-                $this->isNotifiable($notifiable) &&
-                $this->passesConditions($notifier->conditions, $object)
-            ) {
-                $notifiable->notify(new LdapNotification($object, $notifier));
+            if ($this->passesConditions($notifier->conditions, $object)) {
+                $this->createNotifierLogs($notifier, $object);
+
+                $object->notify(new LdapNotification($notifier));
             }
         });
+    }
+
+    /**
+     * Create the notifier logs.
+     *
+     * @param LdapNotifier $notifier
+     * @param LdapObject   $object
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function createNotifierLogs(LdapNotifier $notifier, LdapObject $object)
+    {
+        $logs = collect();
+
+        $notifier->conditions->pluck('attribute')->each(function ($attribute) use ($notifier, $object, $logs) {
+            $log = new LdapNotifierLog();
+
+            $log->object()->associate($object);
+            $log->notifier()->associate($notifier);
+
+            $log->before = $this->getOriginalValue($object, $attribute);
+            $log->after = $this->getUpdatedValue($object, $attribute);
+
+            $log->save();
+
+            $logs->add($log);
+        });
+
+        return $logs;
     }
 
     /**
@@ -60,14 +89,52 @@ class LdapObjectObserver
     }
 
     /**
-     * Determine if the given model is notifiable.
+     * Get the LDAP objects original value for the attribute.
      *
-     * @param mixed $notifiable
+     * @param LdapObject $object
+     * @param string     $key
      *
-     * @return bool
+     * @return mixed
      */
-    protected function isNotifiable($notifiable)
+    protected function getOriginalValue(LdapObject $object, $key)
     {
-        return method_exists($notifiable, 'notify');
+        return Arr::get($this->getOriginalValues($object), $key);
+    }
+
+    /**
+     * Get the LDAP objects updated value for the attribute.
+     *
+     * @param LdapObject $object
+     * @param string     $key
+     *
+     * @return mixed
+     */
+    protected function getUpdatedValue(LdapObject $object, $key)
+    {
+        return Arr::get($this->getUpdatedValues($object), $key);
+    }
+
+    /**
+     * Get the LDAP objects original values.
+     *
+     * @param LdapObject $object
+     *
+     * @return array
+     */
+    protected function getOriginalValues(LdapObject $object)
+    {
+        return json_decode($object->getOriginal('values'), true);
+    }
+
+    /**
+     * Get the LDAP objects updated values.
+     *
+     * @param LdapObject $object
+     *
+     * @return array
+     */
+    protected function getUpdatedValues(LdapObject $object)
+    {
+        return $object->getAttribute('values');
     }
 }

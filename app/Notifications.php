@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Notifications\DatabaseNotification;
 use App\Http\Resources\Notifications as NotificationResource;
 
 class Notifications
@@ -28,8 +29,7 @@ class Notifications
      */
     public function get()
     {
-        return $this->user->notifications()
-            ->with('notifiable')
+        return DatabaseNotification::with('notifiable')
             ->limit(10)
             ->get();
     }

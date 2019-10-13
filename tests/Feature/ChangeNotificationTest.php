@@ -38,8 +38,8 @@ class ChangeNotificationTest extends InstalledTestCase
         $object->save();
 
         $this->assertDatabaseHas('notifications', [
-            'notifiable_id' => $domain->id,
-            'notifiable_type' => get_class($domain),
+            'notifiable_id' => $object->id,
+            'notifiable_type' => get_class($object),
         ]);
     }
 
@@ -107,8 +107,8 @@ class ChangeNotificationTest extends InstalledTestCase
         $object->save();
 
         $this->assertDatabaseHas('notifications', [
-            'notifiable_id' => $domain->id,
-            'notifiable_type' => get_class($domain),
+            'notifiable_id' => $object->id,
+            'notifiable_type' => get_class($object),
         ]);
     }
 }

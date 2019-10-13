@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    Route::resource('notifications', 'NotificationsController');
+
     Route::resource('domains', 'DomainsController');
 
     Route::get('/domains/{domain}/delete', 'DomainsController@delete')->name('domains.delete');

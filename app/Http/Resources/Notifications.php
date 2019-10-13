@@ -17,7 +17,6 @@ class Notifications extends JsonResource
     {
         return [
             'id' => $this->id,
-            'data' => $this->data,
         ];
     }
 }

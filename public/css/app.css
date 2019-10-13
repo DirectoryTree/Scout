@@ -12280,10 +12280,6 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   }
 }
 
-[v-cloak] {
-  display: none;
-}
-
 hr {
   border-top: 1px dotted rgba(0, 0, 0, 0.1);
 }

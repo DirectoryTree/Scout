@@ -1,5 +1,8 @@
-@error($name)
-<span class="invalid-feedback" role="alert">
-    <strong>{{ $message }}</strong>
-</span>
-@enderror
+<span
+    {!!
+       Html::attributes(array_merge([
+           'class' => 'invalid-feedback'
+       ], $attributes))
+    !!}
+    role="alert"
+></span>

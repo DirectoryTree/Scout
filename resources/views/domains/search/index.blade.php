@@ -25,7 +25,12 @@
                 <summary onselectstart="return false">Search Options</summary>
 
                 <div class="ml-3 mt-2">
-                    {{ Form::scoutCheckbox('deleted', '1', request('deleted') == '1', ['label' => 'Include Deleted']) }}
+                    {{
+                        Form::scoutCheckbox('deleted', '1', request('deleted') == '1', [
+                            'id' => 'search-deleted',
+                            'label' => 'Include Deleted',
+                        ])
+                    }}
                 </div>
             </details>
         </form>

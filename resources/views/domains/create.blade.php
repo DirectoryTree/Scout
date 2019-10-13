@@ -3,7 +3,7 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.create'))
 
 @section('content')
-    <form method="post" action="{{ route('domains.store') }}">
+    <form method="post" action="{{ route('domains.store') }}" data-controller="form-xhr">
         @csrf
 
         @component('components.card')

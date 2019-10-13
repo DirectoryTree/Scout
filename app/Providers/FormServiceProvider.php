@@ -17,8 +17,8 @@ class FormServiceProvider extends ServiceProvider
             return view('forms.label', compact('name', 'value', 'attributes'));
         });
 
-        FormFacade::macro('scoutError', function ($name) {
-            return view('forms.error', compact('name'));
+        FormFacade::macro('scoutError', function ($attributes = []) {
+            return view('forms.error', compact('attributes'));
         });
 
         FormFacade::macro('scoutInput', function ($type, $name = '', $value = '', $attributes = []) {
@@ -37,6 +37,10 @@ class FormServiceProvider extends ServiceProvider
             return FormFacade::scoutInput('text', $name, $value, $attributes);
         });
 
+        FormFacade::macro('scoutNumber', function ($name, $value = '', $attributes = []) {
+            return FormFacade::scoutInput('number', $name, $value, $attributes);
+        });
+
         FormFacade::macro('scoutEmail', function ($name, $value = '', $attributes = []) {
             return FormFacade::scoutInput('email', $name, $value, $attributes);
         });
@@ -45,15 +49,22 @@ class FormServiceProvider extends ServiceProvider
             return FormFacade::scoutInput('search', $name, $value, $attributes);
         });
 
-        FormFacade::macro('scoutCheckbox', function ($name, $value = '', $checked = false, $attributes = []) {
+        FormFacade::macro('scoutSelector', function ($name, $value = '', $selected = false, $type = 'checkbox', $attributes = []) {
             $label = Arr::pull($attributes, 'label');
-            $type = Arr::pull($attributes, 'type', 'checkbox');
 
-            if ($checked) {
+            if ($selected) {
                 $attributes['checked'] = 'checked';
             }
 
-            return view('forms.checkbox', compact('name', 'value', 'label', 'type', 'attributes'));
+            return view('forms.selector', compact('name', 'value', 'label', 'type', 'attributes'));
+        });
+
+        FormFacade::macro('scoutCheckbox', function ($name, $value = '', $checked = false, $attributes = []) {
+            return FormFacade::scoutSelector($name, $value, $checked, 'checkbox', $attributes);
+        });
+
+        FormFacade::macro('scoutRadio', function ($name, $value = '', $checked = false, $attributes = []) {
+            return FormFacade::scoutSelector($name, $value, $checked, 'radio', $attributes);
         });
     }
 }

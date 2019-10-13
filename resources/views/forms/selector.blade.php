@@ -2,7 +2,7 @@
     <input
         name="{{ $name }}"
         value="{{ $value }}"
-        type="checkbox"
+        type="{{ $type }}"
         {!!
            Html::attributes(array_merge([
                'class' => 'custom-control-input' . ($errors->has($name) ? ' is-invalid' : null)

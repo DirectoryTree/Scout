@@ -51,12 +51,13 @@ class FormServiceProvider extends ServiceProvider
 
         FormFacade::macro('scoutSelector', function ($name, $value = '', $selected = false, $type = 'checkbox', $attributes = []) {
             $label = Arr::pull($attributes, 'label');
+            $switch = Arr::pull($attributes, 'switch', false);
 
             if ($selected) {
                 $attributes['checked'] = 'checked';
             }
 
-            return view('forms.selector', compact('name', 'value', 'label', 'type', 'attributes'));
+            return view('forms.selector', compact('name', 'value', 'label', 'type', 'switch', 'attributes'));
         });
 
         FormFacade::macro('scoutCheckbox', function ($name, $value = '', $checked = false, $attributes = []) {

@@ -1,4 +1,4 @@
-<div class="custom-control custom-{{ $type }}">
+<div class="custom-control custom-{{ $switch ? 'switch' : $type }}">
     <input
         name="{{ $name }}"
         value="{{ $value }}"

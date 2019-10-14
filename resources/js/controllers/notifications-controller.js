@@ -10,6 +10,15 @@ export default class extends Controller {
     eventSourceTimeout = null;
 
     /**
+     * Visits the clicked notification.
+     *
+     * @param {Event} event
+     */
+    view(event) {
+        Turbolinks.visit(event.target.dataset.notificationsUrl);
+    }
+
+    /**
      * Update the notification count and set the event source timeout.
      */
     connect() {

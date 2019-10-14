@@ -39,10 +39,14 @@ class LdapObject extends Model
         parent::boot();
 
         // We don't need to worry about eloquent events firing
-        // for change records. We'll bulk delete the changes.
+        // for change records. We'll bulk delete the changes
+        // if the LDAP object is being force deleted.
         static::deleting(function(LdapObject $object) {
-            $object->changes()->delete();
-            $object->notifiers()->delete();
+            if ($object->isForceDeleting()) {
+                $object->changes()->delete();
+                $object->notifiers()->delete();
+                $object->notifications()->delete();
+            }
         });
     }
 

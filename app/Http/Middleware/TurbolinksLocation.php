@@ -24,6 +24,6 @@ class TurbolinksLocation
             return $response;
         }
 
-        return $response->header('Turbolinks-Location', $request->url());
+        return $response->header('Turbolinks-Location', $request->fullUrl());
     }
 }

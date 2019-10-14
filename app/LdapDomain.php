@@ -4,12 +4,9 @@ namespace App;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
 class LdapDomain extends Model
 {
-    use Notifiable;
-
     // The LDAP connection types.
     const TYPE_UNKNOWN = 1;
     const TYPE_ACTIVE_DIRECTORY = 2;

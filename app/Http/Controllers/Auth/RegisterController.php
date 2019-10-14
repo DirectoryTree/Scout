@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -38,6 +39,19 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware(['guest', 'can.register']);
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param User                     $user
+     *
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        return response()->turbolinks('/login');
     }
 
     /**

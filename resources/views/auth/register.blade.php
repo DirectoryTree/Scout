@@ -8,7 +8,12 @@
 
                 <hr/>
 
-                <form method="POST" action="{{ route('register') }}" data-controller="forms--register">
+                <form
+                    method="POST"
+                    action="{{ route('register') }}"
+                    data-controller="forms--register"
+                    data-forms--register-redirect="true"
+                >
                     @csrf
 
                     <div class="form-group row justify-content-center">

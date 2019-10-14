@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\LdapDomain;
 use App\Jobs\QueueSync;
+use AdSystemNotifierSeeder;
 use Illuminate\Support\Facades\Bus;
 use App\Http\Requests\LdapDomainRequest;
 
@@ -45,9 +46,11 @@ class DomainsController extends Controller
     {
         $request->persist($domain);
 
-        flash()->success('Added LDAP domain.');
+        if ($domain->type == LdapDomain::TYPE_ACTIVE_DIRECTORY) {
+            (new AdSystemNotifierSeeder())->run();
+        }
 
-        return redirect()->route('domains.show', $domain);
+        return response()->turbolinks(route('domains.show', $domain));
     }
 
     /**
@@ -92,9 +95,7 @@ class DomainsController extends Controller
     {
         $request->persist($domain);
 
-        flash()->success('Updated LDAP domain.');
-
-        return redirect()->route('domains.edit', $domain);
+        return response()->turbolinks(route('domains.show', $domain));
     }
 
     /**
@@ -108,9 +109,7 @@ class DomainsController extends Controller
     {
         Bus::dispatch(new QueueSync($domain));
 
-        flash()->success('Queued Synchronization.');
-
-        return redirect()->route('domains.show', $domain);
+        return response()->turbolinks(route('domains.show', $domain));
     }
 
     /**

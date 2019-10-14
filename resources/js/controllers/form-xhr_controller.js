@@ -46,8 +46,8 @@ export default class extends Controller {
             };
 
             document.addEventListener('turbolinks:load', after, false);
-
-            Turbolinks.visit(response.headers['turbolinks-location'], { action: 'replace' });
+            
+            eval(response.data);
         }
         // Otherwise, we will execute the after closure now.
         else {
@@ -70,9 +70,11 @@ export default class extends Controller {
      * @param {Object} error
      */
     error(error) {
-        this.setErrors(
-            this.getErrorsFromResponse(error.response)
-        );
+        if (error.response) {
+            this.setErrors(
+                this.getErrorsFromResponse(error.response)
+            );
+        }
     }
 
     /**
@@ -165,11 +167,15 @@ export default class extends Controller {
      * @return {Object}
      */
     getErrorsFromResponse(response) {
-        if (response.data.errors) {
+        if (!response.data || typeof response.data !== 'object') {
+            return { error: 'Something went wrong. Please try again later.' }
+        }
+
+        if (response.data.hasOwnProperty('errors')) {
             return { ...response.data.errors }
         }
 
-        if (response.data.message) {
+        if (response.data.hasOwnProperty('message')) {
             return { error: response.data.message }
         }
 

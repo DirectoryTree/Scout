@@ -8,7 +8,7 @@
         action="{{ route('domains.store') }}"
         data-controller="forms--domain"
         data-forms--domain-redirect="true"
-        data-forms--domain-saved-message="Added domain."
+        data-forms--domain-message="Added domain."
     >
         @csrf
 

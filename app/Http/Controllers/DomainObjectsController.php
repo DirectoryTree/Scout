@@ -67,12 +67,10 @@ class DomainObjectsController extends Controller
 
         try {
             Bus::dispatch(new SyncSingleObject($domain, $object));
-
-            flash()->success('Synchronized object');
         } catch (Exception $ex) {
-            flash()->error($ex->getMessage());
+            return response(['message' => $ex->getMessage()]);
         }
 
-        return redirect()->back();
+        return response()->turbolinks(route('domains.objects.attributes.index', [$domain, $object]));
     }
 }

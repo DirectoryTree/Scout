@@ -19,7 +19,12 @@
 
                     <a class="btn btn-block btn-primary" href="{{ route('register') }}">Register</a>
                 @else
-                    <form method="POST" action="{{ route('login') }}" data-controller="form-xhr">
+                    <form
+                        method="POST"
+                        action="{{ route('login') }}"
+                        data-controller="form-xhr"
+                        data-form-xhr-redirect="true"
+                    >
                         @csrf
 
                         <div class="form-group">

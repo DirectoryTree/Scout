@@ -19,7 +19,13 @@
                         </small>
                     </div>
 
-                    <form method="post" action="{{ route('domains.objects.sync', [$domain, $object]) }}">
+                    <form
+                        method="post"
+                        action="{{ route('domains.objects.sync', [$domain, $object]) }}"
+                        data-controller="forms--sync-object"
+                        data-forms--sync-object-redirect="true"
+                        data-forms--sync-object-message="Synchronized object."
+                    >
                         @csrf
                         @method('patch')
 

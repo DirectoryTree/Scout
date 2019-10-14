@@ -47,7 +47,7 @@ class InstallController extends Controller
                 ->with('error', "Error: " . $ex->getMessage());
         }
 
-        return redirect()->route('install.index');
+        return response()->turbolinks(route('install.index'));
     }
 
     /**

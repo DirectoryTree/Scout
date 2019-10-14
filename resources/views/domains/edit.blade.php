@@ -7,7 +7,7 @@
         method="post"
         action="{{ route('domains.update', $domain) }}"
         data-controller="forms--domain"
-        data-forms--domain-saved-message="Updated domain configuration."
+        data-forms--domain-message="Updated domain configuration."
     >
         @csrf
         @method('patch')

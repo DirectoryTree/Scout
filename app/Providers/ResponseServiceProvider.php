@@ -8,16 +8,23 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 
 class ResponseServiceProvider extends ServiceProvider
 {
+    /**
+     * Register the response macros.
+     *
+     * @param ResponseFactory $factory
+     */
     public function boot(ResponseFactory $factory)
     {
-        Response::macro('turbolinks', function ($url) use ($factory) {
-            $script = [];
-            $script[] = 'Turbolinks.clearCache()';
-            $script[] = sprintf('Turbolinks.visit("%s", {"action":"replace"})', $url);
+        Response::macro('turbolinks', function ($url, $replace = false) use ($factory) {
+            $action = $replace ? 'replace' : 'advance';
+
+            $script = [
+                'Turbolinks.clearCache()',
+                "Turbolinks.visit('{$url}', {'action':'{$action}'})",
+            ];
 
             return $factory->make(implode("\n", $script), 200)
-                ->header('Content-Type', 'application/javascript')
-                ->setStatusCode(200);
+                ->header('Content-Type', 'application/javascript');
         });
     }
 }

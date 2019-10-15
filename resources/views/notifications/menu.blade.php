@@ -9,6 +9,8 @@
             class="list-group-item list-group-item-action font-weight-bold {{ request('unread', 'yes') === 'yes' ? 'active' : null }}"
         >
             <i class="far fa-envelope"></i> {{ __('Unread') }}
+
+            <span class="badge badge-light">{{ $counts['unread'] }}</span>
         </a>
 
         <a
@@ -16,6 +18,8 @@
             class="list-group-item list-group-item-action font-weight-bold {{ request('unread') === 'no' ? 'active' : null }}"
         >
             <i class="far fa-envelope-open"></i> {{ __('Read') }}
+
+            <span class="badge badge-light">{{ $counts['read'] }}</span>
         </a>
     </div>
 @endcomponent

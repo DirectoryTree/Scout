@@ -129,6 +129,16 @@ class LdapDomain extends Model
     }
 
     /**
+     * Determine if password operations can be ran for the domain.
+     *
+     * @return bool
+     */
+    public function canModifyPasswords()
+    {
+        return in_array($this->encryption, ['tls', 'ssl']);
+    }
+
+    /**
      * Returns the domains connection name.
      *
      * @return string

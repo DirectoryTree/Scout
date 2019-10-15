@@ -22,6 +22,7 @@ class Validator
         LdapNotifierCondition::OPERATOR_CONTAINS => Contains::class,
         LdapNotifierCondition::OPERATOR_LESS_THAN => LessThan::class,
         LdapNotifierCondition::OPERATOR_GREATER_THAN => GreaterThan::class,
+        LdapNotifierCondition::OPERATOR_CHANGED => Changed::class,
     ];
 
     /**
@@ -39,15 +40,24 @@ class Validator
     protected $values;
 
     /**
+     * The original object values.
+     *
+     * @var array
+     */
+    protected $original;
+
+    /**
      * Constructor.
      *
      * @param Collection $conditions
      * @param array      $values
+     * @param array      $original
      */
-    public function __construct(Collection $conditions, array $values = [])
+    public function __construct(Collection $conditions, array $values = [], array $original = [])
     {
         $this->conditions = $conditions;
         $this->values = $this->getTransformedValues($values);
+        $this->original = $this->getTransformedValues($original);
     }
 
     /**
@@ -90,6 +100,12 @@ class Validator
      */
     protected function getConditionValue(LdapNotifierCondition $condition)
     {
+        // If we're working with a 'changed' operator, we must pass the
+        // original objects values so it can be compared to properly.
+        if ($condition->operator == LdapNotifierCondition::OPERATOR_CHANGED) {
+            return $this->original;
+        }
+
         return Arr::wrap($condition->value);
     }
 

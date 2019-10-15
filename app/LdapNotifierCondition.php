@@ -26,6 +26,7 @@ class LdapNotifierCondition extends Model
     const OPERATOR_CONTAINS = '%';
     const OPERATOR_HAS = '*';
     const OPERATOR_PAST = '>>';
+    const OPERATOR_CHANGED = '!*';
 
     /**
      * Indicates if the model should be timestamped.

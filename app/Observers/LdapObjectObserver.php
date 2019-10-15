@@ -85,7 +85,11 @@ class LdapObjectObserver
      */
     protected function passesConditions($conditions, LdapObject $object)
     {
-        return (new Validator($conditions, $object->values ?? []))->passes();
+        return (new Validator(
+            $conditions,
+            $this->getUpdatedValues($object),
+            $this->getOriginalValues($object)
+        ))->passes();
     }
 
     /**

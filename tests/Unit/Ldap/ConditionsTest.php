@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Ldap\Conditions\Has;
 use App\Ldap\Conditions\Equals;
 use App\Ldap\Conditions\IsPast;
+use App\Ldap\Conditions\Changed;
 use App\Ldap\Conditions\Contains;
 use App\Ldap\Conditions\LessThan;
 use App\Ldap\Conditions\NotEquals;
@@ -65,5 +66,15 @@ class ConditionsTest extends TestCase
         $this->assertFalse((new LessThan([101], 'attribute', [101]))->passes());
         $this->assertFalse((new LessThan(['invalid'], 'attribute', [101]))->passes());
         $this->assertFalse((new LessThan([100], 'attribute'))->passes());
+    }
+
+    public function test_changed()
+    {
+        $this->assertTrue((new Changed([100], 'attribute'))->passes());
+        $this->assertTrue((new Changed([100], 'attribute', [101]))->passes());
+        $this->assertTrue((new Changed(['one'], 'attribute', ['one', 'two']))->passes());
+        $this->assertTrue((new Changed([], 'attribute', ['one']))->passes());
+        $this->assertFalse((new Changed(['one'], 'attribute', ['one']))->passes());
+        $this->assertFalse((new Changed([0 => 'one'], 'attribute', [1 => 'one']))->passes());
     }
 }

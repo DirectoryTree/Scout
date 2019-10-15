@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-flex flex-column justify-content-between mb-2">
-        <h3 class="mb-0">
+    <div class="d-flex align-items-baseline mb-2">
+        <h3 class="mb-0 mr-2">
             @isset($object)
                 @include('domains.objects.partials.icon', ['object' => $object])
 

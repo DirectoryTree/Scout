@@ -22,7 +22,7 @@
             @endforeach
         </div>
 
-        <div class="dropdown-item" data-target="notifications.empty">
+        <div class="dropdown-item text-muted text-center py-2" data-target="notifications.empty">
             You have no notifications.
         </div>
 

@@ -20,9 +20,9 @@
             class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.attributes.*') ? 'active' : null }}"
         >
             <div class="d-flex justify-content-between align-items-center">
-                                <span>
-                                    <i class="fa fa-list-ul"></i> {{ __('Attributes') }}
-                                </span>
+                <span>
+                    <i class="fa fa-list-ul"></i> {{ __('Attributes') }}
+                </span>
 
                 <span class="badge badge-primary">{{ $counts['object']['attributes'] }}</span>
             </div>
@@ -33,12 +33,21 @@
             class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.changes.*') ? 'active' : null }}"
         >
             <div class="d-flex justify-content-between align-items-center">
-                                <span>
-                                    <i class="fa fa-sync"></i> {{ __('Changes') }}
-                                </span>
+                <span>
+                    <i class="fa fa-sync"></i> {{ __('Changes') }}
+                </span>
 
                 <span class="badge badge-primary">{{ $counts['object']['changes'] }}</span>
             </div>
         </a>
+
+        @if(!$domain->canModifyPasswords())
+            <a
+                href="#"
+                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.password.*') ? 'active' : null }}"
+            >
+                <i class="fa fa-key"></i> {{ __('Reset Password') }}
+            </a>
+        @endif
     </div>
 @endcomponent

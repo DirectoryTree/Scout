@@ -6,7 +6,7 @@
                     @isset($object)
                         <i class="fa fa-level-down-alt"></i> {{ __('Nested Objects') }}
                     @else
-                        {{ __('Root Domain Objects') }}
+                        {{ __('Domain Objects') }}
                     @endisset
                 </h5>
             </div>

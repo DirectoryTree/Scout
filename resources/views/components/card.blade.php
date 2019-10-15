@@ -1,6 +1,6 @@
-<div class="card {{ $class ?? null }} shadow-sm">
+<div class="card border shadow-sm {{ $class ?? null }}">
     @isset($header)
-        <div class="card-header">
+        <div class="card-header border-bottom">
             {{ $header }}
         </div>
     @endisset
@@ -10,7 +10,7 @@
     </div>
 
     @isset($footer)
-        <div class="card-footer">
+        <div class="card-footer border-top">
             {{ $footer }}
         </div>
     @endisset

@@ -30,7 +30,7 @@ class SetupTest extends InstalledTestCase
 
         $this->post(route('register'), $data)
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+            ->assertTurbolinksRedirect();
 
         $this->assertDatabaseHas('users', Arr::only($data, ['name', 'email']));
     }

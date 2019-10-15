@@ -14,4 +14,16 @@ abstract class TestCase extends BaseTestCase
     {
         Auth::login($user ?? factory(User::class)->create());
     }
+
+    /**
+     * Use a custom test response base.
+     *
+     * @param \Illuminate\Http\Response $response
+     *
+     * @return TestResponse
+     */
+    protected function createTestResponse($response)
+    {
+        return TestResponse::fromBaseResponse($response);
+    }
 }

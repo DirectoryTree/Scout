@@ -39,7 +39,7 @@ class DomainsTest extends InstalledTestCase
             'port' => 389,
             'timeout' => 5,
             'encryption' => 'tls',
-        ])->assertRedirect(route('domains.show', 'localhost'));
+        ])->assertTurbolinksRedirect(route('domains.show', 'localhost'));
 
         $this->assertDatabaseHas('ldap_domains', ['name' => 'localhost']);
     }

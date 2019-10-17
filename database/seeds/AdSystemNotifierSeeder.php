@@ -31,7 +31,7 @@ class AdSystemNotifierSeeder extends Seeder
             'conditions' => [
                 [
                     'type' => LdapNotifierCondition::TYPE_STRING,
-                    'operator' => LdapNotifierCondition::OPERATOR_NOT_EQUALS,
+                    'operator' => LdapNotifierCondition::OPERATOR_CHANGED,
                     'attribute' => 'member',
                 ]
             ],

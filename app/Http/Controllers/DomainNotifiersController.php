@@ -59,6 +59,24 @@ class DomainNotifiersController
     }
 
     /**
+     * Displays the notifier belonging to the domain.
+     *
+     * @param LdapDomain $domain
+     * @param integer    $notifierId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(LdapDomain $domain, $notifierId)
+    {
+        /** @var LdapNotifier $notifier */
+        $notifier = $domain->notifiers()->findOrFail($notifierId);
+
+        $conditions = $notifier->conditions()->get();
+
+        return view('domains.notifiers.show', compact('domain', 'notifier', 'conditions'));
+    }
+
+    /**
      * Displays the form for editing the domain notifier.
      *
      * @param LdapDomain $domain

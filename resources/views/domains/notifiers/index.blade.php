@@ -11,7 +11,7 @@
                 </div>
 
                 @foreach($systemNotifiers as $notifier)
-                    <div class="list-group-item">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
                         {{
                             Form::scoutCheckbox('enabled', true, $notifier->enabled, [
                                 'id' => "notifier_$notifier->id",
@@ -22,6 +22,10 @@
                                 'data-toggle-url' => route('api.notifier.toggle', $notifier)
                             ])
                         }}
+
+                        <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}">
+                            Customize
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -49,13 +53,13 @@
                     </span>
 
                     <span class="badge badge-secondary">
-                        @if ($notifier->operator == \App\LdapNotifier::OPERATOR_CONTAINS)
+                        @if ($notifier->operator == \App\LdapNotifierCondition::OPERATOR_CONTAINS)
                             @if ($notifier->value)
                                 {{ __('contains') }}
                             @else
                                 {{ __('exists') }}
                             @endif
-                        @elseif ($notifier->operator == \App\LdapNotifier::OPERATOR_PAST)
+                        @elseif ($notifier->operator == \App\LdapNotifierCondition::OPERATOR_PAST)
                             {{ __('is past') }}
                         @else
                             {{ $notifier->operator }}

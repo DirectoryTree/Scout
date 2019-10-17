@@ -46,6 +46,18 @@ Breadcrumbs::for('domains.notifiers.create', function ($trail, $domain) {
     $trail->push('Add', route('domains.notifiers.create', $domain));
 });
 
+Breadcrumbs::for('domains.notifiers.show', function ($trail, $domain, $notifier) {
+    $trail->parent('domains.notifiers.index', $domain);
+
+    $trail->push($notifier->notifiable_name, route('domains.notifiers.show', [$domain, $notifier]));
+});
+
+Breadcrumbs::for('domains.notifiers.edit', function ($trail, $domain, $notifier) {
+    $trail->parent('domains.notifiers.show', $domain, $notifier);
+
+    $trail->push('Edit', route('domains.notifiers.edit', [$domain, $notifier]));
+});
+
 Breadcrumbs::for('domains.changes.index', function ($trail, $domain) {
     $trail->parent('domains.show', $domain);
 

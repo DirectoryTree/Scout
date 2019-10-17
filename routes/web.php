@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::resource('notifications', 'NotificationsController');
+    Route::resource('notifications', 'NotificationsController', ['only' => ['index', 'show']]);
 
     Route::resource('domains', 'DomainsController');
 
@@ -66,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('notifications', 'NotificationsController@index')->name('notifications');
 
+        Route::resource('domains.objects.attributes', 'DomainObjectAttributesController', ['only' => ['index']]);
     });
 
 });

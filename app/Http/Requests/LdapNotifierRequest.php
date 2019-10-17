@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\LdapDomain;
 use App\LdapNotifier;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,15 +24,13 @@ class LdapNotifierRequest extends FormRequest
     /**
      * Save an LDAP notifier.
      *
-     * @param LdapDomain   $domain
      * @param LdapNotifier $notifier
      *
      * @return LdapNotifier
      */
-    public function persist(LdapDomain $domain, LdapNotifier $notifier)
+    public function persist(LdapNotifier $notifier)
     {
         if (!$notifier->exists) {
-            $notifier->notifiable()->associate($domain);
             $notifier->creator()->associate($this->user());
         }
 

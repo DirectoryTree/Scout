@@ -2,41 +2,19 @@
 
 @section('page')
     @if($notifications->isNotEmpty())
-        @component('components.card', ['flush' => true])
+        @component('components.card', ['class' => 'overflow-hidden', 'flush' => true])
             <div class="list-group list-group-flush">
                 @foreach($notifications as $notification)
-                    <div class="list-group-item d-flex align-items-center" data-controller="notification">
-                        <div class="mr-3">
-                            <div class="dropdown">
-                                <button class="btn btn-sm border rounded-pill" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    @if ($notification->read())
-                                        <button class="dropdown-item" data-action="click->notification#markUnread">
-                                            <i class="far fa-envelope"></i> Mark Unread
-                                        </button>
-                                    @else
-                                        <button class="dropdown-item" data-action="click->notification#markRead">
-                                            <i class="far fa-envelope-open"></i> Mark Read
-                                        </button>
-                                    @endif
-
-                                    <div class="dropdown-divider"></div>
-
-                                    <a class="dropdown-item" href="#">
-                                        <i class="far fa-trash-alt"></i> Delete
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
+                    <div
+                        class="list-group-item d-flex align-items-center justify-content-between"
+                        data-controller="notification"
+                        data-notification-id="{{ $notification->id }}"
+                    >
+                        <div class="mr-2">
                             <h5>
-                                {{ $notification->data['name'] }}
+                                {{ $notification->data['notifier']['notifiable_name'] }}
                                 on
-                                @include('domains.objects.partials.badge', ['object' => $notification->notifiable])
+                                @include('domains.objects.partials.badge', ['object' => $notification->data['object']])
                             </h5>
 
                             <small>
@@ -47,6 +25,18 @@
                                 ({{ $notification->created_at }})
                             </small>
                         </div>
+
+                        @if ($notification->read())
+                            <button class="btn btn-sm btn-outline-secondary" data-action="click->notification#markUnread">
+                                <i class="far fa-envelope"></i>
+                                <span class="d-none d-md-inline">Mark Unread</span>
+                            </button>
+                        @else
+                            <button class="btn btn-sm btn-outline-secondary" data-action="click->notification#markRead">
+                                <i class="far fa-envelope-open"></i>
+                                <span class="d-none d-md-inline">Mark Read</span>
+                            </button>
+                        @endif
                     </div>
                 @endforeach
             </div>

@@ -27,15 +27,6 @@ class DomainLayoutComposer
             })->count()
         ]];
 
-        if ($objectId = request()->object) {
-            $object = $domain->objects()->withTrashed()->findOrFail($objectId);
-
-            $data['counts']['object'] = [
-                'attributes' => count($object->values),
-                'changes' => $object->changes()->count(),
-            ];
-        }
-
         $view->with($data);
     }
 }

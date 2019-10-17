@@ -27,6 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('notifications', 'NotificationsController', ['only' => ['index', 'show']]);
 
+    Route::resource('notifiers.conditions', 'NotifierConditionsController');
+
     Route::resource('domains', 'DomainsController');
 
     Route::get('/domains/{domain}/delete', 'DomainsController@delete')->name('domains.delete');

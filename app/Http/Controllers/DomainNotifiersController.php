@@ -47,15 +47,15 @@ class DomainNotifiersController
      * @param LdapNotifierRequest $request
      * @param LdapDomain          $domain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(LdapNotifierRequest $request, LdapDomain $domain)
     {
-        $request->persist(new LdapNotifier(), $domain);
+        $notifier = $domain->notifiers()->make();
 
-        flash()->success('Added domain notifier');
+        $request->persist($notifier);
 
-        return redirect()->route('domains.notifiers.index', $domain);
+        return response()->turbolinks(route('domains.notifiers.index', [$domain, $notifier]));
     }
 
     /**

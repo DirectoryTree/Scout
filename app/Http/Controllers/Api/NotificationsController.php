@@ -38,4 +38,14 @@ class NotificationsController
             'Cache-Control' => 'no-cache',
         ]);
     }
+
+    public function markRead()
+    {
+
+    }
+
+    public function markUnread()
+    {
+
+    }
 }

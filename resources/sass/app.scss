@@ -8,11 +8,16 @@
 // Variables
 @import 'variables';
 
+// Overflows.
+@import 'overflows';
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
 // Sweet alert
 @import "~sweetalert2/src/sweetalert2";
+
+@import "~trix";
 
 // Flat pickr
 @import "~flatpickr";
@@ -77,4 +82,9 @@ hr {
     .notification {
         cursor: pointer;
     }
+}
+
+trix-editor {
+    border: $input-border-width solid $input-border-color;
+    border-radius: $border-radius;
 }

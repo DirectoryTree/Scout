@@ -5,7 +5,7 @@
     data-read="{{ $notification->read() }}"
     data-notifications-url="{{ route('notifications.show', $notification) }}"
 >
-    @include('domains.objects.partials.badge', ['object' => $notification->notifiable])
+    @include('domains.objects.partials.badge', ['object' => $notification->data['object']])
 
-    <small>{{ $notification->data['name'] }}</small>
+    <small>{{ $notification->data['notifier']['name'] }}</small>
 </div>

@@ -40,6 +40,7 @@ class LdapNotifier extends Model
 
         static::deleting(function (LdapNotifier $notifier) {
             $notifier->conditions()->delete();
+            $notifier->logs()->delete();
         });
     }
 
@@ -71,6 +72,16 @@ class LdapNotifier extends Model
     public function logs()
     {
         return $this->hasMany(LdapNotifierLog::class, 'notifier_id');
+    }
+
+    /**
+     * The belongsTo many users relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'ldap_notifier_users');
     }
 
     /**

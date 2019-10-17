@@ -8,7 +8,7 @@ use App\Http\View\Composers\AppLayoutComposer;
 use App\Http\View\Composers\DomainFormComposer;
 use App\Http\View\Composers\InstallFormComposer;
 use App\Http\View\Composers\DomainLayoutComposer;
-use App\Http\View\Composers\NotifierFormComposer;
+use App\Http\View\Composers\NotifierConditionFormComposer;
 use App\Http\View\Composers\NotificationMenuComposer;
 
 class ComposerServiceProvider extends ServiceProvider
@@ -22,9 +22,9 @@ class ComposerServiceProvider extends ServiceProvider
         AppLayoutComposer::class => ['layouts.app'],
         DomainFormComposer::class => ['domains.form'],
         DomainLayoutComposer::class => ['domains.layout'],
-        NotifierFormComposer::class => ['domains.notifiers.form'],
         InstallFormComposer::class => ['installer.form'],
         NotificationMenuComposer::class => ['notifications.menu'],
+        NotifierConditionFormComposer::class => ['domains.notifiers.conditions.form'],
     ];
 
     /**

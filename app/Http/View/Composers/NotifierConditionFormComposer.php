@@ -5,7 +5,7 @@ namespace App\Http\View\Composers;
 use App\LdapNotifierCondition;
 use Illuminate\Contracts\View\View;
 
-class NotifierFormComposer
+class NotifierConditionFormComposer
 {
     /**
      * Bind data to the view.

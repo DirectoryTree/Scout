@@ -3,7 +3,7 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.edit', $domain, $notifier))
 
 @section('page')
-    <div data-controller="hidden">
+    <div data-controller="conditions">
         @component('components.card')
             @slot('header')
                 <div class="d-flex justify-content-between align-items-center">
@@ -14,8 +14,8 @@
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        data-action="click->hidden#open"
-                        data-target="hidden.button"
+                        data-action="click->conditions#open"
+                        data-target="conditions.button"
                     >
                         <i class="fa fa-plus-circle"></i> Add New Condition
                     </button>
@@ -24,15 +24,15 @@
 
             <form
                 method="post"
-                action="{{ route('domains.notifiers.store', $domain) }}"
+                action="{{ route('notifiers.conditions.store', $notifier) }}"
                 class="rounded border p-3 bg-white mb-4 d-none"
                 data-controller="forms--condition"
-                data-target="hidden.container"
+                data-target="conditions.container"
             >
-                @include('domains.notifiers.form', ['condition' => new \App\LdapNotifierCondition()])
+                @include('domains.notifiers.conditions.form', ['condition' => new \App\LdapNotifierCondition()])
 
                 <div class="form-row justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-action="click->hidden#close">
+                    <button type="button" class="btn btn-secondary" data-action="click->conditions#close">
                         <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
                     </button>
 
@@ -42,7 +42,7 @@
                 </div>
             </form>
 
-            @foreach($notifier->conditions as $condition)
+            @forelse($notifier->conditions as $condition)
                 <form
                     method="post"
                     action="{{ route('domains.notifiers.store', $domain) }}"
@@ -50,7 +50,7 @@
                     class="rounded border p-3 bg-white mb-4"
                 >
                     @csrf
-                    @include('domains.notifiers.form')
+                    @include('domains.notifiers.conditions.form')
 
                     <div class="form-row justify-content-between">
                         <a href="{{ route('domains.notifiers.index', $domain) }}" class="btn btn-secondary">
@@ -62,7 +62,11 @@
                         </button>
                     </div>
                 </form>
-            @endforeach
+            @empty
+                <div id="alert-no-notifiers" class="alert alert-primary">
+                    There are no conditions for this notifier.
+                </div>
+            @endforelse
         @endcomponent
     </div>
 @endsection

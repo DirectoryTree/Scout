@@ -3,12 +3,20 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.create', $domain))
 
 @section('page')
-    <form method="post" action="{{ route('domains.notifiers.store', $domain) }}">
+    <form
+        method="post"
+        action="{{ route('domains.notifiers.store', $domain) }}"
+        data-controller="forms--notifier"
+        data-forms--notifier-redirect="true"
+        data-forms--notifier-message="Created notifier."
+    >
         @csrf
 
-        @component('components.card')
+        @component('components.card', ['class' => 'bg-white'])
             @slot('header')
-                <h5 class="mb-0">Add Domain Notifier</h5>
+                <h5 class="mb-0">
+                    <i class="far fa-bell"></i> Add Domain Notifier
+                </h5>
             @endslot
 
             @include('domains.notifiers.form')

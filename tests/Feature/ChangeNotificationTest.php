@@ -13,6 +13,8 @@ class ChangeNotificationTest extends InstalledTestCase
 {
     public function test_notification_is_created_with_domain_notifier()
     {
+        $user = $this->signIn();
+
         $domain = factory(LdapDomain::class)->create();
 
         // Create a domain notifier.
@@ -38,8 +40,8 @@ class ChangeNotificationTest extends InstalledTestCase
         $object->save();
 
         $this->assertDatabaseHas('notifications', [
-            'notifiable_id' => $object->id,
-            'notifiable_type' => get_class($object),
+            'notifiable_id' => $user->id,
+            'notifiable_type' => get_class($user),
         ]);
     }
 
@@ -81,6 +83,8 @@ class ChangeNotificationTest extends InstalledTestCase
 
     public function test_notification_is_past()
     {
+        $user = $this->signIn();
+
         $domain = factory(LdapDomain::class)->create();
 
         // Create a domain notifier.
@@ -107,8 +111,8 @@ class ChangeNotificationTest extends InstalledTestCase
         $object->save();
 
         $this->assertDatabaseHas('notifications', [
-            'notifiable_id' => $object->id,
-            'notifiable_type' => get_class($object),
+            'notifiable_id' => $user->id,
+            'notifiable_type' => get_class($user),
         ]);
     }
 }

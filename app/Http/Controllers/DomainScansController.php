@@ -15,7 +15,7 @@ class DomainScansController extends Controller
      */
     public function index(LdapDomain $domain)
     {
-        $scans = $domain->scans()->latest()->paginate(25);
+        $scans = $domain->scans()->latest()->paginate(10);
 
         return view('domains.scans.index', compact('domain', 'scans'));
     }

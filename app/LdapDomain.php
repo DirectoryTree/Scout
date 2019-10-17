@@ -38,6 +38,17 @@ class LdapDomain extends Model
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'username',
+        'password',
+        'token',
+    ];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array

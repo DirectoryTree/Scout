@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Notifications\DatabaseNotification;
-use App\Http\Resources\Notifications as NotificationResource;
 
 class Notifications
 {
@@ -32,15 +31,5 @@ class Notifications
         return DatabaseNotification::with('notifiable')
             ->limit(10)
             ->get();
-    }
-
-    /**
-     * Get the users notifications as a resource.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function resource()
-    {
-        return NotificationResource::collection($this->get());
     }
 }

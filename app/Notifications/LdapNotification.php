@@ -4,6 +4,8 @@ namespace App\Notifications;
 
 use App\LdapObject;
 use App\LdapNotifier;
+use App\Http\Resources\LdapObject as LdapObjectResource;
+use App\Http\Resources\LdapNotifier as LdapNotifierResource;
 use Illuminate\Notifications\Notification;
 
 class LdapNotification extends Notification
@@ -14,13 +16,20 @@ class LdapNotification extends Notification
     protected $notifier;
 
     /**
+     * @var LdapObject
+     */
+    protected $object;
+
+    /**
      * Constructor.
      *
      * @param LdapNotifier $notifier
+     * @param LdapObject   $object
      */
-    public function __construct(LdapNotifier $notifier)
+    public function __construct(LdapNotifier $notifier, LdapObject $object)
     {
         $this->notifier = $notifier;
+        $this->object = $object;
     }
 
     /**
@@ -40,14 +49,15 @@ class LdapNotification extends Notification
      *
      * Returns the modified attributes names.
      *
-     * @param LdapObject $notifiable
+     * @param mixed $notifiable
      *
      * @return array
      */
-    public function toArray(LdapObject $notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'name' => $this->notifier->notifiable_name,
+            'object' => LdapObjectResource::make($this->object),
+            'notifier' => LdapNotifierResource::make($this->notifier),
         ];
     }
 }

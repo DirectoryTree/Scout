@@ -1,0 +1,21 @@
+.overflow-x {
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.overflow-y {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.overflow-x::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.overflow-y::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

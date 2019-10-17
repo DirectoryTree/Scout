@@ -49,6 +49,15 @@ class FormServiceProvider extends ServiceProvider
             return FormFacade::scoutInput('search', $name, $value, $attributes);
         });
 
+        FormFacade::macro('scoutTextarea', function ($name, $value = '', $attributes = []) {
+            $attributes = array_merge($attributes, [
+                'id' => "trix-$name",
+                'type' => 'hidden',
+            ]);
+
+            return view('forms.textarea', compact('name', 'value', 'attributes'));
+        });
+
         FormFacade::macro('scoutSelector', function ($name, $value = '', $selected = false, $type = 'checkbox', $attributes = []) {
             $label = Arr::pull($attributes, 'label');
             $switch = Arr::pull($attributes, 'switch', false);

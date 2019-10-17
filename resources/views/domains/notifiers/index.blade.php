@@ -11,22 +11,7 @@
                 </div>
 
                 @foreach($systemNotifiers as $notifier)
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        {{
-                            Form::scoutCheckbox('enabled', true, $notifier->enabled, [
-                                'id' => "notifier_$notifier->id",
-                                'switch' => true,
-                                'label' => $notifier->name,
-                                'data-controller' => 'toggle',
-                                'data-action' => 'click->toggle#update',
-                                'data-toggle-url' => route('api.notifier.toggle', $notifier)
-                            ])
-                        }}
-
-                        <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}">
-                            Customize
-                        </a>
-                    </div>
+                    @include('domains.notifiers.notifier')
                 @endforeach
             </div>
         @endcomponent
@@ -43,33 +28,7 @@
             </div>
 
             @forelse($notifiers as $notifier)
-                <div class="list-group-item h5">
-                    <span class="badge badge-light">
-                        Notify me when:
-                    </span>
-
-                    <span class="badge badge-primary">
-                        {{ $notifier->attribute }}
-                    </span>
-
-                    <span class="badge badge-secondary">
-                        @if ($notifier->operator == \App\LdapNotifierCondition::OPERATOR_CONTAINS)
-                            @if ($notifier->value)
-                                {{ __('contains') }}
-                            @else
-                                {{ __('exists') }}
-                            @endif
-                        @elseif ($notifier->operator == \App\LdapNotifierCondition::OPERATOR_PAST)
-                            {{ __('is past') }}
-                        @else
-                            {{ $notifier->operator }}
-                        @endif
-                    </span>
-
-                    <span class="badge badge-warning">
-                         {{ $notifier->value }}
-                    </span>
-                </div>
+                @include('domains.notifiers.notifier')
             @empty
                 <div class="list-group-item text-muted text-center">
                     No custom domain notifiers have been created yet.

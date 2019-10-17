@@ -1,31 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-flex align-items-baseline mb-2">
-        <h3 class="mb-0 mr-2">
-            @isset($object)
-                @include('domains.objects.partials.icon', ['object' => $object])
-
-                {{ $object->name }}
-
-                @if($object->trashed())
-                    <small class="text-muted">(deleted)</small>
-                @endif
-            @else
-                {{ $domain->name }}
-            @endif
+    <div class="mb-2">
+        <h3 class="d-flex justify-content-start mb-0 mr-2 overflow-x">
+            @yield('name', $domain->name)
         </h3>
 
-        <div class="text-muted">
-            @isset($object) {{ $object->dn }} @else {{ $domain->base_dn }} @endif
+        <div class="text-muted overflow-x">
+            @yield('dn', $domain->base_dn)
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-3 col-md-4 col-12">
-            @isset($object)
-                @include('domains.objects.menu')
-            @endisset
+            @yield('menu')
 
             @include('domains.menu')
         </div>

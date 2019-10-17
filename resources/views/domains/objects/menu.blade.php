@@ -24,7 +24,7 @@
                     <i class="fa fa-list-ul"></i> {{ __('Attributes') }}
                 </span>
 
-                <span class="badge badge-primary">{{ $counts['object']['attributes'] }}</span>
+                <span class="badge badge-primary">{{ count($object->values) }}</span>
             </div>
         </a>
 
@@ -37,7 +37,7 @@
                     <i class="fa fa-sync"></i> {{ __('Changes') }}
                 </span>
 
-                <span class="badge badge-primary">{{ $counts['object']['changes'] }}</span>
+                <span class="badge badge-primary">{{ $object->changes()->count() }}</span>
             </div>
         </a>
 

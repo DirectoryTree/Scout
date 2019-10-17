@@ -24,7 +24,7 @@
         "spatie/valuestore": "^1.2"
     },
     "require-dev": {
-        "facade/ignition": "^1.4",
+        "facade/ignition": "1.11.1",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",

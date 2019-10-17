@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\User;
 use App\LdapObject;
 use App\LdapNotifier;
 use App\LdapNotifierLog;
@@ -27,7 +28,14 @@ class LdapObjectObserver
             if ($this->passesConditions($notifier->conditions, $object)) {
                 $this->createNotifierLogs($notifier, $object);
 
-                $object->notify(new LdapNotification($notifier));
+                $notification = new LdapNotification($notifier, $object);
+
+                $users = $notifier->all_users ? User::all() : $notifier->users()->get();
+
+                /** @var User $user */
+                foreach ($users as $user) {
+                    $user->notify($notification);
+                }
             }
         });
     }

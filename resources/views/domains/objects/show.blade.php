@@ -1,4 +1,4 @@
-@extends('domains.layout')
+@extends('domains.objects.layout')
 
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.show', $domain, $object))
 

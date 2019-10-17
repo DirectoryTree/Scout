@@ -3,12 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LdapObject extends Model
 {
-    use Notifiable, SoftDeletes;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -30,6 +29,13 @@ class LdapObject extends Model
     protected $casts = ['values' => 'array'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['icon'];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -45,7 +51,6 @@ class LdapObject extends Model
             if ($object->isForceDeleting()) {
                 $object->changes()->delete();
                 $object->notifiers()->delete();
-                $object->notifications()->delete();
             }
         });
     }

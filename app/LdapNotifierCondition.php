@@ -62,6 +62,7 @@ class LdapNotifierCondition extends Model
             static::OPERATOR_CONTAINS => 'Contains',
             static::OPERATOR_HAS => 'Has',
             static::OPERATOR_PAST => 'Is Past',
+            static::OPERATOR_CHANGED => 'Changed',
         ];
     }
 

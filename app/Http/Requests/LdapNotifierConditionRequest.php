@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\LdapNotifier;
 use App\LdapNotifierCondition;
 use App\Rules\DistinguishedName;
 use Illuminate\Validation\Rule;
@@ -63,17 +62,12 @@ class LdapNotifierConditionRequest extends FormRequest
     /**
      * Persist the LDAP notifier condition.
      *
-     * @param LdapNotifier          $notifier
      * @param LdapNotifierCondition $condition
      *
      * @return LdapNotifierCondition
      */
-    public function persist(LdapNotifier $notifier, LdapNotifierCondition $condition)
+    public function persist(LdapNotifierCondition $condition)
     {
-        if (!$condition->exists) {
-            $condition->notifier()->associate($notifier);
-        }
-
         $condition->type = $this->type;
         $condition->attribute = $this->attribute;
         $condition->operator = $this->operator;

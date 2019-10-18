@@ -99,20 +99,6 @@ class DomainsController extends Controller
     }
 
     /**
-     * Queues the synchronization of the domain.
-     *
-     * @param LdapDomain $domain
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function synchronize(LdapDomain $domain)
-    {
-        Bus::dispatch(new QueueSync($domain));
-
-        return response()->turbolinks(route('domains.show', $domain));
-    }
-
-    /**
      * Displays the form for deleting a domain.
      *
      * @param LdapDomain $domain

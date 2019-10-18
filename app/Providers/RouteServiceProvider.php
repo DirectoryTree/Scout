@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\LdapDomain;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,9 +24,18 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('notifiable_type', function ($value) {
+            return $value == 'domain' ? new LdapDomain() : abort(404);
+        });
+
+        Route::bind('notifiable_model', function ($value, $route) {
+            /** @var $model \Illuminate\Database\Eloquent\Model */
+            $model = $route->notifiable_type;
+
+            return $model->resolveRouteBinding($value) ?? abort(404);
+        });
     }
 
     /**

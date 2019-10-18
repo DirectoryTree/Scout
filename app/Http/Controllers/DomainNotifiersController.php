@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\LdapDomain;
 use App\LdapNotifier;
-use App\Http\Requests\LdapNotifierRequest;
 
-class DomainNotifiersController
+class DomainNotifiersController extends Controller
 {
     /**
      * Displays all the setup LDAP notifications for the domain.
@@ -42,23 +41,6 @@ class DomainNotifiersController
     }
 
     /**
-     * Creates a new domain notifier.
-     *
-     * @param LdapNotifierRequest $request
-     * @param LdapDomain          $domain
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(LdapNotifierRequest $request, LdapDomain $domain)
-    {
-        $notifier = $domain->notifiers()->make();
-
-        $request->persist($notifier);
-
-        return response()->turbolinks(route('domains.notifiers.index', [$domain, $notifier]));
-    }
-
-    /**
      * Displays the notifier belonging to the domain.
      *
      * @param LdapDomain $domain
@@ -88,15 +70,5 @@ class DomainNotifiersController
         $notifier = $domain->notifiers()->findOrFail($notifierId);
 
         return view('domains.notifiers.edit', compact('domain', 'notifier'));
-    }
-
-    public function update()
-    {
-        //
-    }
-
-    public function destroy()
-    {
-        //
     }
 }

@@ -34,9 +34,9 @@ class LdapNotifierRequest extends FormRequest
             $notifier->creator()->associate($this->user());
         }
 
-        $notifier->name = $this->name;
-        $notifier->notifiable_name = $this->short_name;
-        $notifier->description = $this->description;
+        $notifier->name = $this->get('name', $notifier->name);
+        $notifier->description = $this->get('description', $notifier->description);
+        $notifier->notifiable_name = $this->get('short_name', $notifier->short_name);
 
         $notifier->save();
 

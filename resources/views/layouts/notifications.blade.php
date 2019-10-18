@@ -1,4 +1,8 @@
-<li class="nav-item dropdown d-flex align-items-center" data-controller="notifications" data-notifications-url="{{ route('api.notifications') }}">
+<li
+    class="nav-item dropdown d-flex align-items-center"
+    data-controller="notifications"
+    data-notifications-url="{{ route('api.notifications.index') }}"
+>
     <a
         href="#"
         class="nav-link dropdown-toggle d-flex align-items-center"

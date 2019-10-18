@@ -74,7 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');
 
-        Route::get('notifications', 'NotificationsController@index')->name('notifications');
+        Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
+        Route::patch('notifications/{notification}/mark', 'NotificationsMarkController@update')->name('notifications.mark.update');
 
     });
 

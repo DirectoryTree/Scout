@@ -25,7 +25,7 @@ class NotificationsController
     public function index(Request $request)
     {
         return new StreamedResponse(function() use ($request) {
-            $notifications = (new Notifications($request->user()))->get()->transform(function ($notification) {
+            $notifications = $request->user()->notifications()->limit(10)->get()->transform(function ($notification) {
                 return view('notifications.notification', compact('notification'))->render();
             });
 
@@ -37,15 +37,5 @@ class NotificationsController
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);
-    }
-
-    public function markRead()
-    {
-
-    }
-
-    public function markUnread()
-    {
-
     }
 }

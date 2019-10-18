@@ -3,7 +3,6 @@
 namespace App\Http\View\Composers;
 
 use App\LdapDomain;
-use App\Notifications;
 use Illuminate\Contracts\View\View;
 
 class AppLayoutComposer
@@ -17,11 +16,9 @@ class AppLayoutComposer
      */
     public function compose(View $view)
     {
-        $notifications = (new Notifications(request()->user()));
-
         $view->with([
             'counts' => ['domains' => LdapDomain::count()],
-            'notifications' => $notifications->get(),
+            'notifications' => auth()->user()->notifications()->limit(10)->get(),
         ]);
     }
 }

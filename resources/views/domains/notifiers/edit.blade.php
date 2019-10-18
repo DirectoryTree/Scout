@@ -22,46 +22,129 @@
                 </div>
             @endslot
 
-            <form
-                method="post"
-                action="{{ route('notifiers.conditions.store', $notifier) }}"
-                class="rounded border p-3 bg-white mb-4 d-none"
-                data-controller="forms--condition"
-                data-target="conditions.container"
-            >
-                @include('domains.notifiers.conditions.form', ['condition' => new \App\LdapNotifierCondition()])
+            <div class="mb-4" data-target="conditions.container">
+                @component('components.card', ['class' => 'bg-white'])
+                    <form
+                        method="post"
+                        action="{{ route('notifiers.conditions.store', $notifier) }}"
+                        data-controller="forms--condition"
+                        data-forms--condition-redirect="true"
+                        data-forms--condition-message="Added condition"
+                    >
+                        @include('domains.notifiers.conditions.form', ['condition' => new \App\LdapNotifierCondition()])
 
-                <div class="form-row justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-action="click->conditions#close">
-                        <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
-                    </button>
+                        <hr/>
 
-                    <button type="submit" class="ml-auto btn btn-success">
-                        <i class="fa fa-save"></i> {{ __('Save') }}
-                    </button>
-                </div>
-            </form>
+                        <div class="form-row">
+                            <div class="col">
+                                <button type="button" class="btn btn-sm btn-secondary" data-action="click->conditions#close">
+                                    <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
+                                </button>
+                            </div>
 
-            @forelse($notifier->conditions as $condition)
-                <form
-                    method="post"
-                    action="{{ route('domains.notifiers.store', $domain) }}"
-                    data-controller="forms--condition"
-                    class="rounded border p-3 bg-white mb-4"
-                >
-                    @csrf
-                    @include('domains.notifiers.conditions.form')
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    <i class="fa fa-save"></i> {{ __('Save') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                @endcomponent
+            </div>
 
-                    <div class="form-row justify-content-between">
-                        <a href="{{ route('domains.notifiers.index', $domain) }}" class="btn btn-secondary">
-                            <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
-                        </a>
-
-                        <button type="submit" class="ml-auto btn btn-success">
-                            <i class="fa fa-save"></i> {{ __('Save') }}
-                        </button>
+            @forelse($notifier->conditions->groupBy('boolean') as $boolean => $conditions)
+                <div class="row {{ $loop->last && $loop->iteration != 1 ? 'mt-4' : '' }}">
+                    <div class="col">
+                        @switch($boolean)
+                            @case('and')
+                                <h6 class="text-uppercase text-muted font-weight-bold">
+                                    Generate notification when the following is matched:
+                                </h6>
+                                @break
+                            @case('or')
+                                <h6 class="text-uppercase text-muted font-weight-bold">
+                                    Or when one of the following is matched:
+                                </h6>
+                                @break
+                        @endswitch
                     </div>
-                </form>
+                </div>
+
+                @foreach($conditions as $condition)
+                    <div class="{{ $loop->last ? '' : 'mb-4' }}" data-controller="expand">
+                        @component('components.card', ['class' => 'bg-white'])
+                            <div class="row">
+                                <div class="col">
+                                    <h5>
+                                         <span class="badge badge-primary text-uppercase">
+                                            {{ $condition->boolean }}
+                                        </span>
+
+                                        <span class="badge badge-success">
+                                            {{ $condition->attribute }}
+                                        </span>
+
+                                        <span class="badge badge-pill badge-secondary">
+                                            {{ $condition->operator_name }}
+                                        </span>
+
+                                        <span class="badge badge-info">
+                                           {{ $condition->value }}
+                                        </span>
+                                    </h5>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        data-action="click->expand#open"
+                                        data-target="expand.button"
+                                    >
+                                        <i class="fa fa-plus-circle"></i> Edit Condition
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div data-target="expand.container">
+                                <hr/>
+
+                                <form
+                                    method="post"
+                                    action="{{ route('conditions.update', $condition) }}"
+                                    data-controller="forms--condition"
+                                    data-forms--condition-redirect="true"
+                                    data-forms--condition-message="Saved condition"
+                                >
+                                    @csrf
+                                    @method('patch')
+
+                                    @include('domains.notifiers.conditions.form')
+
+                                    <hr/>
+
+                                    <div class="form-row justify-content-between">
+                                        <div class="col">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-secondary"
+                                                data-action="click->expand#close"
+                                            >
+                                                <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
+                                            </button>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <button type="submit" class="ml-auto btn btn-sm btn-success">
+                                                <i class="fa fa-save"></i> {{ __('Save') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        @endcomponent
+                    </div>
+                @endforeach
             @empty
                 <div id="alert-no-notifiers" class="alert alert-primary">
                     There are no conditions for this notifier.

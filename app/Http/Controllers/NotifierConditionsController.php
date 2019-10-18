@@ -26,4 +26,3 @@ class NotifierConditionsController extends Controller
         return response()->turbolinks(url()->previous());
     }
 }
-

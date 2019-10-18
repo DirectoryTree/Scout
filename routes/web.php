@@ -43,6 +43,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/domains/{domain}/objects',          'DomainObjectsController@index')->name('domains.objects.index');
     Route::get('/domains/{domain}/objects/{object}', 'DomainObjectsController@show')->name('domains.objects.show');
 
+    Route::get('/domains/{domain}/objects/{object}/changes', 'DomainObjectChangesController@index')
+        ->name('domains.objects.changes.index');
+    Route::get('/domains/{domain}/objects/{object}/changes/{change}', 'DomainObjectChangesController@show')
+        ->name('domains.objects.changes.show');
+
     Route::get('/domains/{domain}/objects/{object}/attributes', 'DomainObjectAttributesController@index')
         ->name('domains.objects.attributes.index');
 
@@ -64,10 +69,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/notifiers/{notifiable_type}/{notifiable_model}', 'NotifierNotifiableController@store')->name('notifiers.notifiable.store');
 
-    Route::patch('/conditions/{id}', 'ConditionsController@update')->name('conditions.update');
-    Route::delete('/conditions{id}', 'ConditionsController@destory')->name('conditions.destroy');
+    Route::patch('/conditions/{condition}', 'ConditionsController@update')->name('conditions.update');
+    Route::delete('/conditions/{condition}', 'ConditionsController@destory')->name('conditions.destroy');
 
-    Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectsController@sync')
+    Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectSyncController@update')
         ->name('domains.objects.sync');
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
@@ -75,7 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');
 
         Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
-        Route::patch('notifications/{notification}/mark', 'NotificationsMarkController@update')->name('notifications.mark.update');
+        Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 
     });
 

@@ -20,7 +20,7 @@ class DomainChangesController extends Controller
         $changes = LdapChange::whereHas('object', function ($query) use ($domain) {
             return $query->where('domain_id', '=', $domain->id);
         })->groupBy('attribute')
-            ->select(DB::raw('COUNT(*) as count, max(ldap_updated_at), attribute'))
+            ->select(DB::raw('count(*) as count, max(ldap_updated_at) as ldap_updated_at, attribute'))
             ->orderBy(DB::raw('max(ldap_updated_at)'), 'desc')
             ->paginate(25);
 

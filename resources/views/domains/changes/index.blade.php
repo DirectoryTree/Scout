@@ -14,6 +14,7 @@
                     <tr>
                         <th class="pl-4">Attribute</th>
                         <th class="text-center">Objects Changed</th>
+                        <th class="text-center">Last Changed</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +26,11 @@
                                 </a>
                             </td>
                             <td class="text-center">{{ $change->count }}</td>
+                            <td class="text-center">
+                                {{ $change->ldap_updated_at->diffForHumans() }}
+
+                                <small>({{ $change->ldap_updated_at }})</small>
+                            </td>
                         </tr>
                     @empty
                         <tr>

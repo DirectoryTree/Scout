@@ -18,6 +18,7 @@ class NotifierConditionFormComposer
     {
         $view->with([
             'types' => LdapNotifierCondition::types(),
+            'booleans' => LdapNotifierCondition::booleans(),
             'operators' => LdapNotifierCondition::operators(),
         ]);
     }

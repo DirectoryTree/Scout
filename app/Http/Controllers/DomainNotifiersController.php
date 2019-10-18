@@ -17,7 +17,7 @@ class DomainNotifiersController extends Controller
     public function index(LdapDomain $domain)
     {
         $notifiers = $domain->notifiers()
-            ->with('conditions')
+            ->withCount('conditions')
             ->custom()
             ->latest()
             ->paginate(25);

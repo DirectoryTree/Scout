@@ -5,7 +5,7 @@
 @section('page')
     <form
         method="post"
-        action="{{ route('domains.notifiers.store', $domain) }}"
+        action="{{ route('notifiers.notifiable.store', ['domain', $domain]) }}"
         data-controller="forms--notifier"
         data-forms--notifier-redirect="true"
         data-forms--notifier-message="Created notifier."

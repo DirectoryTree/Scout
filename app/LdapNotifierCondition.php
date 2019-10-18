@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class LdapNotifierCondition extends Model
 {
     /**
-     * The notifier condition types.
+     * The condition types.
      */
     const TYPE_DN = 'dn';
     const TYPE_BOOL = 'bool';
@@ -17,7 +17,13 @@ class LdapNotifierCondition extends Model
     const TYPE_TIMESTAMP = 'timestamp';
 
     /**
-     * The notifier condition operators.
+     * The condition booleans.
+     */
+    const BOOLEAN_AND = 'and';
+    const BOOLEAN_OR = 'or';
+
+    /**
+     * The condition operators.
      */
     const OPERATOR_EQUALS = '=';
     const OPERATOR_NOT_EQUALS = '!=';
@@ -83,6 +89,19 @@ class LdapNotifierCondition extends Model
     }
 
     /**
+     * Get the notifier booleans.
+     *
+     * @return array
+     */
+    public static function booleans()
+    {
+        return [
+            static::BOOLEAN_AND => 'And',
+            static::BOOLEAN_OR => 'Or',
+        ];
+    }
+
+    /**
      * The belongsTo notifier relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -90,6 +109,11 @@ class LdapNotifierCondition extends Model
     public function notifier()
     {
         return $this->belongsTo(LdapNotifier::class, 'notifier_id');
+    }
+
+    public function getOperatorNameAttribute()
+    {
+        return static::operators()[$this->operator];
     }
 
     /**

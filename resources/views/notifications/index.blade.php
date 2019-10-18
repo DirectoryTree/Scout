@@ -5,11 +5,19 @@
         @component('components.card', ['class' => 'overflow-hidden', 'flush' => true])
             <div class="list-group list-group-flush">
                 @foreach($notifications as $notification)
-                    <div
-                        class="list-group-item d-flex align-items-center justify-content-between"
-                        data-controller="notification"
-                        data-notification-id="{{ $notification->id }}"
+                    <form
+                        method="post"
+                        action="{{ route('api.notifications.mark.update', $notification) }}"
+                        data-controller="forms--notification-mark"
+                        data-forms--notification-mark-redirect="true"
                     >
+                        @csrf
+                        @method('patch')
+
+                        <input type="hidden" name="read" value="{{ $notification->read() ? '0' : '1' }}">
+
+                        <div class="list-group-item d-flex align-items-center justify-content-between">
+
                         <div class="mr-2">
                             <h5>
                                 {{ $notification->data['notifier']['notifiable_name'] }}
@@ -27,17 +35,18 @@
                         </div>
 
                         @if ($notification->read())
-                            <button class="btn btn-sm btn-outline-secondary" data-action="click->notification#markUnread">
+                            <button type="submit" class="btn btn-sm btn-dark">
                                 <i class="far fa-envelope"></i>
                                 <span class="d-none d-md-inline">Mark Unread</span>
                             </button>
                         @else
-                            <button class="btn btn-sm btn-outline-secondary" data-action="click->notification#markRead">
+                            <button type="submit" class="btn btn-sm btn-dark">
                                 <i class="far fa-envelope-open"></i>
                                 <span class="d-none d-md-inline">Mark Read</span>
                             </button>
                         @endif
-                    </div>
+                        </div>
+                    </form>
                 @endforeach
             </div>
         @endcomponent

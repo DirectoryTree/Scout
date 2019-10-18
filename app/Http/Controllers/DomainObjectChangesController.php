@@ -20,7 +20,7 @@ class DomainObjectChangesController extends Controller
         $object = $domain->objects()->withTrashed()->findOrFail($objectId);
 
         $changes = $object->changes()
-            ->select(DB::raw('COUNT(*) as count, attribute, max(ldap_updated_at) as ldap_updated_at'))
+            ->select(DB::raw('count(*) as count, attribute, max(ldap_updated_at) as ldap_updated_at'))
             ->groupBy('attribute')
             ->orderBy('ldap_updated_at', 'desc')
             ->paginate(20);

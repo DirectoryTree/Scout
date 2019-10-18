@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as Ladda from 'ladda';
-import Turbolinks from 'turbolinks';
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
@@ -23,10 +22,23 @@ export default class extends Controller {
 
         this.removeErrors();
 
-        axios.post(this.element.action, this.getFormData())
+        this.send()
             .then(response => this.success(response))
             .catch(error => this.error(error))
             .then(() => Ladda.stopAll());
+    }
+
+    /**
+     * Send the form request.
+     *
+     * @returns {Promise<void>}
+     */
+    send() {
+        return axios({
+            url: this.element.action,
+            method: this.element.method,
+            data: this.getFormData()
+        });
     }
 
     /**
@@ -46,7 +58,7 @@ export default class extends Controller {
             };
 
             document.addEventListener('turbolinks:load', after, false);
-            
+
             eval(response.data);
         }
         // Otherwise, we will execute the after closure now.

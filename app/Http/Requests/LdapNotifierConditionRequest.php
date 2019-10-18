@@ -17,16 +17,20 @@ class LdapNotifierConditionRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'boolean' => [
+                'required',
+                Rule::in(array_keys(LdapNotifierCondition::booleans())),
+            ],
             'type' => [
                 'required',
-                Rule::in(array_keys(LdapNotifierCondition::types()))
+                Rule::in(array_keys(LdapNotifierCondition::types())),
             ],
             'attribute' => [
                 'required',
             ],
             'operator' => [
                 'required',
-                Rule::in(array_keys(LdapNotifierCondition::operators()))
+                Rule::in(array_keys(LdapNotifierCondition::operators())),
             ],
         ];
 
@@ -68,6 +72,7 @@ class LdapNotifierConditionRequest extends FormRequest
      */
     public function persist(LdapNotifierCondition $condition)
     {
+        $condition->boolean = $this->boolean;
         $condition->type = $this->type;
         $condition->attribute = $this->attribute;
         $condition->operator = $this->operator;

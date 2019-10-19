@@ -173,7 +173,6 @@ return [
         App\Providers\ComposerServiceProvider::class,
         App\Providers\InstallationServiceProvider::class,
         App\Providers\FormServiceProvider::class,
-        App\Providers\ResponseServiceProvider::class,
     ],
 
     /*

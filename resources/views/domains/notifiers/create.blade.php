@@ -3,13 +3,7 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.create', $domain))
 
 @section('page')
-    <form
-        method="post"
-        action="{{ route('notifiers.notifiable.store', ['domain', $domain]) }}"
-        data-controller="forms--notifier"
-        data-forms--notifier-redirect="true"
-        data-forms--notifier-message="Created notifier."
-    >
+    <form method="post" action="{{ route('notifiers.notifiable.store', ['domain', $domain]) }}" data-controller="form">
         @csrf
 
         @component('components.card', ['class' => 'bg-white'])

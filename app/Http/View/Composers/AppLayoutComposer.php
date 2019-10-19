@@ -18,7 +18,7 @@ class AppLayoutComposer
     {
         $view->with([
             'counts' => ['domains' => LdapDomain::count()],
-            'notifications' => auth()->user()->notifications()->limit(10)->get(),
+            'notifications' => auth()->user()->unreadNotifications()->limit(10)->get(),
         ]);
     }
 }

@@ -28,8 +28,6 @@
                         method="post"
                         action="{{ route('notifiers.conditions.store', $notifier) }}"
                         data-controller="forms--condition"
-                        data-forms--condition-redirect="true"
-                        data-forms--condition-message="Added condition"
                     >
                         @include('domains.notifiers.conditions.form', ['condition' => new \App\LdapNotifierCondition()])
 
@@ -76,7 +74,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5>
-                                         <span class="badge badge-primary text-uppercase">
+                                        <span class="badge badge-primary text-uppercase">
                                             {{ $condition->boolean }}
                                         </span>
 
@@ -113,8 +111,6 @@
                                     method="post"
                                     action="{{ route('conditions.update', $condition) }}"
                                     data-controller="forms--condition"
-                                    data-forms--condition-redirect="true"
-                                    data-forms--condition-message="Saved condition"
                                 >
                                     @csrf
                                     @method('patch')

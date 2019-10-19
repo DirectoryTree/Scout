@@ -7,8 +7,6 @@
 
 @section('body')
     <div id="app">
-        @include('layouts.flash')
-
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
             <div class="container">
                 <a class="navbar-brand font-weight-bold" href="{{ url('/') }}">

@@ -27,7 +27,6 @@
                 method="post"
                 action="{{ route('domains.destroy', $domain) }}"
                 data-controller="form-confirmation"
-                data-action="submit->form-confirmation#confirm"
                 data-form-confirmation-title="Delete domain?"
                 data-form-confirmation-message="This action cannot be undone. All domain data will be deleted."
             >

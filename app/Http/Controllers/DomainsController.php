@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
 use App\LdapDomain;
-use App\Jobs\QueueSync;
 use AdSystemNotifierSeeder;
-use Illuminate\Support\Facades\Bus;
 use App\Http\Requests\LdapDomainRequest;
 
 class DomainsController extends Controller
@@ -40,7 +39,7 @@ class DomainsController extends Controller
      * @param LdapDomainRequest $request
      * @param LdapDomain        $domain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function store(LdapDomainRequest $request, LdapDomain $domain)
     {
@@ -50,7 +49,9 @@ class DomainsController extends Controller
             (new AdSystemNotifierSeeder())->run();
         }
 
-        return response()->turbolinks(route('domains.show', $domain));
+        return Scout::response()
+            ->notifyWithMessage('Added domain.')
+            ->redirect(route('domains.show', $domain));
     }
 
     /**
@@ -89,13 +90,15 @@ class DomainsController extends Controller
      * @param LdapDomainRequest $request
      * @param LdapDomain        $domain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function update(LdapDomainRequest $request, LdapDomain $domain)
     {
         $request->persist($domain);
 
-        return response()->turbolinks(route('domains.show', $domain));
+        return Scout::response()
+            ->notifyWithMessage('Updated domain.')
+            ->redirect(route('domains.show', $domain));
     }
 
     /**
@@ -115,7 +118,7 @@ class DomainsController extends Controller
      *
      * @param LdapDomain $domain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      *
      * @throws \Exception
      */
@@ -123,8 +126,8 @@ class DomainsController extends Controller
     {
         $domain->delete();
 
-        flash()->success('Removed domain and all data.');
-
-        return redirect()->route('domains.index');
+        return Scout::response()
+            ->notifyWithMessage('Deleted domain.')
+            ->redirect(route('domains.index'));
     }
 }

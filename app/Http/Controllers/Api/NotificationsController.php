@@ -25,7 +25,7 @@ class NotificationsController
     public function index(Request $request)
     {
         return new StreamedResponse(function() use ($request) {
-            $notifications = $request->user()->notifications()->limit(10)->get()->transform(function ($notification) {
+            $notifications = $request->user()->unreadNotifications()->limit(10)->get()->transform(function ($notification) {
                 return view('notifications.notification', compact('notification'))->render();
             });
 

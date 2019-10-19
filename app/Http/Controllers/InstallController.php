@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Scout;
 use App\Installer\Installer;
 use App\Installer\Requirements;
 use App\Http\Requests\InstallRequest;
@@ -28,13 +29,14 @@ class InstallController extends Controller
      *
      * @param InstallRequest $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function store(InstallRequest $request)
     {
         if (!app(Requirements::class)->passes()) {
-            return redirect()->route('install.index')
-                ->with('error', __('Your server does not pass all of the application requirements.'));
+            return Scout::response()
+                ->type('error')
+                ->notifyWithMessage(__('Your server does not pass all of the application requirements.'));
         }
 
         /** @var Installer $installer */
@@ -43,22 +45,21 @@ class InstallController extends Controller
         try {
             $installer->install($request->validated());
         } catch (Exception $ex) {
-            return redirect()->route('install.index')
-                ->with('error', "Error: " . $ex->getMessage());
+            return Scout::response()->type('error')->notifyWithMessage($ex->getMessage());
         }
 
-        return response()->turbolinks(route('install.index'));
+        return Scout::response()->redirect(route('install.index'));
     }
 
     /**
      * Run the application migrations.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function migrate()
     {
         Artisan::call('migrate');
 
-        return redirect()->to('/login');
+        return Scout::response()->redirect(route('login'));
     }
 }

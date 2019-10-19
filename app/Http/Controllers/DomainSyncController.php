@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
 use App\LdapDomain;
 use App\Jobs\QueueSync;
 use Illuminate\Support\Facades\Bus;
@@ -13,12 +14,14 @@ class DomainSyncController
      *
      * @param LdapDomain $domain
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function store(LdapDomain $domain)
     {
         Bus::dispatch(new QueueSync($domain));
 
-        return response()->turbolinks(route('domains.show', $domain));
+        return Scout::response()
+            ->notifyWithMessage('Synchronized object.')
+            ->visit(route('domains.show', $domain));
     }
 }

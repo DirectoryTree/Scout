@@ -1,5 +1,5 @@
 <div
-    class="dropdown-item notification py-2 {{ $notification->read() ? 'bg-light' : null }}"
+    class="dropdown-item notification py-2"
     data-target="notifications.notification"
     data-action="click->notifications#view"
     data-read="{{ $notification->read() }}"

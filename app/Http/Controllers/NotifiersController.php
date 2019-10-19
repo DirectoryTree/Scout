@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
 use App\LdapNotifier;
 use App\Http\Requests\LdapNotifierRequest;
 
@@ -13,13 +14,15 @@ class NotifiersController
      * @param LdapNotifierRequest $request
      * @param LdapNotifier        $notifier
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      */
     public function update(LdapNotifierRequest $request, LdapNotifier $notifier)
     {
         $request->persist($notifier);
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->notifyWithMessage('Updated notifier')
+            ->redirect(url()->previous());
     }
 
     /**
@@ -27,7 +30,7 @@ class NotifiersController
      *
      * @param LdapNotifier $notifier
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      *
      * @throws \Exception
      */
@@ -35,6 +38,8 @@ class NotifiersController
     {
         $notifier->delete();
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->notifyWithMessage('Deleted notifier')
+            ->redirect(url()->previous());
     }
 }

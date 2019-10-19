@@ -19,12 +19,7 @@
 
                     <a class="btn btn-block btn-primary" href="{{ route('register') }}">Register</a>
                 @else
-                    <form
-                        method="POST"
-                        action="{{ route('login') }}"
-                        data-controller="form-xhr"
-                        data-form-xhr-redirect="true"
-                    >
+                    <form method="POST" action="{{ route('login') }}" data-controller="form">
                         @csrf
 
                         <div class="form-group">
@@ -34,15 +29,15 @@
                                 Form::scoutText('email', null, [
                                     'required',
                                     'autofocus',
-                                    'data-target' => 'form-xhr.input',
-                                    'data-action' => 'keyup->form-xhr#clearError'
+                                    'data-target' => 'form.input',
+                                    'data-action' => 'keyup->form#clearError'
                                 ])
                             }}
 
                             {{
                                 Form::scoutError([
                                     'data-input' => 'email',
-                                    'data-target' => 'form-xhr.error'
+                                    'data-target' => 'form.error'
                                 ])
                             }}
                         </div>
@@ -53,15 +48,15 @@
                             {{
                                 Form::scoutPassword('password', [
                                     'required',
-                                    'data-target' => 'form-xhr.input',
-                                    'data-action' => 'keyup->form-xhr#clearError'
+                                    'data-target' => 'form.input',
+                                    'data-action' => 'keyup->form#clearError'
                                 ])
                             }}
 
                             {{
                                  Form::scoutError([
                                      'data-input' => 'password',
-                                     'data-target' => 'form-xhr.error'
+                                     'data-target' => 'form.error'
                                  ])
                              }}
                         </div>

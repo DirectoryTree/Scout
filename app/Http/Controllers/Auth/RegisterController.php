@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Scout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -47,11 +48,11 @@ class RegisterController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param User                     $user
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      */
     protected function registered(Request $request, $user)
     {
-        return response()->turbolinks('/login');
+        return Scout::response()->redirect(route('login'));
     }
 
     /**

@@ -5,12 +5,7 @@
         @component('components.card', ['class' => 'overflow-hidden', 'flush' => true])
             <div class="list-group list-group-flush">
                 @foreach($notifications as $notification)
-                    <form
-                        method="post"
-                        action="{{ route('api.notifications.mark.update', $notification) }}"
-                        data-controller="forms--notification-mark"
-                        data-forms--notification-mark-redirect="true"
-                    >
+                    <form method="post" action="{{ route('api.notifications.mark.update', $notification) }}" data-controller="form">
                         @csrf
                         @method('patch')
 

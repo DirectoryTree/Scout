@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
 use App\LdapNotifier;
 use App\LdapNotifierCondition;
 use App\Http\Requests\LdapNotifierConditionRequest;
@@ -23,6 +24,8 @@ class NotifierConditionsController extends Controller
 
         $request->persist($condition);
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->notifyWithMessage('Created condition.')
+            ->redirect(url()->previous());
     }
 }

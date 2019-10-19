@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Scout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +14,7 @@ class NotificationMarkController extends Controller
      * @param Request $request
      * @param string  $notificationId
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      */
     public function update(Request $request, $notificationId)
     {
@@ -24,6 +25,7 @@ class NotificationMarkController extends Controller
 
         $request->read ? $notification->markAsRead() : $notification->markAsUnread();
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->visit(url()->previous());
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @push('scripts')
-    <script src="{{ asset(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>
+    <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
 @endpush
 
 @push('styles')

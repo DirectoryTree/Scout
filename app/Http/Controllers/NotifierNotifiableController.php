@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
+use App\LdapDomain;
 use App\LdapNotifier;
 use App\Http\Requests\LdapNotifierRequest;
 
@@ -14,7 +16,7 @@ class NotifierNotifiableController
      * @param string                              $notifiableType
      * @param \Illuminate\Database\Eloquent\Model $notifiableModel
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\ScoutResponse
      */
     public function store(LdapNotifierRequest $request, $notifiableType, $notifiableModel)
     {
@@ -23,6 +25,12 @@ class NotifierNotifiableController
 
         $request->persist($notifier);
 
-        return response()->turbolinks(url()->previous());
+        $url = $notifiableModel instanceof LdapDomain ?
+            route('domains.notifiers.edit', [$notifiableModel, $notifier]) :
+            url()->previous();
+
+        return Scout::response()
+            ->notifyWithMessage('Created notifier.')
+            ->redirect($url);
     }
 }

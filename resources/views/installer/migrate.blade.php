@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center">
         @component('components.card', ['class' => 'bg-white col-lg-4 text-center'])
-            <form method="POST" action="{{ route('install.migrate') }}">
+            <form method="POST" action="{{ route('install.migrate') }}" data-controller="form">
                 @csrf
 
                 @if(session('error'))

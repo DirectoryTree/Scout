@@ -3,15 +3,15 @@
 
     {{
         Form::scoutSelect('driver', $databases, null, [
-            'data-target' => 'forms--install.input',
-            'data-action' => 'change->forms--install#clearError'
+            'data-target' => 'form.input',
+            'data-action' => 'change->form#clearError'
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'driver',
-            'data-target' => 'forms--install.error',
+            'data-target' => 'form.error',
         ])
     }}
 </div>
@@ -22,15 +22,15 @@
     {{
         Form::scoutText('host', null, [
             'placeholder' => '127.0.0.1',
-            'data-target' => 'forms--install.input',
-            'data-action' => 'keyup->forms--install#clearError',
+            'data-target' => 'form.input',
+            'data-action' => 'keyup->form#clearError',
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'host',
-            'data-target' => 'forms--install.error'
+            'data-target' => 'form.error'
         ])
     }}
 </div>
@@ -41,15 +41,15 @@
     {{
         Form::scoutText('port', 3306, [
             'placeholder' => '3306',
-            'data-target' => 'forms--install.input',
-            'data-action' => 'keyup->forms--install#clearError',
+            'data-target' => 'form.input',
+            'data-action' => 'keyup->form#clearError',
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'port',
-            'data-target' => 'forms--install.error'
+            'data-target' => 'form.error'
         ])
     }}
 </div>
@@ -60,15 +60,15 @@
     {{
         Form::scoutText('database', null, [
             'placeholder' => 'scout',
-            'data-target' => 'forms--install.input',
-            'data-action' => 'keyup->forms--install#clearError',
+            'data-target' => 'form.input',
+            'data-action' => 'keyup->form#clearError',
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'database',
-            'data-target' => 'forms--install.error'
+            'data-target' => 'form.error'
         ])
     }}
 </div>
@@ -79,15 +79,15 @@
     {{
         Form::scoutText('username', null, [
             'placeholder' => 'Username',
-            'data-target' => 'forms--install.input',
-            'data-action' => 'keyup->forms--install#clearError',
+            'data-target' => 'form.input',
+            'data-action' => 'keyup->form#clearError',
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'username',
-            'data-target' => 'forms--install.error'
+            'data-target' => 'form.error'
         ])
     }}
 </div>
@@ -98,15 +98,15 @@
     {{
         Form::scoutPassword('password', [
             'placeholder' => 'Password',
-            'data-target' => 'forms--install.input',
-            'data-action' => 'keyup->forms--install#clearError',
+            'data-target' => 'form.input',
+            'data-action' => 'keyup->form#clearError',
         ])
     }}
 
     {{
         Form::scoutError([
             'data-input' => 'password',
-            'data-target' => 'forms--install.error'
+            'data-target' => 'form.error'
         ])
     }}
 </div>

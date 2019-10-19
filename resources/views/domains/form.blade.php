@@ -7,7 +7,7 @@
                 Form::scoutRadio('encryption', '', $domain->encryption == '', [
                     'id' => 'none',
                     'label' => 'No Encryption',
-                    'data-target' => 'forms--domain.input',
+                    'data-target' => 'form.input',
                 ])
             }}
         </div>
@@ -17,7 +17,7 @@
                 Form::scoutRadio('encryption', 'tls', $domain->encryption == 'tls', [
                     'id' => 'radio-use-tls',
                     'label' => 'Use TLS',
-                    'data-target' => 'forms--domain.input',
+                    'data-target' => 'form.input',
                 ])
             }}
         </div>
@@ -27,7 +27,7 @@
                 Form::scoutRadio('encryption', 'ssl', $domain->encryption == 'ssl', [
                     'id' => 'radio-use-ssl',
                     'label' => 'Use SSL',
-                    'data-target' => 'forms--domain.input',
+                    'data-target' => 'form.input',
                 ])
             }}
         </div>
@@ -36,7 +36,7 @@
     {{
         Form::scoutError([
             'data-input' => 'encryption',
-            'data-target' => 'forms--domain.error',
+            'data-target' => 'form.error',
         ])
     }}
 
@@ -53,15 +53,15 @@
             {{
                 Form::scoutSelect('type', $types, $domain->type, [
                     'required',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                 ])
             }}
 
             {{
                 Form::scoutError([
                     'data-input' => 'type',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>
@@ -75,8 +75,8 @@
                 Form::scoutText('name', $domain->name, [
                     'required',
                     'autofocus',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => 'Domain Name / Company',
                 ])
             }}
@@ -84,7 +84,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'name',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>
@@ -100,8 +100,8 @@
                 Form::scoutText('hosts', implode(',', $domain->hosts ?? []), [
                     'required',
                     'autofocus',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => '10.0.0.1,10.0.0.2',
                 ])
             }}
@@ -109,7 +109,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'hosts',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
 
@@ -126,8 +126,8 @@
             {{
                 Form::scoutNumber('port', $domain->port ?? 389, [
                     'required',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => '389',
                 ])
             }}
@@ -135,7 +135,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'port',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>
@@ -148,8 +148,8 @@
             {{
                 Form::scoutNumber('timeout', $domain->timeout ?? 5, [
                     'required',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => '5',
                 ])
             }}
@@ -157,7 +157,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'timeout',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>
@@ -172,8 +172,8 @@
             {{
                 Form::scoutText('base_dn', $domain->base_dn, [
                     'required',
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => 'dc=local,dc=com',
                 ])
             }}
@@ -181,7 +181,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'base_dn',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
 
@@ -197,8 +197,8 @@
 
             {{
                 Form::scoutText('filter', $domain->filter, [
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => '(example=value)',
                 ])
             }}
@@ -206,7 +206,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'filter',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
 
@@ -232,8 +232,8 @@
 
             {{
                 Form::scoutText('username', $domain->username ? decrypt($domain->username) : null, [
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => 'admin',
                 ])
             }}
@@ -241,7 +241,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'username',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>
@@ -253,8 +253,8 @@
 
             {{
                 Form::scoutPassword('password', [
-                    'data-target' => 'forms--domain.input',
-                    'data-action' => 'keyup->forms--domain#clearError',
+                    'data-target' => 'form.input',
+                    'data-action' => 'keyup->form#clearError',
                     'placeholder' => 'secret',
                 ])
             }}
@@ -262,7 +262,7 @@
             {{
                 Form::scoutError([
                     'data-input' => 'password',
-                    'data-target' => 'forms--domain.error',
+                    'data-target' => 'form.error',
                 ])
             }}
         </div>

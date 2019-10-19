@@ -61,13 +61,7 @@
                 </h4>
 
                 @slot('footer')
-                    <form
-                        method="post"
-                        action="{{ route('domains.synchronize', $domain) }}"
-                        data-controller="forms--domain-sync"
-                        data-forms--domain-sync-redirect="true"
-                        data-forms--domain-sync-message="Queued Synchronization"
-                    >
+                    <form method="post" action="{{ route('domains.synchronize', $domain) }}" data-controller="form">
                         @csrf
 
                         <button type="submit" class="btn btn-block btn-sm btn-primary">

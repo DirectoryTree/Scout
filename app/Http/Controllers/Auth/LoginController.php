@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Scout;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -59,6 +60,9 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        return response()->turbolinks('/');
+        return Scout::response()
+            ->withoutCache()
+            ->notifyWithMessage('Logged in.')
+            ->redirect('/');
     }
 }

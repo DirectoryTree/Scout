@@ -3,13 +3,7 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.create'))
 
 @section('content')
-    <form
-        method="post"
-        action="{{ route('domains.store') }}"
-        data-controller="forms--domain"
-        data-forms--domain-redirect="true"
-        data-forms--domain-message="Added domain."
-    >
+    <form method="post" action="{{ route('domains.store') }}" data-controller="form">
         @csrf
 
         @component('components.card')

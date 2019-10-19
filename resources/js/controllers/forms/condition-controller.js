@@ -1,5 +1,5 @@
 import toaster from "../../toaster";
-import FormController from '../form-xhr-controller';
+import FormController from '../form-controller';
 
 export default class extends FormController {
     after(response) {

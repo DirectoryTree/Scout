@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as Ladda from 'ladda';
+import Resolver from "../resolver";
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
@@ -20,12 +21,16 @@ export default class extends Controller {
     submit(event) {
         event.preventDefault();
 
-        this.removeErrors();
+        this.before().then(() => {
+            this.removeErrors();
 
-        this.send()
-            .then(response => this.success(response))
-            .catch(error => this.error(error))
-            .then(() => Ladda.stopAll());
+            this.send()
+                .then(response => this.success(response))
+                .catch(error => this.error(error))
+                .then(() => Ladda.stopAll());
+        }).catch(() => {
+            Ladda.stopAll();
+        });
     }
 
     /**
@@ -47,24 +52,20 @@ export default class extends Controller {
      * @param {Object} response
      */
     success(response) {
-        // If the form indicates that a redirect must occur, we
-        // will execute the after closure when turbolinks has
-        // finished loading the redirect to properly execute.
-        if (this.data.has('redirect')) {
-            let after = () => {
-                this.after(response);
+        let resolver = new Resolver(response);
 
-                document.removeEventListener('turbolinks:load', after, false);
-            };
+        resolver.afterResolving(() => { this.after(response); });
 
-            document.addEventListener('turbolinks:load', after, false);
+        resolver.resolve();
+    }
 
-            eval(response.data);
-        }
-        // Otherwise, we will execute the after closure now.
-        else {
-            this.after(response);
-        }
+    /**
+     * Additional operations to run before a form submission.
+     *
+     * @return {Promise}
+     */
+    before() {
+        return new Promise(resolve => { resolve(); });
     }
 
     /**
@@ -82,10 +83,13 @@ export default class extends Controller {
      * @param {Object} error
      */
     error(error) {
-        if (error.response) {
+        // If this is a form validation error, we'll display the form errors.
+        if (error.response.status === 422) {
             this.setErrors(
                 this.getErrorsFromResponse(error.response)
             );
+        } else {
+            (new Resolver(error.response)).resolve();
         }
     }
 
@@ -157,7 +161,7 @@ export default class extends Controller {
     }
 
     /**
-     * Get the serialized form data as an object.
+     * Get the serialized form data as an object for axios.
      *
      * @returns {Object}
      */

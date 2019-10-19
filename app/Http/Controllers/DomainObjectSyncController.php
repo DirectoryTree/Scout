@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Scout;
 use App\LdapDomain;
 use App\LdapObject;
 use App\Jobs\SyncSingleObject;
@@ -16,7 +17,7 @@ class DomainObjectSyncController
      * @param LdapDomain $domain
      * @param int        $objectId
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \App\Http\ScoutResponse
      */
     public function update(LdapDomain $domain, $objectId)
     {
@@ -28,9 +29,13 @@ class DomainObjectSyncController
         try {
             Bus::dispatch(new SyncSingleObject($domain, $object));
         } catch (Exception $ex) {
-            return response(['error' => $ex->getMessage()]);
+            return Scout::response()
+                ->type('error')
+                ->notifyWithMessage($ex->getMessage());
         }
 
-        return response()->turbolinks(route('domains.objects.attributes.index', [$domain, $object]), $replace = true);
+        return Scout::response()
+            ->notifyWithMessage('Synchronized object.')
+            ->visit(route('domains.objects.attributes.index', [$domain, $object]));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Scout;
 use App\LdapNotifierCondition;
 use App\Http\Requests\LdapNotifierConditionRequest;
 
@@ -13,13 +14,15 @@ class ConditionsController extends Controller
      * @param LdapNotifierConditionRequest $request
      * @param LdapNotifierCondition        $condition
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      */
     public function update(LdapNotifierConditionRequest $request, LdapNotifierCondition $condition)
     {
         $request->persist($condition);
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->notifyWithMessage('Updated condition.')
+            ->redirect(url()->previous());
     }
 
     /**
@@ -27,7 +30,7 @@ class ConditionsController extends Controller
      *
      * @param LdapNotifierCondition $condition
      *
-     * @return mixed
+     * @return \App\Http\ScoutResponse
      *
      * @throws \Exception
      */
@@ -44,6 +47,8 @@ class ConditionsController extends Controller
             $notifier->save();
         }
 
-        return response()->turbolinks(url()->previous());
+        return Scout::response()
+            ->notifyWithMessage('Deleted condition.')
+            ->redirect(url()->previous());
     }
 }

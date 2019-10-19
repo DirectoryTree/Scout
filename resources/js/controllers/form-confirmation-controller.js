@@ -1,33 +1,13 @@
-import Swal from 'sweetalert2';
-import * as Ladda from 'ladda';
-import { Controller } from 'stimulus';
+import toaster from "../toaster";
+import FormController from './form-controller';
 
-export default class extends Controller {
+export default class extends FormController {
     /**
      * Prevent form submissions from occurring until confirmed.
      *
-     * @param {Object} event
+     * @returns {Promise<SweetAlertResult>}
      */
-    confirm(event) {
-        event.preventDefault();
-
-        Swal.fire({
-            reverseButtons:true,
-            showCancelButton: true,
-            showConfirmButton: true,
-            type: 'warning',
-            title: this.data.get('title'),
-            text: this.data.get('message'),
-            animation:false,
-        }).then((result) => {
-            if (result.value) {
-                // Submit the form upon confirmation.
-                event.target.submit();
-            } else {
-                Ladda.stopAll();
-            }
-        }).catch(() => {
-            Ladda.stopAll();
-        });
+    before() {
+        return toaster.confirm(this.data.get('title'), this.data.get('message'));
     }
 }

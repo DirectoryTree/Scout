@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\LdapDomain;
 use App\LdapObject;
-use App\Jobs\SyncSingleObject;
-use Illuminate\Support\Facades\Bus;
 
 class DomainObjectsController extends Controller
 {

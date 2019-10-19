@@ -14,7 +14,7 @@ class CreateLdapNotifierConditionsTable extends Migration
     public function up()
     {
         Schema::create('ldap_notifier_conditions', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('notifier_id');
             $table->string('boolean')->default('and');
             $table->string('type');

@@ -24,7 +24,7 @@ class NotifierTest extends InstalledTestCase
             'name' => 'New Name',
             'short_name' => 'New Short Name',
             'description' => 'New Description',
-        ])->assertTurbolinksRedirect();
+        ])->assertJson(['type' => 'success']);
 
         $this->assertDatabaseHas('ldap_notifiers', [
             'name' => 'New Name',
@@ -48,6 +48,6 @@ class NotifierTest extends InstalledTestCase
         $notifier = factory(LdapNotifier::class)->state('domain')->create();
 
         $this->delete(route('notifiers.destroy', $notifier))
-            ->assertTurbolinksRedirect();
+            ->assertJson(['type' => 'success']);
     }
 }

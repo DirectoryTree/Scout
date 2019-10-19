@@ -42,7 +42,7 @@ class NotifierNotifiableTest extends InstalledTestCase
             'name' => 'Notifier Name',
             'short_name' => 'Short Name',
             'description' => 'Description',
-        ])->assertTurbolinksRedirect();
+        ])->assertJson(['type' => 'success']);
 
         $this->assertDatabaseHas('ldap_notifiers', [
             'notifiable_type' => LdapDomain::class,

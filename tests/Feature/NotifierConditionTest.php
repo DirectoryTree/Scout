@@ -22,10 +22,11 @@ class NotifierConditionTest extends InstalledTestCase
         $notifier = factory(LdapNotifier::class)->states('domain')->create();
 
         $this->post(route('notifiers.conditions.store', $notifier), [
+            'boolean' => 'and',
             'attribute' => 'company',
             'type' => LdapNotifierCondition::TYPE_STRING,
             'operator' => LdapNotifierCondition::OPERATOR_CHANGED,
-        ])->assertTurbolinksRedirect();
+        ])->assertJson(['type' => 'success']);
     }
 
     public function test_condition_type_is_required()

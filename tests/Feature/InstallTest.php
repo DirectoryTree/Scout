@@ -109,7 +109,10 @@ class InstallTest extends TestCase
         Artisan::shouldReceive('call')->once()->withArgs(['migrate']);
 
         $this->post(route('install.migrate'))
-            ->assertRedirect('/login');
+            ->assertJson([
+                'type' => 'success',
+                'url' => route('login'),
+            ]);
     }
 
     public function test_migrations_cannot_be_ran_after_setting_up_database()

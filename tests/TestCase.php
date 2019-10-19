@@ -25,16 +25,4 @@ abstract class TestCase extends BaseTestCase
 
         return $user;
     }
-
-    /**
-     * Use a custom test response base.
-     *
-     * @param \Illuminate\Http\Response $response
-     *
-     * @return TestResponse
-     */
-    protected function createTestResponse($response)
-    {
-        return TestResponse::fromBaseResponse($response);
-    }
 }

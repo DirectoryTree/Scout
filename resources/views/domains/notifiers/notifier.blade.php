@@ -21,7 +21,36 @@
         @endif
     </div>
 
-    <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}">
-        Customize
-    </a>
+    <div class="dropdown dropleft">
+        <button class="btn btn-sm btn-outline-secondary" type="button" id="btn-notifier-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="btn-notifier-settings">
+            <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="dropdown-item">
+                <i class="fas fa-cogs"></i> Customize
+            </a>
+
+            @if(!$notifier->system)
+                <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="dropdown-item">
+                    <i class="fas fa-not-equal"></i> Conditions
+                </a>
+
+                <form
+                    class="d-inline"
+                    method="post"
+                    action="{{ route('notifiers.destroy', $notifier) }}"
+                    data-controller="form-confirmation"
+                    data-form-confirmation-title="Delete Notifier?"
+                    data-form-confirmation-message="This cannot be undone."
+                >
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="dropdown-item no-loading">
+                        <i class="fa fa-trash-alt"></i> Delete
+                    </button>
+                </form>
+            @endif
+        </div>
+    </div>
 </div>

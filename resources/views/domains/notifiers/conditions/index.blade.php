@@ -1,6 +1,6 @@
 @extends('domains.layout')
 
-@section('breadcrumbs', Breadcrumbs::render('domains.notifiers.edit', $domain, $notifier))
+@section('breadcrumbs', Breadcrumbs::render('domains.notifiers.conditions.index', $domain, $notifier))
 
 @section('page')
     <div data-controller="conditions">
@@ -55,15 +55,15 @@
                     <div class="col">
                         @switch($boolean)
                             @case('and')
-                                <h6 class="text-uppercase text-muted font-weight-bold">
-                                    Generate notification when the following is matched:
-                                </h6>
-                                @break
+                            <h6 class="text-uppercase text-muted font-weight-bold">
+                                Generate notification when the following is matched:
+                            </h6>
+                            @break
                             @case('or')
-                                <h6 class="text-uppercase text-muted font-weight-bold">
-                                    Or when one of the following is matched:
-                                </h6>
-                                @break
+                            <h6 class="text-uppercase text-muted font-weight-bold">
+                                Or when one of the following is matched:
+                            </h6>
+                            @break
                         @endswitch
                     </div>
                 </div>

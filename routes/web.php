@@ -62,6 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/domains/{domain}/notifiers/{notifier}',      'DomainNotifiersController@show')->name('domains.notifiers.show');
     Route::get('/domains/{domain}/notifiers/{notifier}/edit', 'DomainNotifiersController@edit')->name('domains.notifiers.edit');
 
+    Route::get('/domains/{domain}/notifiers/{notifier}/conditions', 'DomainNotifierConditionsController@index')
+        ->name('domains.notifiers.edit');
+
     Route::patch('/notifiers/{notifier}',  'NotifiersController@update')->name('notifiers.update');
     Route::delete('/notifiers/{notifier}', 'NotifiersController@destroy')->name('notifiers.destroy');
 
@@ -70,7 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/notifiers/{notifiable_type}/{notifiable_model}', 'NotifierNotifiableController@store')->name('notifiers.notifiable.store');
 
     Route::patch('/conditions/{condition}', 'ConditionsController@update')->name('conditions.update');
-    Route::delete('/conditions/{condition}', 'ConditionsController@destory')->name('conditions.destroy');
+    Route::delete('/conditions/{condition}', 'ConditionsController@destroy')->name('conditions.destroy');
 
     Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectSyncController@update')
         ->name('domains.objects.sync');

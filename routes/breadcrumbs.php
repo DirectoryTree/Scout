@@ -64,6 +64,18 @@ Breadcrumbs::for('domains.notifiers.conditions.index', function ($trail, $domain
     $trail->push('Edit', route('domains.notifiers.show', [$domain, $notifier]));
 });
 
+Breadcrumbs::for('domains.notifiers.logs.index', function ($trail, $domain, $notifier) {
+    $trail->parent('domains.notifiers.show', $domain, $notifier);
+
+    $trail->push('Logs', route('domains.notifiers.logs.index', [$domain, $notifier]));
+});
+
+Breadcrumbs::for('domains.notifiers.logs.show', function ($trail, $domain, $notifier, $log) {
+    $trail->parent('domains.notifiers.show', $domain, $notifier);
+
+    $trail->push("# {$log->getKey()}", route('domains.notifiers.logs.show', [$domain, $notifier, $log]));
+});
+
 Breadcrumbs::for('domains.changes.index', function ($trail, $domain) {
     $trail->parent('domains.show', $domain);
 

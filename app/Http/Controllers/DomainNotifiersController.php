@@ -20,7 +20,7 @@ class DomainNotifiersController extends Controller
             ->withCount('conditions')
             ->custom()
             ->latest()
-            ->paginate(25);
+            ->paginate(10);
 
         $systemNotifiers = $domain->notifiers()->system()->get();
 

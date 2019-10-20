@@ -33,11 +33,11 @@ class Validator
     protected $conditions;
 
     /**
-     * The values to validate.
+     * The updated object values.
      *
      * @var array
      */
-    protected $values;
+    protected $updated;
 
     /**
      * The original object values.
@@ -50,13 +50,13 @@ class Validator
      * Constructor.
      *
      * @param Collection $conditions
-     * @param array      $values
+     * @param array      $updated
      * @param array      $original
      */
-    public function __construct(Collection $conditions, array $values = [], array $original = [])
+    public function __construct(Collection $conditions, array $updated = [], array $original = [])
     {
         $this->conditions = $conditions;
-        $this->values = $this->getTransformedValues($values);
+        $this->updated = $this->getTransformedValues($updated);
         $this->original = $this->getTransformedValues($original);
     }
 
@@ -67,16 +67,20 @@ class Validator
      */
     public function passes()
     {
+        if ($this->conditions->isEmpty()) {
+            return false;
+        }
+
         return $this->conditions->filter(function (LdapNotifierCondition $condition) {
-                // Create the conditions validator and determine if it passes.
-                return transform($this->map[$condition->operator], function ($class) use ($condition) {
-                    return new $class(
-                        $this->getValueForAttribute($condition->attribute),
-                        $condition->attribute,
-                        $this->getConditionValue($condition)
-                    );
-                })->passes();
-            })->count() == $this->conditions->count();
+            // Create the conditions validator and determine if it passes.
+            return transform($this->map[$condition->operator], function ($class) use ($condition) {
+                return new $class(
+                    $this->getUpdatedValueForAttribute($condition->attribute),
+                    $condition->attribute,
+                    $this->getConditionValue($condition)
+                );
+            })->passes();
+        })->count() == $this->conditions->count();
     }
 
     /**
@@ -103,21 +107,33 @@ class Validator
         // If we're working with a 'changed' operator, we must pass the
         // original objects values so it can be compared to properly.
         if ($condition->operator == LdapNotifierCondition::OPERATOR_CHANGED) {
-            return $this->original;
+            return $this->getOriginalValueForAttribute($condition->attribute);
         }
 
         return Arr::wrap($condition->value);
     }
 
     /**
-     * Get the attributes value.
+     * Get the attributes original value.
      *
      * @param string $attribute
      *
      * @return array
      */
-    protected function getValueForAttribute($attribute)
+    protected function getOriginalValueForAttribute($attribute)
     {
-        return Arr::wrap(Arr::get($this->values, $attribute));
+        return Arr::wrap(Arr::get($this->original, $attribute));
+    }
+
+    /**
+     * Get the attributes updated value.
+     *
+     * @param string $attribute
+     *
+     * @return array
+     */
+    protected function getUpdatedValueForAttribute($attribute)
+    {
+        return Arr::wrap(Arr::get($this->updated, $attribute));
     }
 }

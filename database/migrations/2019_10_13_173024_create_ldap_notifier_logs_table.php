@@ -17,7 +17,9 @@ class CreateLdapNotifierLogsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedBigInteger('notifier_id');
+            $table->unsignedBigInteger('condition_id');
             $table->unsignedBigInteger('object_id');
+            $table->string('attribute');
             $table->text('before')->nullable();
             $table->text('after')->nullable();
         });

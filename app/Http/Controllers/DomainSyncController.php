@@ -21,7 +21,7 @@ class DomainSyncController
         Bus::dispatch(new QueueSync($domain));
 
         return Scout::response()
-            ->notifyWithMessage('Synchronized object.')
+            ->notifyWithMessage('Queued synchronization.')
             ->visit(route('domains.show', $domain));
     }
 }

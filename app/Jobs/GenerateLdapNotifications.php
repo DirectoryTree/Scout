@@ -6,6 +6,7 @@ use App\User;
 use App\LdapObject;
 use App\LdapNotifier;
 use App\LdapNotifierLog;
+use App\LdapNotifierCondition;
 use App\Ldap\Conditions\Validator;
 use App\Notifications\LdapNotification;
 use Illuminate\Support\Arr;
@@ -27,13 +28,31 @@ class GenerateLdapNotifications implements ShouldQueue
     protected $object;
 
     /**
+     * The objects original values.
+     *
+     * @var array
+     */
+    protected $original;
+
+    /**
+     * The objects updated values.
+     *
+     * @var array
+     */
+    protected $updated;
+
+    /**
      * Constructor.
      *
      * @param LdapObject $object
+     * @param array      $original
+     * @param array      $updated
      */
-    public function __construct(LdapObject $object)
+    public function __construct(LdapObject $object, array $original = [], array $updated = [])
     {
         $this->object = $object;
+        $this->original = $original;
+        $this->updated = $updated;
     }
 
     /**
@@ -49,10 +68,10 @@ class GenerateLdapNotifications implements ShouldQueue
         // objects attributes, determine if the notifiable model can be notified
         // and if all the conditions pass for the notifier conditions.
         $this->getNotifiersForAttributes($attributes)->each(function (LdapNotifier $notifier) {
-            if ($this->passesConditions($notifier->conditions)) {
-                $this->createNotifierLogs($notifier);
+            if ($this->getConditionValidator($notifier->conditions)->passes()) {
+                $logs = $this->createNotifierLogs($notifier)->pluck('id');
 
-                $notification = new LdapNotification($notifier, $this->object);
+                $notification = new LdapNotification($notifier, $this->object, $logs);
 
                 $users = $notifier->all_users ? User::all() : $notifier->users()->get();
 
@@ -76,14 +95,16 @@ class GenerateLdapNotifications implements ShouldQueue
     {
         $logs = collect();
 
-        $notifier->conditions->pluck('attribute')->each(function ($attribute) use ($notifier, $logs) {
+        $notifier->conditions->each(function (LdapNotifierCondition $condition) use ($notifier, $logs) {
             $log = new LdapNotifierLog();
 
             $log->notifier()->associate($notifier);
+            $log->condition()->associate($condition);
             $log->object()->associate($this->object);
 
-            $log->before = $this->getOriginalValue($attribute);
-            $log->after = $this->getUpdatedValue($attribute);
+            $log->attribute = $condition->attribute;
+            $log->before = $this->getOriginalValue($condition->attribute);
+            $log->after = $this->getUpdatedValue($condition->attribute);
 
             $log->save();
 
@@ -112,15 +133,15 @@ class GenerateLdapNotifications implements ShouldQueue
      *
      * @param \Illuminate\Support\Collection $conditions
      *
-     * @return bool
+     * @return Validator
      */
-    protected function passesConditions($conditions)
+    protected function getConditionValidator($conditions)
     {
-        return (new Validator(
+        return new Validator(
             $conditions,
-            $this->getUpdatedValues(),
-            $this->getOriginalValues()
-        ))->passes();
+            $this->updated,
+            $this->original
+        );
     }
 
     /**
@@ -132,7 +153,7 @@ class GenerateLdapNotifications implements ShouldQueue
      */
     protected function getOriginalValue($key)
     {
-        return Arr::get($this->getOriginalValues(), $key);
+        return Arr::get($this->original, $key);
     }
 
     /**
@@ -144,30 +165,6 @@ class GenerateLdapNotifications implements ShouldQueue
      */
     protected function getUpdatedValue($key)
     {
-        return Arr::get($this->getUpdatedValues(), $key);
-    }
-
-    /**
-     * Get the LDAP objects original values.
-     *
-     * @param LdapObject $object
-     *
-     * @return array
-     */
-    protected function getOriginalValues()
-    {
-        return json_decode($this->object->getOriginal('values'), true);
-    }
-
-    /**
-     * Get the LDAP objects updated values.
-     *
-     * @param LdapObject $object
-     *
-     * @return array
-     */
-    protected function getUpdatedValues()
-    {
-        return $this->object->getAttribute('values');
+        return Arr::get($this->updated, $key);
     }
 }

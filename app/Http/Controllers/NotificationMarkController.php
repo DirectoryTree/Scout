@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Scout;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class NotificationMarkController extends Controller
 {

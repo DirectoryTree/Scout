@@ -27,6 +27,16 @@ class LdapNotifierLog extends Model
     }
 
     /**
+     * The belongsTo condition relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function condition()
+    {
+        return $this->belongsTo(LdapNotifierCondition::class, 'condition_id');
+    }
+
+    /**
      * The belongsTo object relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

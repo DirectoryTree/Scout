@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\LdapObject;
 use App\Jobs\GenerateLdapNotifications;
-use Illuminate\Support\Facades\Bus;
 
 class LdapObjectObserver
 {
@@ -15,6 +14,34 @@ class LdapObjectObserver
      */
     public function updated(LdapObject $object)
     {
-        Bus::dispatch(new GenerateLdapNotifications($object));
+        GenerateLdapNotifications::dispatch(
+            $object,
+            $this->getOriginalValues($object),
+            $this->getUpdatedValues($object)
+        );
+    }
+
+    /**
+     * Get the LDAP objects original values.
+     *
+     * @param LdapObject $object
+     *
+     * @return array
+     */
+    protected function getOriginalValues(LdapObject $object)
+    {
+        return json_decode($object->getOriginal('values'), true);
+    }
+
+    /**
+     * Get the LDAP objects updated values.
+     *
+     * @param LdapObject $object
+     *
+     * @return array
+     */
+    protected function getUpdatedValues(LdapObject $object)
+    {
+        return $object->getAttribute('values');
     }
 }

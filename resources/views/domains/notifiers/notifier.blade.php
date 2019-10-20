@@ -22,13 +22,17 @@
     </div>
 
     <div class="dropdown dropleft">
-        <button class="btn btn-sm btn-outline-secondary" type="button" id="btn-notifier-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-sm btn-light" type="button" id="btn-notifier-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v"></i>
         </button>
 
         <div class="dropdown-menu" aria-labelledby="btn-notifier-settings">
-            <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="dropdown-item">
+            <a href="{{ route('domains.notifiers.show', [$domain, $notifier]) }}" class="dropdown-item">
                 <i class="fas fa-cogs"></i> Customize
+            </a>
+
+            <a href="{{ route('domains.notifiers.logs.index', [$domain, $notifier]) }}" class="dropdown-item">
+                <i class="fas fa-clipboard-check"></i> Logs
             </a>
 
             @if(!$notifier->system)

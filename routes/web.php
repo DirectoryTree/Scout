@@ -62,6 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/domains/{domain}/notifiers/{notifier}',      'DomainNotifiersController@show')->name('domains.notifiers.show');
     Route::get('/domains/{domain}/notifiers/{notifier}/edit', 'DomainNotifiersController@edit')->name('domains.notifiers.edit');
 
+    Route::get('/domains/{domain}/notifiers/{notifier}/logs',       'DomainNotifierLogsController@index')->name('domains.notifiers.logs.index');
+    Route::get('/domains/{domain}/notifiers/{notifier}/logs/{log}', 'DomainNotifierLogsController@show')->name('domains.notifiers.logs.show');
+
     Route::get('/domains/{domain}/notifiers/{notifier}/conditions', 'DomainNotifierConditionsController@index')
         ->name('domains.notifiers.edit');
 
@@ -78,12 +81,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectSyncController@update')
         ->name('domains.objects.sync');
 
+    Route::patch('notifications/mark-all', 'NotificationMarkAllController@update')->name('notifications.mark.all');
+    Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
+
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
 
         Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');
 
         Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
-        Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 
     });
 

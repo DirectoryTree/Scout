@@ -9,7 +9,7 @@ export default class extends Controller {
     /**
      * Automatically bind to the form submit event.
      */
-    connect() {
+    initialize() {
         this.element.addEventListener('submit', (event) => this.submit(event));
     }
 
@@ -24,10 +24,16 @@ export default class extends Controller {
         this.before().then(() => {
             this.removeErrors();
 
+            this.loading();
+
             this.send()
                 .then(response => this.success(response))
                 .catch(error => this.error(error))
-                .then(() => Ladda.stopAll());
+                .then(() => {
+                    Ladda.stopAll();
+
+                    this.done();
+                });
         }).catch(() => {
             Ladda.stopAll();
         });
@@ -39,11 +45,13 @@ export default class extends Controller {
      * @returns {Promise<void>}
      */
     send() {
-        return axios({
-            url: this.element.action,
-            method: this.element.method,
-            data: this.getFormData()
-        });
+        if (this.element.method === 'get') {
+            return axios.get(this.element.action, {
+                params: this.getFormData()
+            });
+        } else {
+            return axios.post(this.element.action, this.getFormData());
+        }
     }
 
     /**
@@ -74,6 +82,20 @@ export default class extends Controller {
      * @param {Object} response
      */
     after(response) {
+        //
+    }
+
+    /**
+     * Operations to perform while the form has been submitted.
+     */
+    loading() {
+        //
+    }
+
+    /**
+     * Operations to perform after the form has received a response.
+     */
+    done() {
         //
     }
 

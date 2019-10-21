@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\LdapDomain;
 use App\LdapObject;
-use LdapRecord\Models\Entry;
 use Illuminate\Support\Facades\Bus;
 use App\Ldap\Connectors\DomainConnector;
 
@@ -51,7 +50,7 @@ class SyncSingleObject
 
         $connector->connect();
 
-        $entry = Entry::on($connector->getConnectionName())->findOrFail($this->object->dn);
+        $entry = $this->domain->getLdapModel()->findOrFail($this->object->dn);
 
         Bus::dispatch(new SyncObject($this->domain, $entry, $this->object->parent));
     }

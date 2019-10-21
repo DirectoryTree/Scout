@@ -6,9 +6,6 @@ use App\LdapDomain;
 use App\LdapObject;
 use LdapRecord\Models\Model;
 use Illuminate\Support\Facades\Bus;
-use LdapRecord\Models\Entry as UnknownModel;
-use LdapRecord\Models\OpenLDAP\Entry as OpenLdapModel;
-use LdapRecord\Models\ActiveDirectory\Entry as ActiveDirectoryModel;
 
 class ImportObjects
 {
@@ -85,7 +82,7 @@ class ImportObjects
     {
         $query = $model ?
             $model->in($model->getDn()) :
-            $this->getDomainLdapModel();
+            $this->domain->getLdapModel();
 
         if ($filter = $this->domain->filter) {
             $query = $query->rawFilter($filter);
@@ -94,29 +91,5 @@ class ImportObjects
         return $query->listing()
             ->select('*')
             ->paginate(1000);
-    }
-
-    /**
-     * Get a new LDAP model for the current domains type.
-     *
-     * @return ActiveDirectoryModel|UnknownModel|OpenLdapModel
-     */
-    protected function getDomainLdapModel()
-    {
-        switch($this->domain->type) {
-            case LdapDomain::TYPE_ACTIVE_DIRECTORY:
-                $model = new ActiveDirectoryModel();
-                break;
-            case LdapDomain::TYPE_OPEN_LDAP:
-                $model = new OpenLdapModel();
-                break;
-            default:
-                $model = new UnknownModel();
-                break;
-        }
-
-        $model->setConnection($this->domain->slug);
-
-        return $model;
     }
 }

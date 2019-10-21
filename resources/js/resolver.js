@@ -25,6 +25,32 @@ export default class Resolver {
      * Completes a successful response.
      */
     complete() {
+        if (this.isRenderableResponse()) {
+            this.renderResponse();
+        } else {
+           this.performNavigation();
+        }
+    }
+
+    /**
+     * Render the responses HTML.
+     */
+    renderResponse() {
+        let containerId = this.getResponseContainer();
+
+        let container = document.getElementById(containerId);
+
+        if (container) {
+            container.innerHTML = this.getResponseHtml();
+        } else {
+            console.error('Cannot locate container: ' + containerId);
+        }
+    }
+
+    /**
+     * Navigate to the responses requested URL.
+     */
+    performNavigation() {
         // Flush the cache if the response requires is.
         if (!this.isCaching()) {
             this.flushCache();
@@ -123,6 +149,16 @@ export default class Resolver {
     }
 
     /**
+     * Determine if the response is rendering directly into a container.
+     *
+     * @returns {boolean}
+     */
+    isRenderableResponse() {
+        return this.response.data.hasOwnProperty('render') &&
+            this.response.data.render === true;
+    }
+
+    /**
      * Determine if the response requires a redirect.
      *
      * @returns {boolean}
@@ -151,6 +187,28 @@ export default class Resolver {
     }
 
     /**
+     * Get the container that the response requires inserting HTML into.
+     *
+     * @returns {String}
+     */
+    getResponseContainer() {
+        if (this.response.data.hasOwnProperty('container')) {
+            return this.response.data.container;
+        }
+    }
+
+    /**
+     * Get the HTML to render from the response.
+     *
+     * @returns {String}
+     */
+    getResponseHtml() {
+        if (this.response.data.hasOwnProperty('html')) {
+            return this.response.data.html;
+        }
+    }
+
+    /**
      * Get the response URL.
      *
      * @returns {String}
@@ -170,6 +228,8 @@ export default class Resolver {
         if (this.response.data.hasOwnProperty('type')) {
             return this.response.data.type;
         }
+
+        return 'error';
     }
 
     /**
@@ -181,5 +241,7 @@ export default class Resolver {
         if (this.response.data.hasOwnProperty('message')) {
             return this.response.data.message;
         }
+
+        return 'Whoops! There was an error.';
     }
 }

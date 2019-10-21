@@ -84,6 +84,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('notifications/mark-all', 'NotificationMarkAllController@update')->name('notifications.mark.all');
     Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 
+    Route::group(['namespace' => 'Partials', 'prefix' => 'partials', 'as' => 'partials.'], function () {
+
+        Route::get('domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
+
+    });
+
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
 
         Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');

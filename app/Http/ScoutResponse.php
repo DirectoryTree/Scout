@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Contracts\Support\Responsable;
 
@@ -68,6 +69,42 @@ class ScoutResponse implements Responsable
         }
 
         return $this->mergeResponseData(['type' => $type]);
+    }
+
+    /**
+     * Render the view into the response without redirection or navigation.
+     *
+     * @param View $view
+     *
+     * @return $this
+     */
+    public function render(View $view)
+    {
+        return $this->html($view->render())->mergeResponseData(['render' => true]);
+    }
+
+    /**
+     * Add HTML to the response.
+     *
+     * @param string $html
+     *
+     * @return $this
+     */
+    public function html($html)
+    {
+        return $this->mergeResponseData(['html' => $html]);
+    }
+
+    /**
+     * The container to render the HTML response into.
+     *
+     * @param string $container The ID of the container to render the HTML into.
+     *
+     * @return ScoutResponse
+     */
+    public function into($container)
+    {
+        return $this->mergeResponseData(['container' => $container]);
     }
 
     /**

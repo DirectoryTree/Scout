@@ -1,24 +1,22 @@
 <div class="list-group list-group-flush">
     @forelse($objects as $object)
         <div class="list-group-item {{ $object->trashed() ? 'bg-light' : null }}">
-            <div class="row">
-                <div class="col">
-                    @include('domains.objects.partials.icon')
+            <div class="d-flex justify-content-start align-items-center">
+                @include('domains.objects.partials.icon')
 
-                    <a href="{{ route('domains.objects.show', [$domain, $object]) }}" class="font-weight-bold">
-                        {{ $object->name }}
-                    </a>
+                <a href="{{ route('domains.objects.show', [$domain, $object]) }}" class="ml-1 font-weight-bold">
+                    {{ $object->name }}
+                </a>
 
-                    @if($object->children_count)
-                        <span class="ml-1 badge badge-light border">
-                            {{ $object->children_count }}
-                        </span>
-                    @endif
+                @if($object->children_count)
+                    <span class="ml-2 badge badge-light border">
+                        {{ $object->children_count }}
+                    </span>
+                @endif
 
-                    @if($object->trashed())
-                        <small class="text-muted">(deleted)</small>
-                    @endif
-                </div>
+                @if($object->trashed())
+                    <small class="text-muted">(deleted)</small>
+                @endif
             </div>
 
             <div class="row">

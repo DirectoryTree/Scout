@@ -13,7 +13,7 @@
                         <button
                             id="btn_expand_{{ $object->id }}"
                             type="submit"
-                            class="btn btn-sm btn-light rounded-pill border position-absolute no-loading"
+                            class="btn btn-sm btn-light border position-absolute no-loading"
                         >
                             <i class="fa fa-xs fa-chevron-right"></i>
                         </button>
@@ -21,7 +21,7 @@
                         <button
                             id="btn_shrink_{{ $object->id }}"
                             type="button"
-                            class="btn btn-sm btn-light rounded-pill border position-absolute d-none"
+                            class="btn btn-sm btn-light border position-absolute d-none"
                             data-action="click->object-tree#shrink"
                         >
                             <i class="fa fa-xs fa-chevron-down"></i>

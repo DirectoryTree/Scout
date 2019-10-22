@@ -31,6 +31,7 @@ class CreateLdapDomainsTable extends Migration
             $table->integer('port')->default(389);
             $table->integer('timeout')->default(5);
             $table->boolean('follow_referrals')->default(false);
+            $table->boolean('write_back')->default(false);
 
             $table->tinyInteger('status')->default(LdapDomain::STATUS_OFFLINE);
             $table->tinyInteger('type')->default(LdapDomain::TYPE_ACTIVE_DIRECTORY);

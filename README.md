@@ -33,7 +33,7 @@ help you and your IT team:
 To install Scout, run the following git command to pull down the latest release:
 
 ```bash
-git clone https://github.com/dicrectorytree/scout
+git clone https://github.com/directorytree/scout
 ```
 
 Then, navigate inside the created directory and run the following comamnd to install Scout's dependencies with Composer:

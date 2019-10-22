@@ -3,7 +3,6 @@ import './bootstrap';
 
 import * as Ladda from 'ladda';
 import Swal from 'sweetalert2';
-import Trix from 'trix';
 import Turbolinks from 'turbolinks';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';

@@ -1,4 +1,4 @@
-<ul id="domain-objects" class="object-tree list-unstyled mb-0{{ isset($parent) ? ' ml-4' : null }}">
+<ul id="domain-objects" class="list-unstyled mb-0{{ isset($parent) ? ' ml-4' : null }}">
     @foreach($objects as $object)
         <li>
             <form
@@ -33,6 +33,8 @@
                     </h5>
                 </div>
             </form>
+
+            <hr class="slim"/>
 
             <div id="leaves_{{ $object->id }}"></div>
         </li>

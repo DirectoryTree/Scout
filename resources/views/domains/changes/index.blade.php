@@ -34,7 +34,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="2" class="text-center text-muted">
+                            <td colspan="3" class="text-center text-muted">
                                 <em>There are no changes to list.</em>
                             </td>
                         </tr>

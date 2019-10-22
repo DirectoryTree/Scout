@@ -88,47 +88,7 @@ trix-editor:empty:not(:focus)::before {
     color:$input-placeholder-color;
 }
 
-.object-tree ul {
-    margin: 0 0 0 20px;
-    list-style: none; line-height: 2em;
-    li {
-        font-size: 16px;
-        position: relative;
-        &:before {
-            position: absolute;
-            left: -15px;
-            top: 0;
-            content: '';
-            display: block;
-            border-left: 1px solid #ddd;
-            height: 1em;
-            border-bottom: 1px solid #ddd;
-            width: 25px;
-        }
-
-        &:after{
-            position: absolute;
-            left: -15px;
-            bottom: -7px;
-            content: '';
-            display: block;
-            border-left: 1px solid #ddd;
-            height: 100%;
-        }
-
-        &.root {
-            margin: 0 0 0px -20px;
-            &:before{
-                display: none;
-            }
-
-            &:after{
-                display: none;
-            }
-        }
-
-        &:last-child{
-            &:after{ display: none }
-        }
-    }
+hr.slim {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }

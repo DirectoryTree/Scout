@@ -5,7 +5,7 @@
         </div>
     @endisset
 
-    <div class="card-body {{ isset($flush) ? 'p-0' : null }}">
+    <div class="card-body {{ isset($flush) && $flush === true ? 'p-0' : null }}">
         {{ $slot }}
     </div>
 

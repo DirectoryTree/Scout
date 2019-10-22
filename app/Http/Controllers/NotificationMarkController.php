@@ -24,7 +24,6 @@ class NotificationMarkController extends Controller
 
         $request->read ? $notification->markAsRead() : $notification->markAsUnread();
 
-        return Scout::response()
-            ->visit(url()->previous());
+        return Scout::response()->visit(url()->previous());
     }
 }

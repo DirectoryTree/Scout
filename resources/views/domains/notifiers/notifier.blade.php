@@ -22,7 +22,7 @@
     </div>
 
     <div class="dropdown dropleft">
-        <button class="btn btn-sm btn-light" type="button" id="btn-notifier-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-sm btn-light rounded-pill border" type="button" id="btn-notifier-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v"></i>
         </button>
 
@@ -37,7 +37,7 @@
 
             @if(!$notifier->system)
                 <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="dropdown-item">
-                    <i class="fas fa-not-equal"></i> Conditions
+                    <i class="fa fa-check-double"></i> Conditions
                 </a>
 
                 <form

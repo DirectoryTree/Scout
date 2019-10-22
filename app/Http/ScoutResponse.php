@@ -98,13 +98,13 @@ class ScoutResponse implements Responsable
     /**
      * The container to render the HTML response into.
      *
-     * @param string $container The ID of the container to render the HTML into.
+     * @param string $containerId The ID of the container to render the HTML into.
      *
      * @return ScoutResponse
      */
-    public function into($container)
+    public function into($containerId)
     {
-        return $this->mergeResponseData(['container' => $container]);
+        return $this->mergeResponseData(['container' => $containerId]);
     }
 
     /**

@@ -21,7 +21,7 @@ class NotifiersController
         $request->persist($notifier);
 
         return Scout::response()
-            ->notifyWithMessage('Updated notifier')
+            ->notifyWithMessage('Updated notifier.')
             ->redirect(url()->previous());
     }
 
@@ -39,7 +39,7 @@ class NotifiersController
         $notifier->delete();
 
         return Scout::response()
-            ->notifyWithMessage('Deleted notifier')
+            ->notifyWithMessage('Deleted notifier.')
             ->redirect(url()->previous());
     }
 }

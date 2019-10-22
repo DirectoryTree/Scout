@@ -1,9 +1,16 @@
+@if(!$notifier->exists)
+    <div class="alert alert-primary">
+        <strong>Heads up!</strong> This is a domain notifier. Any domain objects
+        that pass the notifiers conditions will generate a notification.
+    </div>
+@endif
+
 <div class="form-group">
-    {{ Form::scoutLabel('short_name', __('Short Name')) }}
+    {{ Form::scoutLabel('short_name', __('Subject / Short Name')) }}
 
     {{
         Form::scoutText('short_name', $notifier->notifiable_name, [
-            'placeholder' => 'Enter the short name for the notifier',
+            'placeholder' => 'Ex. Account Expired',
             'data-target' => 'form.input',
             'data-action' => 'keyup->form#clearError',
         ])
@@ -26,7 +33,7 @@
 
     {{
         Form::scoutText('name', $notifier->name, [
-            'placeholder' => 'Enter the notfier name',
+            'placeholder' => 'Ex. Notify me when...',
             'data-target' => 'form.input',
             'data-action' => 'keyup->form#clearError',
         ])

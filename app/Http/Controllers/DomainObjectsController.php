@@ -4,22 +4,26 @@ namespace App\Http\Controllers;
 
 use App\LdapDomain;
 use App\LdapObject;
+use Illuminate\Http\Request;
 
 class DomainObjectsController extends Controller
 {
     /**
      * Displays all of the domains objects.
      *
+     * @param Request    $request
      * @param LdapDomain $domain
      *
      * @return \Illuminate\View\View
      */
-    public function index(LdapDomain $domain)
+    public function index(Request $request, LdapDomain $domain)
     {
-        $objects = $domain->objects()
+        $query = $domain->objects()
             ->whereNull('parent_id')
-            ->orderBy('name')
-            ->paginate(25);
+            ->withCount('children')
+            ->orderBy('name');
+
+        $objects = $request->view === 'tree' ? $query->get() : $query->paginate(25);
 
         return view('domains.objects.index', compact('domain', 'objects'));
     }
@@ -41,6 +45,7 @@ class DomainObjectsController extends Controller
             ->find($objectId);
 
         $objects = $object->descendants()
+            ->withCount('children')
             ->orderBy('name')
             ->paginate(25);
 

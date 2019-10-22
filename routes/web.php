@@ -88,6 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
 
+        Route::get('domains/{domain}/objects/{object}/tree', 'DomainObjectsTreeController@show')->name('domains.objects.tree.show');
+
     });
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {

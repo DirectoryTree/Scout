@@ -10,7 +10,11 @@
         aria-haspopup="true"
         aria-expanded="false"
     >
-        <i class="far fa-bell pr-1"></i>
+        <span class="pr-1">
+            <i class="far fa-bell pr-1"></i>
+            <span class="d-inline d-md-none">{{ __('Notifications') }}</span>
+        </span>
+        
         <span data-target="notifications.count">{{ $notifications->count() }}</span>
         <span class="pl-1 caret"></span>
     </a>

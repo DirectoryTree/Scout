@@ -19,7 +19,10 @@ class DomainNotifierLogsController extends Controller
         /** @var \App\LdapNotifier $notifier */
         $notifier = $domain->notifiers()->findOrFail($notifierId);
 
-        $logs = $notifier->logs()->latest()->paginate(15);
+        $logs = $notifier->logs()
+            ->with('object')
+            ->latest()
+            ->paginate(15);
 
         return view('domains.notifiers.logs.index', compact('domain', 'notifier', 'logs'));
     }

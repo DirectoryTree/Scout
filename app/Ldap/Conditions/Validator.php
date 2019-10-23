@@ -56,8 +56,8 @@ class Validator
     public function __construct(Collection $conditions, array $updated = [], array $original = [])
     {
         $this->conditions = $conditions;
-        $this->updated = $this->getTransformedValues($updated);
-        $this->original = $this->getTransformedValues($original);
+        $this->updated = $updated;
+        $this->original = $original;
     }
 
     /**
@@ -71,16 +71,33 @@ class Validator
             return false;
         }
 
+        // Here we will go through each of the notifiers conditions,
+        // create their validator and ensure that they all pass.
         return $this->conditions->filter(function (LdapNotifierCondition $condition) {
+            // Retrieve the condition validator class.
+            $conditional = $this->getConditionValidatorByOperator($condition->operator);
+
             // Create the conditions validator and determine if it passes.
-            return transform($this->map[$condition->operator], function ($class) use ($condition) {
+            return transform($conditional, function ($class) use ($condition) {
                 return new $class(
-                    $this->getUpdatedValueForAttribute($condition->attribute),
+                    $this->getUpdatedValueByCondition($condition),
                     $condition->attribute,
                     $this->getConditionValue($condition)
                 );
             })->passes();
         })->count() == $this->conditions->count();
+    }
+
+    /**
+     * Get the condition validator class by the operator.
+     *
+     * @param string $operator
+     *
+     * @return string
+     */
+    protected function getConditionValidatorByOperator($operator)
+    {
+        return $this->map[$operator];
     }
 
     /**
@@ -107,33 +124,55 @@ class Validator
         // If we're working with a 'changed' operator, we must pass the
         // original objects values so it can be compared to properly.
         if ($condition->operator == LdapNotifierCondition::OPERATOR_CHANGED) {
-            return $this->getOriginalValueForAttribute($condition->attribute);
+            return $this->getOriginalValueByCondition($condition);
         }
 
         return Arr::wrap($condition->value);
     }
 
     /**
-     * Get the attributes original value.
+     * Get the original value for the conditions attribute.
      *
-     * @param string $attribute
+     * @param LdapNotifierCondition $condition
      *
      * @return array
      */
-    protected function getOriginalValueForAttribute($attribute)
+    protected function getOriginalValueByCondition(LdapNotifierCondition $condition)
     {
-        return Arr::wrap(Arr::get($this->original, $attribute));
+        // If the condition requires that the attribute be transformed, then
+        // we will transform the values before retrieving the attribute.
+        $original = $this->conditionRequiresAttributeTransformation($condition) ?
+            $this->getTransformedValues($this->original) : $this->original;
+
+        return Arr::wrap(Arr::get($original, $condition->attribute));
     }
 
     /**
-     * Get the attributes updated value.
+     * Get the updated value for the conditions attribute.
      *
-     * @param string $attribute
+     * @param LdapNotifierCondition $condition
      *
      * @return array
      */
-    protected function getUpdatedValueForAttribute($attribute)
+    protected function getUpdatedValueByCondition(LdapNotifierCondition $condition)
     {
-        return Arr::wrap(Arr::get($this->updated, $attribute));
+        // If the condition requires that the attribute be transformed, then
+        // we will transform the values before retrieving the attribute.
+        $updated = $this->conditionRequiresAttributeTransformation($condition) ?
+            $this->getTransformedValues($this->updated) : $this->updated;
+
+        return Arr::wrap(Arr::get($updated, $condition->attribute));
+    }
+
+    /**
+     * Determine if the condition requires that the attribute be transformed.
+     *
+     * @param LdapNotifierCondition $condition
+     *
+     * @return bool
+     */
+    protected function conditionRequiresAttributeTransformation(LdapNotifierCondition $condition)
+    {
+        return $condition->type === LdapNotifierCondition::TYPE_TIMESTAMP;
     }
 }

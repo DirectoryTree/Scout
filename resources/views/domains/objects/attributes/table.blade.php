@@ -1,10 +1,10 @@
 <div class="table-responsive">
     <table class="table mb-0">
         <thead>
-        <tr>
-            <th class="pl-4">Name</th>
-            <th>Value</th>
-        </tr>
+            <tr>
+                <th class="pl-4">Name</th>
+                <th>Value</th>
+            </tr>
         </thead>
         <tbody>
         @forelse($attributes as $name => $values)
@@ -13,7 +13,7 @@
                 <td class="bg-light">
                     @if(count($values) > 1)
                         @foreach ($values as $value)
-                            {{ $value }}{{ !$loop->last ? ',' : null }}
+                            {{ $value }} @if(!$loop->last) <br/> @endif
                         @endforeach
                     @else
                         @if($values[0] instanceof \Carbon\Carbon)

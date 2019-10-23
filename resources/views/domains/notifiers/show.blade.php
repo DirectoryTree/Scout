@@ -4,7 +4,7 @@
 
 @section('page')
     @if($notifier->system)
-        <div class="alert alert-primary">
+        <div class="alert alert-warning">
             <strong>System Notifier -</strong>
 
             This is a built-in system notifier. You cannot make changes to it.
@@ -15,19 +15,20 @@
         <div class="col">
             @component('components.card', ['class' => 'mb-4 bg-white'])
                 @slot('header')
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="mb-0">Notifier</h5>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="far fa-bell"></i> Notifier</h5>
 
-                        <div class="col-auto">
+                        @if(!$notifier->system)
                             <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="btn btn-sm btn-primary">
-                                Edit
+                                <i class="far fa-edit"></i> Edit
                             </a>
-                        </div>
+                        @endif
                     </div>
                 @endslot
 
+                <div class="row">
+                    <div class="col"></div>
+                </div>
             @endcomponent
         </div>
     </div>
@@ -70,11 +71,15 @@
                         <strong>No Conditions</strong> have been added.
                     </div>
                 @else
+                    <div class="alert alert-info mb-0">
+                        <strong>{{ $conditions->count() }}</strong>
 
+                        {{ \Illuminate\Support\Str::plural('condition', $conditions->count()) }} must pass.
+                    </div>
                 @endif
 
                 @slot('footer')
-                    <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="btn btn-sm btn-primary btn-block">
+                    <a href="{{ route('domains.notifiers.conditions.edit', [$domain, $notifier]) }}" class="btn btn-sm btn-primary btn-block">
                         @if($conditions->isEmpty())
                             Add Conditions
                         @else

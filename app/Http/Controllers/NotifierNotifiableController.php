@@ -26,7 +26,7 @@ class NotifierNotifiableController
         $request->persist($notifier);
 
         $url = $notifiableModel instanceof LdapDomain ?
-            route('domains.notifiers.edit', [$notifiableModel, $notifier]) :
+            route('domains.notifiers.show', [$notifiableModel, $notifier]) :
             url()->previous();
 
         return Scout::response()

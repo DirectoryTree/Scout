@@ -69,6 +69,10 @@ class DomainNotifiersController extends Controller
     {
         $notifier = $domain->notifiers()->findOrFail($notifierId);
 
+        if ($notifier->system) {
+            return redirect()->route('domains.notifiers.show', [$domain, $notifier]);
+        }
+
         return view('domains.notifiers.edit', compact('domain', 'notifier'));
     }
 }

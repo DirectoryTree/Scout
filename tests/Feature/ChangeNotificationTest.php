@@ -7,7 +7,6 @@ use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
 use LdapRecord\Models\Attributes\Timestamp;
-use LdapRecord\Utilities;
 use App\LdapNotifierCondition;
 
 class ChangeNotificationTest extends InstalledTestCase

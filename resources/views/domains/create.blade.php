@@ -7,7 +7,9 @@
         @csrf
 
         @component('components.card')
-            @slot('header', __('Add Domain'))
+            @slot('header')
+                <h5 class="mb-0">{{ __('Add Domain') }}</h5>
+            @endslot
 
             @include('domains.form')
 

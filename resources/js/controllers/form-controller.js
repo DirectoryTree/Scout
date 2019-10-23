@@ -122,9 +122,13 @@ export default class extends Controller {
      */
     setErrors(errors) {
         for (let input in errors) {
-            document.getElementsByName(input).forEach((element) => {
-                this.setError(element, _.first(errors[input]));
-            });
+            let element = $(this.element).find(`input[name=${input}]`);
+
+            if (element.length) {
+                this.setError(element.get(0), _.first(errors[input]));
+            } else {
+                console.error('Unable to find input: ' + input);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ class LdapNotifierCondition extends Model
      */
     const TYPE_DN = 'dn';
     const TYPE_BOOL = 'bool';
-    const TYPE_INT = 'integer';
+    const TYPE_INTEGER = 'integer';
     const TYPE_STRING = 'string';
     const TYPE_TIMESTAMP = 'timestamp';
 
@@ -81,7 +81,7 @@ class LdapNotifierCondition extends Model
     {
         return [
             static::TYPE_DN => 'Distinguished Name',
-            static::TYPE_INT => 'Integer',
+            static::TYPE_INTEGER => 'Integer',
             static::TYPE_BOOL => 'Boolean',
             static::TYPE_STRING => 'String',
             static::TYPE_TIMESTAMP => 'Timestamp',

@@ -50,7 +50,7 @@ class LdapNotifierConditionRequest extends FormRequest
             case LdapNotifierCondition::TYPE_DN:
                 $rules['value'][] = new DistinguishedName();
                 break;
-            case LdapNotifierCondition::TYPE_INT:
+            case LdapNotifierCondition::TYPE_INTEGER:
                 $rules['value'][] = 'integer';
                 break;
             case LdapNotifierCondition::TYPE_TIMESTAMP:

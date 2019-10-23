@@ -86,9 +86,11 @@
                                             {{ $condition->operator_name }}
                                         </span>
 
-                                        <span class="badge badge-info">
-                                           {{ $condition->value }}
-                                        </span>
+                                        @if($condition->value)
+                                            <span class="badge badge-info">
+                                               {{ $condition->value }}
+                                            </span>
+                                        @endif
                                     </h5>
                                 </div>
 

@@ -66,7 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/domains/{domain}/notifiers/{notifier}/logs/{log}', 'DomainNotifierLogsController@show')->name('domains.notifiers.logs.show');
 
     Route::get('/domains/{domain}/notifiers/{notifier}/conditions', 'DomainNotifierConditionsController@index')
-        ->name('domains.notifiers.edit');
+        ->name('domains.notifiers.conditions.edit');
 
     Route::patch('/notifiers/{notifier}',  'NotifiersController@update')->name('notifiers.update');
     Route::delete('/notifiers/{notifier}', 'NotifiersController@destroy')->name('notifiers.destroy');

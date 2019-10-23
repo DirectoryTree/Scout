@@ -6,6 +6,7 @@ use App\LdapChange;
 use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
+use LdapRecord\Models\Attributes\Timestamp;
 use LdapRecord\Utilities;
 use App\LdapNotifierCondition;
 
@@ -95,17 +96,21 @@ class ChangeNotificationTest extends InstalledTestCase
 
         factory(LdapNotifierCondition::class)->create([
             'notifier_id' => $notifier->id,
-            'type' => 'string',
-            'attribute' => 'accountexpires',
+            'type' => 'timestamp',
+            'attribute' => 'lockouttime',
             'operator' => LdapNotifierCondition::OPERATOR_PAST,
+            'value' => null,
         ]);
 
         $object = factory(LdapObject::class)->create([
             'domain_id' => $domain->id,
+            'values' => ['lockouttime' => null],
         ]);
 
+        $timestamp = new Timestamp('windows-int');
+
         $object->values = [
-            'accountexpires' => Utilities::convertUnixTimeToWindowsTime(now()->subDay()->timestamp)
+            'lockouttime' => $timestamp->fromDateTime(now()->subDay())
         ];
 
         $object->save();

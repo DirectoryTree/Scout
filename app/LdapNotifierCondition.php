@@ -111,6 +111,11 @@ class LdapNotifierCondition extends Model
         return $this->belongsTo(LdapNotifier::class, 'notifier_id');
     }
 
+    /**
+     * Get the operators name.
+     *
+     * @return string
+     */
     public function getOperatorNameAttribute()
     {
         return static::operators()[$this->operator];

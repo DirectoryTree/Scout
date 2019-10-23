@@ -22,6 +22,23 @@ class AdSystemNotifierSeeder extends Seeder
                     'type' => LdapNotifierCondition::TYPE_TIMESTAMP,
                     'operator' => LdapNotifierCondition::OPERATOR_PAST,
                     'attribute' => 'accountexpires',
+                ],
+                [
+                    'type' => LdapNotifierCondition::TYPE_INTEGER,
+                    'operator' => LdapNotifierCondition::OPERATOR_NOT_EQUALS,
+                    'attribute' => 'accountexpires',
+                    'value' => '9223372036854775807',
+                ],
+                [
+                    'type' => LdapNotifierCondition::TYPE_INTEGER,
+                    'operator' => LdapNotifierCondition::OPERATOR_NOT_EQUALS,
+                    'attribute' => 'accountexpires',
+                    'value' => '0',
+                ],
+                [
+                    'type' => LdapNotifierCondition::TYPE_INTEGER,
+                    'operator' => LdapNotifierCondition::OPERATOR_CHANGED,
+                    'attribute' => 'accountexpires',
                 ]
             ]
         ],

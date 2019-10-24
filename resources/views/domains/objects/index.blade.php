@@ -27,7 +27,9 @@
         @endslot
 
         @if(request('view') === 'tree')
-            @include('domains.objects.partials.tree')
+            <div class="overflow-x">
+                @include('domains.objects.partials.tree')
+            </div>
         @else
             @include('domains.objects.partials.list')
         @endif

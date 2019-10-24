@@ -8,7 +8,7 @@
                 data-object-tree-id="{{ $object->id }}"
                 data-object-tree-children="{{ $object->children_count }}"
             >
-                <div class="d-flex align-items-center mb-2">
+                <div class="d-flex align-items-center mb-2 position-relative">
                     @if($object->children_count > 0)
                         <button
                             id="btn_expand_{{ $object->id }}"

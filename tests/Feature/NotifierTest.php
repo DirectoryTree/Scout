@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use App\LdapNotifier;
+use App\LdapNotifierCondition;
 
-class NotifierTest extends InstalledTestCase
+class NotifierTest extends FeatureTestCase
 {
     public function test_user_must_be_signed_in_to_update_notifier()
     {
@@ -14,7 +15,7 @@ class NotifierTest extends InstalledTestCase
             ->assertRedirect(route('login'));
     }
 
-    public function test_notifiers_can_be_modified()
+    public function test_notifiers_can_be_updated()
     {
         $this->signIn();
 
@@ -45,9 +46,19 @@ class NotifierTest extends InstalledTestCase
     {
         $this->signIn();
 
+        /** @var LdapNotifier $notifier */
         $notifier = factory(LdapNotifier::class)->state('domain')->create();
+
+        factory(LdapNotifierCondition::class)->times(3)->create([
+            'notifier_id' => $notifier->id,
+        ]);
+
+        $this->assertEquals(3, $notifier->conditions()->count());
 
         $this->delete(route('notifiers.destroy', $notifier))
             ->assertJson(['type' => 'success']);
+
+        $this->assertNull($notifier->fresh());
+        $this->assertEquals(0, $notifier->conditions()->count());
     }
 }

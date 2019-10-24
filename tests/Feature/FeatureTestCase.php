@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Installer\Installer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class InstalledTestCase extends TestCase
+class FeatureTestCase extends TestCase
 {
     use RefreshDatabase;
 

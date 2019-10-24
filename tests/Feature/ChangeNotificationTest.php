@@ -9,7 +9,7 @@ use App\LdapNotifier;
 use LdapRecord\Models\Attributes\Timestamp;
 use App\LdapNotifierCondition;
 
-class ChangeNotificationTest extends InstalledTestCase
+class ChangeNotificationTest extends FeatureTestCase
 {
     public function test_notification_is_created_with_domain_notifier()
     {

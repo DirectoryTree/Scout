@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\LdapNotifier;
 use App\LdapNotifierCondition;
 
-class NotifierConditionTest extends InstalledTestCase
+class NotifierConditionTest extends FeatureTestCase
 {
     public function test_user_must_be_signed_in_to_create_conditions()
     {

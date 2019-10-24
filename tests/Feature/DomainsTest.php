@@ -9,7 +9,7 @@ use App\LdapNotifier;
 use LdapRecord\LdapRecordException;
 use App\Ldap\Connectors\ConfigConnector;
 
-class DomainsTest extends InstalledTestCase
+class DomainsTest extends FeatureTestCase
 {
     public function test_viewing_all_initial_domains()
     {

@@ -5,10 +5,10 @@ namespace Tests\Feature\Notifiers;
 use App\LdapDomain;
 use AdSystemNotifierSeeder;
 use App\Ldap\Conditions\Validator;
-use Tests\Feature\InstalledTestCase;
+use Tests\Feature\FeatureTestCase;
 use LdapRecord\Models\Attributes\Timestamp;
 
-class AccountExpiresTest extends InstalledTestCase
+class AccountExpiresTest extends FeatureTestCase
 {
     /** @var LdapDomain */
     protected $domain;

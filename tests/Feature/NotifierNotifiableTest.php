@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\LdapDomain;
 
-class NotifierNotifiableTest extends InstalledTestCase
+class NotifierNotifiableTest extends FeatureTestCase
 {
     public function test_notifiable_type_must_be_provided()
     {

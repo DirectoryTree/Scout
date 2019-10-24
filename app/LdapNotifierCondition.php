@@ -73,6 +73,20 @@ class LdapNotifierCondition extends Model
     }
 
     /**
+     * Get the nullable notifier operators.
+     *
+     * @return array
+     */
+    public static function nullableOperators()
+    {
+        return [
+            static::OPERATOR_CHANGED,
+            static::OPERATOR_PAST,
+            static::OPERATOR_HAS,
+        ];
+    }
+
+    /**
      * Get the notifier types.
      *
      * @return array

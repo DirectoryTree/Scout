@@ -160,7 +160,7 @@
                     </div>
                 @endforeach
             @empty
-                <div id="alert-no-notifiers" class="alert alert-primary">
+                <div id="alert-no-notifiers" class="alert alert-warning">
                     There are no conditions for this notifier.
                 </div>
             @endforelse

@@ -67,7 +67,8 @@
             {{
                 Form::scoutSelect('operator', $operators, $condition->operator, [
                     'data-target' => 'forms--condition.input',
-                    'data-action' => 'keyup->forms--condition#clearError',
+                    'data-action' => 'keyup->forms--condition#clearError change->forms--condition#hideValueInput',
+                    'data-nullable-operators' => json_encode($nullableOperators)
                 ])
             }}
 

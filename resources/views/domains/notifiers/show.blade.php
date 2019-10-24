@@ -18,11 +18,11 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"><i class="far fa-bell"></i> Notifier</h5>
 
-                        @if(!$notifier->system)
+                        @can('notifier.edit', $notifier)
                             <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="btn btn-sm btn-primary">
                                 <i class="far fa-edit"></i> Edit
                             </a>
-                        @endif
+                        @endcan
                     </div>
                 @endslot
 
@@ -58,36 +58,41 @@
             @endcomponent
         </div>
 
-        <div class="col-md-6">
-            @component('components.card')
-                @slot('header')
-                    <h5 class="mb-0">
-                        <i class="fa fa-check-double"></i> Conditions
-                    </h5>
-                @endslot
+        @can('notifier.edit', $notifier)
+            <div class="col-md-6">
+                @component('components.card')
+                    @slot('header')
+                        <h5 class="mb-0">
+                            <i class="fa fa-check-double"></i> Conditions
+                        </h5>
+                    @endslot
 
-                @if($conditions->isEmpty())
-                    <div class="alert alert-warning mb-0">
-                        <strong>No Conditions</strong> have been added.
-                    </div>
-                @else
-                    <div class="alert alert-info mb-0">
-                        <strong>{{ $conditions->count() }}</strong>
+                    @if($conditions->isEmpty())
+                        <div class="alert alert-warning mb-0">
+                            <strong>No Conditions</strong> have been added.
+                        </div>
+                    @else
+                        <div class="alert alert-info mb-0">
+                            <strong>{{ $conditions->count() }}</strong>
 
-                        {{ \Illuminate\Support\Str::plural('condition', $conditions->count()) }} must pass.
-                    </div>
-                @endif
+                            {{ \Illuminate\Support\Str::plural('condition', $conditions->count()) }} must pass.
+                        </div>
+                    @endif
 
-                @slot('footer')
-                    <a href="{{ route('domains.notifiers.conditions.edit', [$domain, $notifier]) }}" class="btn btn-sm btn-primary btn-block">
-                        @if($conditions->isEmpty())
-                            Add Conditions
-                        @else
-                            Modify Conditions
-                        @endif
-                    </a>
-                @endslot
-            @endcomponent
-        </div>
+                    @slot('footer')
+                        <a
+                            href="{{ route('domains.notifiers.conditions.edit', [$domain, $notifier]) }}"
+                            class="btn btn-sm btn-primary btn-block"
+                        >
+                            @if($conditions->isEmpty())
+                                Add Conditions
+                            @else
+                                Modify Conditions
+                            @endif
+                        </a>
+                    @endslot
+                @endcomponent
+            </div>
+        @endcan
     </div>
 @endsection

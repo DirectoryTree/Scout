@@ -20,6 +20,7 @@ class NotifierConditionFormComposer
             'types' => LdapNotifierCondition::types(),
             'booleans' => LdapNotifierCondition::booleans(),
             'operators' => LdapNotifierCondition::operators(),
+            'nullableOperators' => LdapNotifierCondition::nullableOperators(),
         ]);
     }
 }

@@ -35,8 +35,8 @@
                 <i class="fas fa-clipboard-check"></i> Logs
             </a>
 
-            @if(!$notifier->system)
-                <a href="{{ route('domains.notifiers.edit', [$domain, $notifier]) }}" class="dropdown-item">
+            @can('notifier.delete', $notifier)
+                <a href="{{ route('domains.notifiers.conditions.edit', [$domain, $notifier]) }}" class="dropdown-item">
                     <i class="fa fa-check-double"></i> Conditions
                 </a>
 
@@ -54,7 +54,7 @@
                         <i class="fa fa-trash-alt"></i> Delete
                     </button>
                 </form>
-            @endif
+            @endcan
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@ use App\Scout;
 use App\LdapNotifier;
 use App\Http\Requests\LdapNotifierRequest;
 
-class NotifiersController
+class NotifiersController extends Controller
 {
     /**
      * Update the LDAP notifier.
@@ -18,6 +18,8 @@ class NotifiersController
      */
     public function update(LdapNotifierRequest $request, LdapNotifier $notifier)
     {
+        $this->authorize('notifier.edit', $notifier);
+
         $request->persist($notifier);
 
         return Scout::response()
@@ -36,6 +38,8 @@ class NotifiersController
      */
     public function destroy(LdapNotifier $notifier)
     {
+        $this->authorize('notifier.delete', $notifier);
+
         $notifier->delete();
 
         return Scout::response()

@@ -63,15 +63,16 @@ class DomainNotifiersController extends Controller
      *
      * @param LdapDomain $domain
      * @param string     $notifierId
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(LdapDomain $domain, $notifierId)
     {
         $notifier = $domain->notifiers()->findOrFail($notifierId);
 
-        if ($notifier->system) {
-            return redirect()->route('domains.notifiers.show', [$domain, $notifier]);
-        }
+        $this->authorize('notifier.edit', $notifier);
 
         return view('domains.notifiers.edit', compact('domain', 'notifier'));
     }

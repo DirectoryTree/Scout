@@ -1,7 +1,8 @@
-@component('components.card', ['class' => 'mb-4', 'flush' => true])
+@component('components.card', ['class' => 'menu mb-4', 'flush' => true])
     <div class="list-group list-group-flush">
         <div class="list-group-item font-weight-bold">
-            <h5 class="mb-0">Object</h5>
+            <h6 class="mb-0 text-black-50 font-weight-bold">Object</h6>
+            <h4 class="mb-0 text-secondary font-weight-bold">{{ $object->name }}</h4>
         </div>
 
         <a

@@ -23,7 +23,7 @@
 @import "~flatpickr";
 
 // Ladda buttons
-@import "~ladda/dist/ladda-themeless.min.css";
+@import '~ladda/css/ladda';
 
 hr {
     border-top:1px dotted rgba(0, 0, 0, 0.1);
@@ -64,7 +64,7 @@ hr {
 }
 
 .notifications {
-    min-width:400px;
+    min-width:300px;
     background: #fff;
     .dropdown-item {
         background: #fff;
@@ -76,6 +76,10 @@ hr {
     }
     .notification {
         cursor: pointer;
+    }
+
+    @include media-breakpoint-up(sm) {
+        min-width:400px;
     }
 }
 
@@ -91,4 +95,35 @@ trix-editor:empty:not(:focus)::before {
 hr.slim {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.dropdown-divider {
+  border-top:3px solid $dropdown-divider-bg;
+}
+
+.card.menu {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.card.menu > .card-body {
+    border:none;
+}
+
+.card.menu > .card-body > .list-group > .list-group-item {
+    border:none;
+    color:$secondary;
+    margin-top:5px;
+    margin-bottom:5px;
+    border-radius: 5px 5px 5px 5px !important;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.card.menu > .card-body > .list-group > .list-group-item.active {
+    color:$white;
+    background-color:$list-group-active-bg;
+    box-shadow: 0.1rem 0.5rem 0.5rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.list-group {
+    background-color: rgba(0, 0, 0, 0);
 }

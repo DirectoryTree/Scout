@@ -1,4 +1,4 @@
-<div class="card border shadow-sm {{ $class ?? null }}">
+<div class="card {{ $class ?? null }}">
     @isset($header)
         <div class="card-header border-bottom">
             {{ $header }}

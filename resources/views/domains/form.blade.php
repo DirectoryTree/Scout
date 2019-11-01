@@ -1,48 +1,69 @@
-<div class="form-group">
-    {{ Form::scoutLabel('encryption', __('Connection Encryption')) }}
+<div class="form-row">
+    <div class="col">
+        <div class="form-group">
+            {{ Form::scoutLabel('encryption', __('Connection Encryption')) }}
 
-    <div class="d-flex justify-content-start">
-        <div class="mr-2">
+            <div class="d-flex justify-content-start">
+                <div class="mr-2">
+                    {{
+                        Form::scoutRadio('encryption', '', $domain->encryption == '', [
+                            'id' => 'none',
+                            'label' => 'No Encryption',
+                            'data-target' => 'form.input',
+                        ])
+                    }}
+                </div>
+
+                <div class="mr-2">
+                    {{
+                        Form::scoutRadio('encryption', 'tls', $domain->encryption == 'tls', [
+                            'id' => 'radio-use-tls',
+                            'label' => 'Use TLS',
+                            'data-target' => 'form.input',
+                        ])
+                    }}
+                </div>
+
+                <div class="mr-2">
+                    {{
+                        Form::scoutRadio('encryption', 'ssl', $domain->encryption == 'ssl', [
+                            'id' => 'radio-use-ssl',
+                            'label' => 'Use SSL',
+                            'data-target' => 'form.input',
+                        ])
+                    }}
+                </div>
+            </div>
+
             {{
-                Form::scoutRadio('encryption', '', $domain->encryption == '', [
-                    'id' => 'none',
-                    'label' => 'No Encryption',
-                    'data-target' => 'form.input',
+                Form::scoutError([
+                    'data-input' => 'encryption',
+                    'data-target' => 'form.error',
                 ])
             }}
-        </div>
 
-        <div class="mr-2">
-            {{
-                Form::scoutRadio('encryption', 'tls', $domain->encryption == 'tls', [
-                    'id' => 'radio-use-tls',
-                    'label' => 'Use TLS',
-                    'data-target' => 'form.input',
-                ])
-            }}
-        </div>
-
-        <div class="mr-2">
-            {{
-                Form::scoutRadio('encryption', 'ssl', $domain->encryption == 'ssl', [
-                    'id' => 'radio-use-ssl',
-                    'label' => 'Use SSL',
-                    'data-target' => 'form.input',
-                ])
-            }}
+            <small class="form-text text-muted">
+                <strong>Note:</strong> You must select TLS or SSL encryption to be able to perform all password related LDAP tasks.
+            </small>
         </div>
     </div>
 
-    {{
-        Form::scoutError([
-            'data-input' => 'encryption',
-            'data-target' => 'form.error',
-        ])
-    }}
+    <div class="col">
+        <div class="form-group">
+            {{ Form::scoutLabel('write_back', __('Write-Back')) }}
 
-    <small class="form-text text-muted">
-        <strong>Note:</strong> You must select TLS or SSL encryption to be able to perform all password related LDAP tasks.
-    </small>
+            {{
+                Form::scoutCheckbox('write_back', 'Domain Write Back', $domain->write_back, [
+                    'id' => 'checkbox-domain-write-back',
+                    'label' => 'Enable Domain Write Back',
+                ])
+            }}
+
+            <small class="form-text text-muted">
+                Domain write-back allows you to modify LDAP objects through Scout.
+            </small>
+        </div>
+    </div>
 </div>
 
 <div class="form-row">
@@ -132,6 +153,10 @@
                 ])
             }}
 
+            <small class="form-text text-muted">
+                This is usually <strong>389</strong> or <strong>587</strong>.
+            </small>
+
             {{
                 Form::scoutError([
                     'data-input' => 'port',
@@ -153,6 +178,10 @@
                     'placeholder' => '5',
                 ])
             }}
+
+            <small class="form-text text-muted">
+                The amount of <strong>seconds</strong> to wait for LDAP connectivity.
+            </small>
 
             {{
                 Form::scoutError([
@@ -237,6 +266,10 @@
                     'placeholder' => 'admin',
                 ])
             }}
+
+            <small class="form-text text-muted">
+                This must be a full <strong>Distinguished Name</strong> or <strong>User Principal Name.</strong>
+            </small>
 
             {{
                 Form::scoutError([

@@ -30,6 +30,7 @@ $container-max-widths: (
 // Dropdowns
 $dropdown-bg: $dark;
 $dropdown-color:#fff;
+$dropdown-divider-bg: #7877b1;
 
 // Cards
 $card-bg:#fafafa;
@@ -45,3 +46,5 @@ $input-placeholder-color: #cbcbcb;
 // Swal
 $swal2-confirm-button-background-color: $dark;
 
+$list-group-item-padding-y: 0.5rem;
+$card-spacer-y: 0.5rem;

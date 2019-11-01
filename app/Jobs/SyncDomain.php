@@ -55,7 +55,7 @@ class SyncDomain implements ShouldQueue
         // Set the scan start time.
         $this->scan->fill(['started_at' => now()])->save();
 
-        $connector = new DomainConnector($this->domain);
+        $connector = app(DomainConnector::class, ['domain' => $this->domain]);
 
         try {
             $connector->connect();
@@ -65,7 +65,7 @@ class SyncDomain implements ShouldQueue
             // Update our scans completion stats.
             $this->scan->fill([
                 'success' => true,
-                'synchronized' => $synchronized,
+                'synchronized' => $synchronized ?? 0,
                 'completed_at' => now(),
             ])->save();
         } catch (Exception $ex) {

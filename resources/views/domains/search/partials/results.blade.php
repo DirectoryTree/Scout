@@ -1,11 +1,11 @@
 @isset($objects)
-    @component('components.card', ['class' => 'bg-white', 'flush' => true])
-        @slot('header')
-            <h5 class="mb-0">
-                {{ __('Results') }}
-            </h5>
-        @endslot
+    <div class="card shadow-sm mt-4 bg-white">
+        <div class="card-header border-bottom">
+            <h5 class="mb-0">{{ __('Results') }}</h5>
+        </div>
 
-        @include('domains.objects.partials.list')
-    @endcomponent
+        <div class="card-body p-0">
+            @include('domains.objects.partials.list')
+        </div>
+    </div>
 @endisset

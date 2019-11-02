@@ -6,14 +6,16 @@
     <form method="post" action="{{ route('domains.store') }}" data-controller="form">
         @csrf
 
-        @component('components.card')
-            @slot('header')
+        <div class="card shadow-sm">
+            <div class="card-header">
                 <h5 class="mb-0">{{ __('Add Domain') }}</h5>
-            @endslot
+            </div>
 
-            @include('domains.form')
+            <div class="card-body">
+                @include('domains.form')
+            </div>
 
-            @slot('footer')
+            <div class="card-footer">
                 <div class="form-row justify-content-between">
                     <a href="{{ route('domains.index') }}" class="btn btn-secondary">
                         <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
@@ -23,7 +25,7 @@
                         <i class="fa fa-save"></i> {{ __('Save') }}
                     </button>
                 </div>
-            @endslot
-        @endcomponent
+            </div>
+        </div>
     </form>
 @endsection

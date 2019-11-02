@@ -3,24 +3,25 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.changes.index', $domain, $object))
 
 @section('page')
-    @component('components.card', ['class' => 'bg-white', 'flush' => true])
-        <div class="list-group list-group-flush">
-            <div class="list-group-item">
-                <h5 class="mb-0">Changes</h5>
-            </div>
+    <div class="card shadow-sm overflow-hidden">
+        <div class="card-body bg-white p-0">
+            <div class="list-group list-group-flush overflow-hidden">
+                <div class="list-group-item">
+                    <h5 class="mb-0">Changes</h5>
+                </div>
 
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th class="pl-4">Attribute</th>
-                            <th class="text-center">Times Changed</th>
-                            <th>
-                                <i class="far fa-clock"></i> Last Change
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="pl-4">Attribute</th>
+                                <th class="text-center">Times Changed</th>
+                                <th>
+                                    <i class="far fa-clock"></i> Last Change
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         @forelse($changes as $change)
                             <tr>
                                 <td class="pl-4 position-relative">
@@ -45,11 +46,12 @@
                                 </td>
                             </tr>
                         @endforelse
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    @endcomponent
+    </div>
 
     <div class="row my-4">
         <div class="col">

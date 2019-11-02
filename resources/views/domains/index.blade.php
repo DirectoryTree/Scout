@@ -5,49 +5,86 @@
         <div class="col">
             <h2>{{ __('Domains') }}</h2>
         </div>
-
-        <div class="col text-right">
-            <a href="{{ route('domains.create') }}" class="btn btn-success">
-                <i class="fa fa-plus-circle"></i> {{ __('Add') }}
-            </a>
-        </div>
     </div>
 
     <div class="row">
         <div class="col">
-            @forelse($domains as $domain)
-                @component('components.card', ['class' => 'bg-white mb-4'])
-                    <a class="h4" href="{{ route('domains.show', $domain) }}">
-                        {{ $domain->name }}
-                    </a>
+            <div class="card-deck">
+                @forelse($domains as $domain)
+                    <div class="card shadow-sm bg-white mb-4" style="max-width:18rem;">
+                        <div class="card-body">
+                            <div class="row justify-content-between align-items-center mb-3" data-controller="visit" data-url="{{ route('domains.show', $domain) }}">
+                                <div class="col">
+                                    <h3 class="mb-0">{{ $domain->name }}</h3>
+                                </div>
 
-                    <hr/>
+                                <div class="col-auto">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-light border rounded-pill" type="button" data-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
 
-                    <hr/>
+                                        <div class="dropdown-menu">
+                                            <a href="{{ route('domains.notifiers.index', $domain) }}" class="dropdown-item">
+                                                <i class="fa fa-bell"></i> Notifications
+                                            </a>
 
-                    <small>
-                        {{ __('Last Synchronized') }}:
+                                            <a href="{{ route('domains.search.index', $domain) }}" class="dropdown-item">
+                                                <i class="fa fa-search"></i> Search
+                                            </a>
 
-                        @if ($domain->synchronized_at)
-                            {{ $domain->synchronized_at->diffForHumans() }}
-                        @else
-                            <em>Never</em>
-                        @endif
+                                            <a href="{{ route('domains.objects.index', $domain) }}" class="dropdown-item">
+                                                <i class="fa fa-cubes"></i> Objects
+                                            </a>
 
-                        |
+                                            <div class="dropdown-divider"></div>
 
-                        {{ __('Created By') }}:
+                                            <a href="{{ route('domains.edit', $domain) }}" class="dropdown-item">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
 
-                        {{ $domain->creator->name }}
-                    </small>
-                @endcomponent
-            @empty
-                @component('components.card', ['class' => 'bg-white'])
-                    <div class="text-center text-muted">
-                        {{ __("You don't have any domains configured. Click the 'Add' button to get started.") }}
+                                            <a href="{{ route('domains.delete', $domain) }}" class="dropdown-item">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col text-center">
+                                    <h2 class="rounded-pill text-muted bg-light">{{ $domain->objects_count }}</h2>
+                                    <h5 class="d-inline text-muted">objects</h5>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <a href="{{ route('domains.show', $domain) }}" class="btn btn-block btn-primary">
+                                        <i class="far fa-eye"></i> Overview
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                @endcomponent
-            @endforelse
+                @empty
+                    @component('components.card', ['class' => 'bg-white'])
+                        <div class="text-center text-muted">
+                            {{ __("You don't have any domains configured. Click the 'Add' button to get started.") }}
+                        </div>
+                    @endcomponent
+                @endforelse
+
+                <div class="card shadow-sm bg-light mb-4" style="max-width:18rem;">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <div class="text-center">
+                            <a href="{{ route('domains.create') }}" class="btn btn-success">
+                                <i class="fa fa-plus-circle"></i> {{ __('Add') }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

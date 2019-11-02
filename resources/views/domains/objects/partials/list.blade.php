@@ -1,7 +1,7 @@
-<div class="list-group list-group-flush">
+<div class="list-group">
     @forelse($objects as $object)
-        <div class="list-group-item {{ $object->trashed() ? 'bg-light' : null }}">
-            <div class="d-flex justify-content-between align-items-center">
+        <div class="list-group-item border-0 {{ $object->trashed() ? 'bg-light' : null }}">
+            <div class="d-flex justify-content-between align-items-center pb-2{{ !$loop->last ? ' border-bottom' : null }}">
                 <div class="mr-2">
                     <h5>
                         @include('domains.objects.partials.badge')
@@ -21,11 +21,11 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn btn-sm btn-light rounded-pill border" type="button" id="btn-object-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-sm btn-light border rounded-pill" type="button" data-toggle="dropdown">
                         <i class="fas fa-ellipsis-v"></i>
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btn-object-settings">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a href="#" class="dropdown-item">
                             <i class="far fa-bell"></i> Notifications
                         </a>
@@ -42,7 +42,7 @@
             </div>
         </div>
     @empty
-        <div class="list-group-item text-center text-muted">
+        <div class="list-group-item border-0 text-center text-muted">
             {{ __('There are no objects to list.') }}
         </div>
     @endforelse

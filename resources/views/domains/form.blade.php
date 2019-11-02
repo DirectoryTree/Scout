@@ -1,5 +1,5 @@
 <div class="form-row">
-    <div class="col">
+    <div class="col-md-6">
         <div class="form-group">
             {{ Form::scoutLabel('encryption', __('Connection Encryption')) }}
 
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div class="col">
+    <div class="col-md-6">
         <div class="form-group">
             {{ Form::scoutLabel('write_back', __('Write-Back')) }}
 

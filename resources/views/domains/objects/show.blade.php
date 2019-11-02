@@ -3,13 +3,15 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.show', $domain, $object))
 
 @section('page')
-    @component('components.card', ['class' => 'bg-white', 'flush' => true])
-        @slot('header')
+    <div class="card bd-white shadow-sm">
+        <div class="card-header border-bottom">
             <h5 class="mb-0">
                 <i class="fa fa-level-down-alt"></i> {{ __('Nested Objects') }}
             </h5>
-        @endslot
+        </div>
 
-        @include('domains.objects.partials.list')
-    @endcomponent
+        <div class="card-body p-0">
+            @include('domains.objects.partials.list')
+        </div>
+    </div>
 @endsection

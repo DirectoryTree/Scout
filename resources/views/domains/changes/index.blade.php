@@ -3,21 +3,22 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.changes.index', $domain))
 
 @section('page')
-    @component('components.card', ['class' => 'bg-white', 'flush' => true])
-        @slot('header')
+    <div class="card shadow-sm bg-white">
+        <div class="card-header">
             <h5 class="mb-0">All Changes</h5>
-        @endslot
+        </div>
 
-        <div class="table-responsive">
-            <table class="table mb-0">
-                <thead>
-                    <tr>
-                        <th class="pl-4">Attribute</th>
-                        <th class="text-center">Objects Changed</th>
-                        <th class="text-center">Last Changed</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="pl-4">Attribute</th>
+                            <th class="text-center">Objects Changed</th>
+                            <th class="text-center">Last Changed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @forelse($changes as $change)
                         <tr>
                             <td class="pl-4 position-relative">
@@ -39,8 +40,9 @@
                             </td>
                         </tr>
                     @endforelse
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    @endcomponent
+    </div>
 @endsection

@@ -3,8 +3,8 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.index', $domain))
 
 @section('page')
-    @component('components.card', ['class' => 'bg-white', 'flush' => request('view') === 'tree' ? false : true])
-        @slot('header')
+    <div class="card bg-white shadow-sm">
+        <div class="card-header mb-2 border-bottom">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">{{ __('Domain Objects') }}</h5>
 
@@ -24,14 +24,18 @@
                     </a>
                 </div>
             </div>
-        @endslot
+        </div>
 
         @if(request('view') === 'tree')
-            <div class="overflow-x">
-                @include('domains.objects.partials.tree')
+            <div class="card-body py-0">
+                <div class="overflow-x py-2">
+                    @include('domains.objects.partials.tree')
+                </div>
             </div>
         @else
-            @include('domains.objects.partials.list')
+            <div class="card-body p-0">
+                @include('domains.objects.partials.list')
+            </div>
         @endif
-    @endcomponent
+    </div>
 @endsection

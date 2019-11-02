@@ -3,26 +3,28 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.delete', $domain))
 
 @section('page')
-    @component('components.card')
-        @slot('header')
-            <h4 class="mb-0">Delete Domain</h4>
-        @endslot
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">{{ __('Delete Domain') }}</h5>
+        </div>
 
-        <p>
-            Deleting a domain will purge the following data:
-        </p>
+        <div class="card-body">
+            <p>
+                Deleting a domain will purge the following data:
+            </p>
 
-        <ul>
-            <li>All objects</li>
-            <li>All scans</li>
-            <li>All connection data</li>
-            <li>All change history</li>
-            <li>All notifications and notification history</li>
-        </ul>
+            <ul>
+                <li>All objects</li>
+                <li>All scans</li>
+                <li>All connection data</li>
+                <li>All change history</li>
+                <li>All notifications and notification history</li>
+            </ul>
 
-        <p>Once you delete, there is no going back. Please be certain.</p>
+            <p>Once you delete, there is no going back. Please be certain.</p>
+        </div>
 
-        @slot('footer')
+        <div class="card-footer">
             <form
                 method="post"
                 action="{{ route('domains.destroy', $domain) }}"
@@ -43,6 +45,6 @@
                     </button>
                 </div>
             </form>
-        @endslot
-    @endcomponent
+        </div>
+    </div>
 @endsection

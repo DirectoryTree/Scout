@@ -3,27 +3,28 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.scans.index', $domain))
 
 @section('page')
-    @component('components.card', ['class' => 'bg-white', 'flush' => true])
-        <div class="list-group list-group-flush">
-            <div class="list-group-item">
-                <h5 class="mb-0">Recent Scans</h5>
-            </div>
+    <div class="card shadow-sm bg-white">
+        <div class="card-body p-0">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    <h5 class="mb-0">Recent Scans</h5>
+                </div>
 
-            <div class="table-responsive">
-                <table class="table mb-0">
-                    <colgroup>
-                        <col style="width:1%;">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="pl-4"></th>
-                            <th>Started</th>
-                            <th>Completed</th>
-                            <th class="text-center">Synchronized</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <colgroup>
+                            <col style="width:1%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="pl-4"></th>
+                                <th>Started</th>
+                                <th>Completed</th>
+                                <th class="text-center">Synchronized</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         @forelse($scans as $scan)
                             <tr>
                                 <td class="pl-4 align-middle">
@@ -63,11 +64,12 @@
                         @empty
                             <tr></tr>
                         @endforelse
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    @endcomponent
+    </div>
 
     <div class="row my-4">
         <div class="col">

@@ -5,7 +5,9 @@
 @section('page')
     <div class="card shadow-sm bg-white">
         <div class="card-header">
-            <h5 class="mb-0">All Changes</h5>
+            <h6 class="mb-0 text-muted font-weight-bold">
+                <i class="fa fa-sync"></i> All Changes
+            </h6>
         </div>
 
         <div class="card-body p-0">

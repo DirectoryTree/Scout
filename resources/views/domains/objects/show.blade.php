@@ -5,9 +5,9 @@
 @section('page')
     <div class="card bd-white shadow-sm">
         <div class="card-header border-bottom">
-            <h5 class="mb-0">
+            <h6 class="mb-0 text-muted font-weight-bold">
                 <i class="fa fa-level-down-alt"></i> {{ __('Nested Objects') }}
-            </h5>
+            </h6>
         </div>
 
         <div class="card-body p-0">

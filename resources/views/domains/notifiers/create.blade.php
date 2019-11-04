@@ -6,16 +6,18 @@
     <form method="post" action="{{ route('notifiers.notifiable.store', ['domain', $domain]) }}" data-controller="form">
         @csrf
 
-        @component('components.card', ['class' => 'bg-white'])
-            @slot('header')
-                <h5 class="mb-0">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h6 class="mb-0 font-weight-bold text-secondary">
                     <i class="far fa-bell"></i> Add Domain Notifier
-                </h5>
-            @endslot
+                </h6>
+            </div>
 
-            @include('domains.notifiers.form')
+            <div class="card-body bg-light">
+                @include('domains.notifiers.form')
+            </div>
 
-            @slot('footer')
+            <div class="card-footer">
                 <div class="form-row justify-content-between">
                     <a href="{{ route('domains.notifiers.index', $domain) }}" class="btn btn-secondary">
                         <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
@@ -25,7 +27,7 @@
                         <i class="fa fa-save"></i> {{ __('Save') }}
                     </button>
                 </div>
-            @endslot
-        @endcomponent
+            </div>
+        </div>
     </form>
 @endsection

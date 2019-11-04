@@ -5,8 +5,8 @@
 @section('page')
     <form method="get" action="{{ route('partials.domains.search.index', $domain) }}" data-controller="form">
         <div class="card shadow-sm">
-            <div class="card-header">
-                <h5 class="mb-0">Search Domain</h5>
+            <div class="card-header border-bottom">
+                <h6 class="mb-0 font-weight-bold text-secondary">Search Domain</h6>
             </div>
 
             <div class="card-body">

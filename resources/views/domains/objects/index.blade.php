@@ -6,19 +6,21 @@
     <div class="card bg-white shadow-sm">
         <div class="card-header mb-2 border-bottom">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ __('Domain Objects') }}</h5>
+                <h6 class="mb-0 text-muted font-weight-bold">
+                    <i class="fa fa-cubes"></i> {{ __('Domain Objects') }}
+                </h6>
 
-                <div class="btn-group">
+                <div class="btn-group btn-group-sm">
                     <a
                         href="{{ route('domains.objects.index', [$domain, 'view' => 'tree']) }}"
-                        class="btn btn-sm btn-secondary {{ request('view') === 'tree' ? 'active' : null }}"
+                        class="btn btn-secondary {{ request('view') === 'tree' ? 'active' : null }}"
                     >
                         <i class="fa fa-sitemap"></i> Tree
                     </a>
 
                     <a
                         href="{{ route('domains.objects.index', [$domain, 'view' => 'list']) }}"
-                        class="btn btn-sm btn-secondary {{ request('view', 'list') === 'list' ? 'active' : null }}"
+                        class="btn btn-secondary {{ request('view', 'list') === 'list' ? 'active' : null }}"
                     >
                         <i class="fa fa-list"></i> List
                     </a>

@@ -1,11 +1,11 @@
-<div class="card menu bg-white shadow-sm rounded">
-    <div class="card-body p-3">
-        <div class="list-group list-group-flush">
-            <div class="list-group-item pl-2 p-0">
-                <h6 class="mb-0 text-black-50 font-weight-bold">Domain</h6>
-                <h4 class="mb-0 text-secondary font-weight-bold">{{ $domain->name }}</h4>
-            </div>
+<div class="card menu bg-white shadow-sm rounded" data-controller="menu">
+    <div class="card-header pt-4">
+        <h6 class="mb-0 text-black-50 font-weight-bold">Domain</h6>
+        <h4 class="mb-0 text-secondary font-weight-bold">{{ $domain->name }}</h4>
+    </div>
 
+    <div class="card-body pt-0">
+        <div class="list-group list-group-flush d-none d-md-block" data-target="menu.container">
             <a
                 href="{{ route('domains.show', $domain) }}"
                 class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.show') ? 'active' : null }}"
@@ -74,5 +74,7 @@
                 <i class="far fa-trash-alt"></i> {{ __('Delete') }}
             </a>
         </div>
+
+        <button type="button" class="btn btn-sm btn-block btn-outline-secondary d-block d-md-none" data-target="menu.toggleButton"></button>
     </div>
 </div>

@@ -4,12 +4,14 @@
 
 @section('page')
     <div class="card shadow-sm bg-white">
+        <div class="card-header border-bottom">
+            <h6 class="mb-0 font-weight-bold text-secondary">
+                <i class="fa fa-heartbeat"></i> Recent Scans
+            </h6>
+        </div>
+
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
-                <div class="list-group-item">
-                    <h5 class="mb-0">Recent Scans</h5>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table mb-0">
                         <colgroup>

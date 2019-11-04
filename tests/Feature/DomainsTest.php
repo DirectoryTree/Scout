@@ -109,8 +109,7 @@ class DomainsTest extends FeatureTestCase
 
         $this->get(route('domains.index'))->assertSee($domain->name);
         $this->get(route('domains.show', $domain))
-            ->assertSee($domain->name)
-            ->assertSee($domain->base_dn);
+            ->assertSee($domain->name);
     }
 
     public function test_deleting_domain_deletes_child_records()

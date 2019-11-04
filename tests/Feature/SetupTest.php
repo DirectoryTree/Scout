@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Arr;
 
-class SetupTest extends InstalledTestCase
+class SetupTest extends FeatureTestCase
 {
     public function test_user_is_redirected_upon_first_visit()
     {

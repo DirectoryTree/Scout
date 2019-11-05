@@ -23,6 +23,7 @@ class CreateLdapNotifiersTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('system')->default(false);
             $table->boolean('enabled')->default(false);
+            $table->boolean('email')->default(false);
             $table->boolean('all_users')->default(true);
         });
     }

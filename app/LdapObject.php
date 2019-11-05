@@ -116,6 +116,16 @@ class LdapObject extends Model
     }
 
     /**
+     * Determine if the object can have groups.
+     *
+     * @return bool
+     */
+    public function canHaveGroups()
+    {
+        return in_array($this->type, ['group', 'user']);
+    }
+
+    /**
      * Get the LDAP objects type icon.
      *
      * @return string

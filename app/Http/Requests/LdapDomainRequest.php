@@ -12,6 +12,7 @@ use LdapRecord\LdapRecordException;
 use Illuminate\Validation\Validator;
 use App\Ldap\Connectors\ConfigConnector;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\RequiredIf;
 
 class LdapDomainRequest extends FormRequest
 {
@@ -31,7 +32,7 @@ class LdapDomainRequest extends FormRequest
             ],
             'hosts' => 'required',
             'username' => 'required',
-            'password' => 'required',
+            'password' => [new RequiredIf(!$this->domain)],
             'base_dn' => ['required', new DistinguishedName()],
             'filter' => ['nullable', new LdapSearchFilter()],
             'port' => 'required|integer',

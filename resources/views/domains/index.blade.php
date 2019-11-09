@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col">
             <div class="card-deck">
-                @forelse($domains as $domain)
+                @foreach($domains as $domain)
                     <div class="card shadow-sm bg-white mb-4" style="max-width:18rem;">
                         <div class="card-body">
                             <div class="row justify-content-between align-items-center mb-3" data-controller="visit" data-url="{{ route('domains.show', $domain) }}">
@@ -67,13 +67,7 @@
                             </div>
                         </div>
                     </div>
-                @empty
-                    @component('components.card', ['class' => 'bg-white'])
-                        <div class="text-center text-muted">
-                            {{ __("You don't have any domains configured. Click the 'Add' button to get started.") }}
-                        </div>
-                    @endcomponent
-                @endforelse
+                @endforeach
 
                 <div class="card shadow-sm bg-light mb-4" style="max-width:18rem;">
                     <div class="card-body d-flex flex-column justify-content-center">

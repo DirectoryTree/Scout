@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Jobs;
 
-use App\Actions\ImportDomainAction;
 use Mockery as m;
 use App\LdapDomain;
 use App\Jobs\SyncDomain;
+use App\Actions\ImportDomainAction;
 use App\Ldap\Connectors\DomainConnector;
 use Tests\Feature\FeatureTestCase;
 use Illuminate\Support\Facades\Bus;

@@ -133,6 +133,16 @@ class LdapDomain extends Model
     }
 
     /**
+     * The hasManyThrough changes relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function changes()
+    {
+        return $this->hasManyThrough(LdapChange::class, LdapObject::class, 'domain_id', 'object_id');
+    }
+
+    /**
      * The morphMany LDAP notifiers relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany

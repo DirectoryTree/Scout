@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Actions;
 
 use App\LdapDomain;
 use App\LdapObject;
+use App\Ldap\ObjectImporter;
 use LdapRecord\Models\Model;
-use Illuminate\Support\Facades\Bus;
 
-class ImportObjects
+class ImportDomainAction extends Action
 {
     /**
      * The LDAP domain to import objects upon.
@@ -34,11 +34,11 @@ class ImportObjects
     }
 
     /**
-     * Execute the job.
+     * Execute the action.
      *
      * @return int
      */
-    public function handle()
+    public function execute()
     {
         $this->import();
 
@@ -58,7 +58,7 @@ class ImportObjects
     {
         $this->query($model)->each(function (Model $child) use ($model, $parent) {
             /** @var LdapObject $object */
-            $object = Bus::dispatch(new SyncObject($this->domain, $child, $parent));
+            $object = (new ObjectImporter($this->domain, $child))->run($parent);
 
             $this->guids[] = $object->guid;
 
@@ -88,8 +88,6 @@ class ImportObjects
             $query = $query->rawFilter($filter);
         }
 
-        return $query->listing()
-            ->select('*')
-            ->paginate(1000);
+        return $query->listing()->select('*')->paginate(1000);
     }
 }

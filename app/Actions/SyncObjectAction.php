@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Actions;
 
 use App\LdapDomain;
 use App\LdapObject;
-use Illuminate\Support\Facades\Bus;
+use App\Ldap\ObjectImporter;
 use App\Ldap\Connectors\DomainConnector;
 
-class SyncSingleObject
+class SyncObjectAction extends Action
 {
     /**
      * The domain the entry is being imported from.
@@ -44,7 +44,7 @@ class SyncSingleObject
      * @throws \LdapRecord\ConnectionException
      * @throws \LdapRecord\Models\ModelNotFoundException
      */
-    public function handle()
+    public function execute()
     {
         $connector = new DomainConnector($this->domain);
 
@@ -52,6 +52,6 @@ class SyncSingleObject
 
         $entry = $this->domain->getLdapModel()->findOrFail($this->object->dn);
 
-        Bus::dispatch(new SyncObject($this->domain, $entry, $this->object->parent));
+        (new ObjectImporter($this->domain, $entry))->run($this->object->parent);
     }
 }

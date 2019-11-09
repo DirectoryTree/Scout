@@ -6,8 +6,7 @@ use Exception;
 use App\Scout;
 use App\LdapDomain;
 use App\LdapObject;
-use App\Jobs\SyncSingleObject;
-use Illuminate\Support\Facades\Bus;
+use App\Actions\SyncObjectAction;
 
 class DomainObjectSyncController
 {
@@ -27,7 +26,7 @@ class DomainObjectSyncController
             ->findOrFail($objectId);
 
         try {
-            Bus::dispatch(new SyncSingleObject($domain, $object));
+            (new SyncObjectAction($domain, $object))->execute();
         } catch (Exception $ex) {
             return Scout::response()
                 ->type('error')

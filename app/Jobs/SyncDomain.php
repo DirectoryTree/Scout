@@ -6,7 +6,7 @@ use Exception;
 use App\LdapScan;
 use App\LdapDomain;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Bus;
+use App\Actions\ImportDomainAction;
 use Illuminate\Queue\SerializesModels;
 use App\Ldap\Connectors\DomainConnector;
 use Illuminate\Queue\InteractsWithQueue;
@@ -60,7 +60,10 @@ class SyncDomain implements ShouldQueue
         try {
             $connector->connect();
 
-            $synchronized = Bus::dispatch(new ImportObjects($this->domain));
+            /** @var ImportDomainAction $action */
+            $action = app(ImportDomainAction::class, ['domain' => $this->domain]);
+
+            $synchronized = $action->execute();
 
             // Update our scans completion stats.
             $this->scan->fill([

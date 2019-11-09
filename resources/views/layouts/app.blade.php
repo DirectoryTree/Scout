@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@inject('domains', 'App\Http\Injectors\DomainInjector')
+
+@php($addedDomains = $domains->get())
+
 @section('head')
     <script src="{{ asset(mix('js/app.js')) }}" data-turbolinks-track="reload"></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
@@ -27,14 +31,40 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ request()->routeIs('domains.*') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('domains.index') }}">
+                            <li class="nav-item dropdown {{ request()->routeIs('domains.*') ? 'active' : null }}">
+                                <a id="dropdown-domains" class="nav-link dropdown-toggle" href="{{ route('domains.index') }}" data-toggle="dropdown">
                                     <i class="fa fa-network-wired"></i> {{ __('Domains') }}
 
-                                    @component('components.status-count', ['count' => $counts['domains']])
-                                        {{ $counts['domains'] }}
+                                    @component('components.status-count', ['count' => $addedDomains->count()])
+                                        {{ $addedDomains->count() }}
                                     @endcomponent
+
+                                    <span class="caret"></span>
                                 </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdown-domains">
+                                    @forelse($addedDomains as $domain)
+                                        <a href="{{ route('domains.show', $domain) }}" class="dropdown-item d-flex align-items-center">
+                                            @component('components.status', [
+                                                'status' => $domain->status == \App\LdapDomain::STATUS_ONLINE
+                                            ])@endcomponent
+
+                                            <span class="ml-2">
+                                                {{ $domain->name }}
+                                            </span>
+                                        </a>
+                                    @empty
+                                        <a href="{{ route('domains.create') }}" class="dropdown-item">
+                                            <i class="fa fa-plus-circle"></i> Add
+                                        </a>
+                                    @endforelse
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="{{ route('domains.index') }}" class="dropdown-item">
+                                        View All
+                                    </a>
+                                </div>
                             </li>
                         @endauth
                     </ul>
@@ -53,12 +83,19 @@
                             @include('layouts.notifications')
 
                             <li class="nav-item dropdown">
-                                <a id="user-dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="dropdown-user" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <i class="fa fa-user-circle"></i>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->name }}
+                                    <span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-dropdown">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fa fa-cogs"></i> Settings
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
                                     <a
                                         class="dropdown-item"
                                         href="{{ route('logout') }}"

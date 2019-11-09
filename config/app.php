@@ -170,7 +170,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\LdapConnectionProvider::class,
-        App\Providers\ComposerServiceProvider::class,
         App\Providers\InstallationServiceProvider::class,
         App\Providers\FormServiceProvider::class,
     ],

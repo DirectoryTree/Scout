@@ -1,8 +1,10 @@
+@inject('databases', 'App\Http\Injectors\DatabaseTypeInjector')
+
 <div class="form-group">
     {{ Form::scoutLabel('driver', __('Driver')) }}
 
     {{
-        Form::scoutSelect('driver', $databases, null, [
+        Form::scoutSelect('driver', $databases->get(), null, [
             'data-target' => 'form.input',
             'data-action' => 'change->form#clearError'
         ])

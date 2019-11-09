@@ -1,4 +1,6 @@
-<div class="card menu bg-white shadow-sm rounded" data-controller="menu">
+@inject('stats', 'App\Http\Injectors\DomainStatsInjector')
+
+<div class="card menu bg-white shadow-sm rounded mb-4 mb-md-0" data-controller="menu">
     <div class="card-header pt-4">
         <h6 class="mb-0 text-black-50 font-weight-bold">Domain</h6>
         <h4 class="mb-0 text-secondary font-weight-bold">{{ $domain->name }}</h4>
@@ -39,11 +41,11 @@
                 class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.index') ? 'active' : null }}"
             >
                 <div class="d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-cubes"></i> {{ __('All Objects') }}
-                            </span>
+                    <span>
+                        <i class="fa fa-cubes"></i> {{ __('All Objects') }}
+                    </span>
 
-                    <span class="badge badge-primary">{{ $counts['objects'] }}</span>
+                    <span class="badge badge-primary">{{ $stats->getObjectCount() }}</span>
                 </div>
             </a>
 
@@ -52,11 +54,11 @@
                 class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.changes.*') ? 'active' : null }}"
             >
                 <div class="d-flex justify-content-between align-items-center">
-                            <span>
-                                <i class="fa fa-sync"></i> {{ __('All Changes') }}
-                            </span>
+                    <span>
+                        <i class="fa fa-sync"></i> {{ __('All Changes') }}
+                    </span>
 
-                    <span class="badge badge-primary">{{ $counts['changes'] }}</span>
+                    <span class="badge badge-primary">{{ $stats->getChangeCount() }}</span>
                 </div>
             </a>
 

@@ -4,7 +4,7 @@
             {{ Form::scoutLabel('boolean', __('Boolean')) }}
 
             {{
-                Form::scoutSelect('boolean', $booleans, $condition->boolean, [
+                Form::scoutSelect('boolean', \App\LdapNotifierCondition::booleans(), $condition->boolean, [
                     'data-target' => 'forms--condition.input',
                     'data-action' => 'keyup->forms--condition#clearError',
                 ])
@@ -24,7 +24,7 @@
             {{ Form::scoutLabel('type', __('Type')) }}
 
             {{
-                Form::scoutSelect('type', $types, $condition->type, [
+                Form::scoutSelect('type', \App\LdapNotifierCondition::types(), $condition->type, [
                     'data-target' => 'forms--condition.input',
                     'data-action' => 'keyup->forms--condition#clearError',
                 ])
@@ -65,10 +65,10 @@
             {{ Form::scoutLabel('operator', __('Operator')) }}
 
             {{
-                Form::scoutSelect('operator', $operators, $condition->operator, [
+                Form::scoutSelect('operator', \App\LdapNotifierCondition::operators(), $condition->operator, [
                     'data-target' => 'forms--condition.input',
                     'data-action' => 'keyup->forms--condition#clearError change->forms--condition#hideValueInput',
-                    'data-nullable-operators' => json_encode($nullableOperators)
+                    'data-nullable-operators' => json_encode(\App\LdapNotifierCondition::nullableOperators())
                 ])
             }}
 

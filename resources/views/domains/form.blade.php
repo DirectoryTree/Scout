@@ -1,3 +1,5 @@
+@inject('types', 'App\Http\Injectors\DomainTypeInjector')
+
 <div class="form-row">
     <div class="col-md-6">
         <div class="form-group">
@@ -72,7 +74,7 @@
             {{ Form::scoutLabel('type', __('Connection Type')) }}
 
             {{
-                Form::scoutSelect('type', $types, $domain->type, [
+                Form::scoutSelect('type', $types->get(), $domain->type, [
                     'required',
                     'data-target' => 'form.input',
                     'data-action' => 'keyup->form#clearError',
@@ -248,7 +250,7 @@
 
 <hr/>
 
-<div class="alert alert-primary">
+<div class="alert alert-primary shadow-sm">
     <i class="fa fa-exclamation-circle"></i>
 
     {{ __('The username and password fields are encrypted using OpenSSL and the AES-256-CBC cipher. ') }}
@@ -291,6 +293,12 @@
                     'placeholder' => 'secret',
                 ])
             }}
+
+            @if($domain->exists)
+                <small class="form-text text-muted">
+                    Only enter a password if you would like the current changed.
+                </small>
+            @endif
 
             {{
                 Form::scoutError([

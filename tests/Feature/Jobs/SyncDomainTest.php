@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\Jobs;
 
+use App\Actions\ImportDomainAction;
 use Mockery as m;
 use App\LdapDomain;
 use App\Jobs\SyncDomain;
-use App\Jobs\ImportObjects;
 use App\Ldap\Connectors\DomainConnector;
 use Tests\Feature\FeatureTestCase;
 use Illuminate\Support\Facades\Bus;
 
 class SyncDomainTest extends FeatureTestCase
 {
-    public function test_import_objects_is_queued_when_job_is_fired()
+    public function test_import_action_is_executed_when_job_is_fired()
     {
         $domain = factory(LdapDomain::class)->create();
 
@@ -25,11 +25,14 @@ class SyncDomainTest extends FeatureTestCase
 
         $scan = $domain->scans()->create(['synchronized' => 0]);
 
-        $job = new SyncDomain($domain, $scan);
+        $this->app->bind(ImportDomainAction::class, function () {
+            $action = m::mock(ImportDomainAction::class);
+            $action->shouldReceive('execute')->once()->andReturn(5);
 
-        Bus::shouldReceive('dispatch')->once()->withArgs([ImportObjects::class])->andReturn(5);
+            return $action;
+        });
 
-        $job->handle();
+        (new SyncDomain($domain, $scan))->handle();
 
         $scan->refresh();
 
@@ -51,12 +54,14 @@ class SyncDomainTest extends FeatureTestCase
 
         $scan = $domain->scans()->create(['synchronized' => 0]);
 
-        $job = new SyncDomain($domain, $scan);
+        $this->app->bind(ImportDomainAction::class, function () {
+            $action = m::mock(ImportDomainAction::class);
+            $action->shouldReceive('execute')->once()->andThrow(new \Exception('Cannot scan'));
 
-        Bus::shouldReceive('dispatch')->once()->withArgs([ImportObjects::class])
-            ->andThrow(new \Exception('Cannot scan'));
+            return $action;
+        });
 
-        $job->handle();
+        (new SyncDomain($domain, $scan))->handle();
 
         $scan->refresh();
 

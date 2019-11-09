@@ -1,11 +1,11 @@
-<div class="card menu bg-white shadow-sm rounded mb-4">
-    <div class="card-body p-3">
-        <div class="list-group list-group-flush">
-            <div class="list-group-item font-weight-bold pl-2 p-0">
-                <h6 class="mb-0 text-black-50 font-weight-bold">Object</h6>
-                <h4 class="mb-0 text-secondary font-weight-bold">{{ $object->name }}</h4>
-            </div>
+<div class="card menu bg-white shadow-sm rounded mb-4" data-controller="menu">
+    <div class="card-header pt-4">
+        <h6 class="mb-0 text-black-50 font-weight-bold">Object</h6>
+        <h4 class="mb-0 text-secondary font-weight-bold">{{ $object->name }}</h4>
+    </div>
 
+    <div class="card-body pt-0">
+        <div class="list-group list-group-flush d-none d-md-block mb-4 mb-md-0" data-target="menu.container">
             <a
                 href="{{ route('domains.objects.show', [$domain, $object]) }}"
                 class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.show') ? 'active' : null }}"
@@ -43,6 +43,16 @@
                 </div>
             </a>
 
+            @if($object->canHaveGroups())
+                <a
+                    href="#"
+                    class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('domains.objects.groups.*') ? 'active' : null }}"
+                >
+                    <i class="fa fa-users"></i> {{ __('Groups') }}
+                </a>
+            @endif
+
+            {{-- Domain write back menu items. --}}
             @if(!$domain->canModifyPasswords())
                 <a
                     href="#"
@@ -52,5 +62,17 @@
                 </a>
             @endif
         </div>
+
+        <button
+            type="button"
+            class="btn btn-sm btn-block btn-outline-secondary d-block d-md-none"
+            data-target="menu.toggleButton"
+        ></button>
+
+        <hr/>
+
+        <a href="#" class="btn btn-sm btn-outline-primary btn-block">
+            <i class="fa fa-thumbtack"></i> Pin to Dashboard
+        </a>
     </div>
 </div>

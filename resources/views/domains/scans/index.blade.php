@@ -18,7 +18,7 @@
                             <col style="width:1%;">
                         </colgroup>
                         <thead>
-                            <tr>
+                            <tr class="bg-light text-uppercase text-muted font-weight-bold">
                                 <th class="pl-4"></th>
                                 <th>Started</th>
                                 <th>Completed</th>

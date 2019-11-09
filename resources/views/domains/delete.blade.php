@@ -5,10 +5,10 @@
 @section('page')
     <div class="card shadow-sm">
         <div class="card-header">
-            <h5 class="mb-0">{{ __('Delete Domain') }}</h5>
+            <h6 class="mb-0 font-weight-bold text-secondary">{{ __('Delete Domain') }}</h6>
         </div>
 
-        <div class="card-body">
+        <div class="card-body bg-light">
             <p>
                 Deleting a domain will purge the following data:
             </p>

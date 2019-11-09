@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    @component('components.card', ['class' => 'bg-white'])
-        @slot('header')
-            <h4 class="mb-0">Dashboard</h4>
-        @endslot
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="font-weight-bold text-secondary mb-0">Dashboard</h5>
+        </div>
 
-        Welcome to Scout!
-    @endcomponent
+        <div class="card-body">
+            Welcome to Scout!
+        </div>
+    </div>
 @endsection

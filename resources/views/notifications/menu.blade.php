@@ -1,3 +1,5 @@
+@inject('stats', 'App\Http\Injectors\NotificationStatsInjector')
+
 <div class="card menu shadow-sm mb-4">
     <div class="card-body p-3">
         <div class="list-group list-group-flush">
@@ -14,7 +16,7 @@
                     <i class="far fa-envelope"></i> {{ __('Unread') }}
                 </span>
 
-                    <span class="badge badge-primary">{{ $counts['unread'] }}</span>
+                    <span class="badge badge-primary">{{ $stats->getUnreadCount() }}</span>
                 </div>
             </a>
 
@@ -27,9 +29,23 @@
                     <i class="far fa-envelope-open"></i> {{ __('Read') }}
                 </span>
 
-                    <span class="badge badge-primary">{{ $counts['read'] }}</span>
+                    <span class="badge badge-primary">{{ $stats->getReadCount() }}</span>
                 </div>
             </a>
         </div>
+
+        @if(request('unread', 'yes') === 'yes')
+            <hr/>
+
+            <form method="post" action="{{ route('notifications.mark.all') }}" data-controller="form">
+                @csrf
+                @method('patch')
+
+                <button type="submit" class="btn btn-sm btn-block btn-outline-primary">
+                    <i class="far fa-check-circle"></i>
+                    Mark All As Read
+                </button>
+            </form>
+        @endif
     </div>
 </div>

@@ -8,10 +8,10 @@
 
         <div class="card shadow-sm">
             <div class="card-header">
-                <h5 class="mb-0">{{ __('Add Domain') }}</h5>
+                <h6 class="mb-0 font-weight-bold text-secondary">{{ __('Add Domain') }}</h6>
             </div>
 
-            <div class="card-body">
+            <div class="card-body bg-light">
                 @include('domains.form')
             </div>
 

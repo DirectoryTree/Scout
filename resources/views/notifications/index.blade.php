@@ -2,21 +2,6 @@
 
 @section('page')
     @if($notifications->isNotEmpty())
-        @if(request('unread', 'yes') === 'yes')
-            <div class="d-flex justify-content-end mb-2">
-                <form method="post" action="{{ route('notifications.mark.all') }}" data-controller="form">
-                    @csrf
-                    @method('patch')
-
-                    <button type="submit" class="btn t btn-sm btn-primary">
-                        <i class="far fa-check-circle"></i>
-
-                        Mark All As Read
-                    </button>
-                </form>
-            </div>
-        @endif
-
         <div class="card shadow-sm overflow-hidden">
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
@@ -27,8 +12,7 @@
 
                             <input type="hidden" name="read" value="{{ $notification->read() ? '0' : '1' }}">
 
-                            <div class="list-group-item d-flex align-items-center justify-content-between">
-
+                            <div class="list-group-item border-0 d-flex align-items-center justify-content-between">
                                 <div class="mr-2">
                                     <h5>
                                         {{ $notification->data['notifier']['notifiable_name'] }}

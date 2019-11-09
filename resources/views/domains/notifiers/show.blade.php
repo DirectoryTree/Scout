@@ -84,9 +84,9 @@
                             class="btn btn-sm btn-primary btn-block"
                         >
                             @if($conditions->isEmpty())
-                                Add Conditions
+                                <i class="fas fa-plus-circle"></i> Add Conditions
                             @else
-                                Modify Conditions
+                                <i class="far fa-edit"></i> Modify Conditions
                             @endif
                         </a>
                     </div>

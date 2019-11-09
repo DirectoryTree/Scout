@@ -28,7 +28,7 @@
                 </div>
 
                 <details>
-                    <summary onselectstart="return false">Search Options</summary>
+                    <summary class="font-weight-bold text-muted" onselectstart="return false">Search Options</summary>
 
                     <div class="ml-3 mt-2">
                         {{

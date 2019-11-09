@@ -14,7 +14,7 @@
             <div class="table-responsive">
                 <table class="table mb-0">
                     <thead>
-                        <tr>
+                        <tr class="text-uppercase text-muted bg-light">
                             <th class="pl-4">Attribute</th>
                             <th class="text-center">Objects Changed</th>
                             <th class="text-center">Last Changed</th>

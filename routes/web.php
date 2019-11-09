@@ -14,15 +14,12 @@
 Auth::routes();
 
 Route::group(['middleware' => 'can.install'], function () {
-
     Route::get('/install',           'InstallController@index')->name('install.index');
     Route::post('/install',          'InstallController@store')->name('install.store');
     Route::post('/install/migrate',  'InstallController@migrate')->name('install.migrate');
-
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::get('/notifications',      'NotificationsController@index')->name('notifications.index');
@@ -85,19 +82,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 
     Route::group(['namespace' => 'Partials', 'prefix' => 'partials', 'as' => 'partials.'], function () {
-
         Route::get('domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
 
         Route::get('domains/{domain}/objects/{object}/tree', 'DomainObjectsTreeController@show')->name('domains.objects.tree.show');
-
     });
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api', 'as' => 'api.'], function() {
-
         Route::patch('notifier/{notifier}', 'NotifierToggleController@update')->name('notifier.toggle');
 
         Route::get('notifications', 'NotificationsController@index')->name('notifications.index');
-
     });
-
 });

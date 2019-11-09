@@ -7,7 +7,7 @@
         @csrf
         @method('patch')
 
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-header">
                 <h6 class="mb-0 font-weight-bold text-secondary">
                     <i class="far fa-bell"></i> Edit Domain Notifier
@@ -20,7 +20,7 @@
 
             <div class="card-footer">
                 <div class="form-row justify-content-between">
-                    <a href="{{ route('domains.notifiers.index', $domain) }}" class="btn btn-secondary">
+                    <a href="{{ route('domains.notifiers.show', [$domain, $notifier]) }}" class="btn btn-secondary">
                         <i class="fa fa-times-circle"></i> {{ __('Cancel') }}
                     </a>
 

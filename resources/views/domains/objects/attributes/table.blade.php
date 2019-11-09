@@ -1,7 +1,7 @@
 <div class="table-responsive">
     <table class="table mb-0">
         <thead>
-            <tr>
+            <tr class="text-uppercase text-muted bg-light">
                 <th class="pl-4">Name</th>
                 <th>Value</th>
             </tr>

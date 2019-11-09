@@ -4,16 +4,18 @@
 
 @section('page')
     <div class="card shadow-sm overflow-hidden">
+        <div class="card-header">
+            <h6 class="mb-0 text-muted">
+                <i class="fa fa-sync"></i> Changes
+            </h6>
+        </div>
+
         <div class="card-body bg-white p-0">
             <div class="list-group list-group-flush overflow-hidden">
-                <div class="list-group-item">
-                    <h5 class="mb-0">Changes</h5>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead>
-                            <tr>
+                            <tr class="text-uppercase text-muted bg-light">
                                 <th class="pl-4">Attribute</th>
                                 <th class="text-center">Times Changed</th>
                                 <th>

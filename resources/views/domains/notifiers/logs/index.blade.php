@@ -3,25 +3,26 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.logs.index', $domain, $notifier))
 
 @section('page')
-    @component('components.card', ['flush' => true, 'class' => 'bg-white'])
-        @slot('header')
-            <h5 class="mb-0">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h6 class="font-weight-bold text-muted mb-0">
                 {{ $notifier->notifiable_name }} - Logs
-            </h5>
-        @endslot
+            </h6>
+        </div>
 
-        <div class="table-responsive">
-            <table class="table mb-0">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Object</th>
-                        <th>Changed Attribute</th>
-                        <th>Generated</th>
-                    </tr>
-                </thead>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Object</th>
+                            <th>Changed Attribute</th>
+                            <th>Generated</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     @forelse($logs as $log)
                         <tr>
                             <td>{{ $log->getKey() }}</td>
@@ -38,10 +39,13 @@
                             </td>
                         </tr>
                     @empty
-
+                        <tr>
+                            <td colspan="4" class="text-center text-secondary">There are no logs for this notifier.</td>
+                        </tr>
                     @endforelse
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    @endcomponent
+    </div>
 @endsection

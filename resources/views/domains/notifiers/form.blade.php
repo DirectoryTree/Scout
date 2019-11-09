@@ -1,5 +1,5 @@
 @if(!$notifier->exists)
-    <div class="alert alert-primary">
+    <div class="alert alert-primary shadow-sm">
         <strong>Heads up!</strong> This is a domain notifier. Any domain objects
         that pass the notifiers conditions will generate a notification.
     </div>

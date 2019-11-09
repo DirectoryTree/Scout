@@ -64,6 +64,23 @@ class AdSystemNotifierSeeder extends Seeder
                 ]
             ],
         ],
+        [
+            'notifiable_name' => 'User Account Locked',
+            'name' => 'Notify me when user accounts are locked',
+            'conditions' => [
+                [
+                    'type' => LdapNotifierCondition::TYPE_INTEGER,
+                    'operator' => LdapNotifierCondition::OPERATOR_GREATER_THAN,
+                    'attribute' => 'lockouttime',
+                    'value' => 1,
+                ],
+                [
+                    'type' => LdapNotifierCondition::TYPE_INTEGER,
+                    'operator' => LdapNotifierCondition::OPERATOR_CHANGED,
+                    'attribute' => 'lockouttime',
+                ]
+            ],
+        ]
     ];
 
     /**

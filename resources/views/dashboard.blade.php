@@ -16,28 +16,14 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    @include('calendar', ['date' => now()->subMonths(2)])
+        @foreach($months as $month)
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        @include('calendar', ['date' => $month, 'events' => $changes])
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    @include('calendar', ['date' => now()->subMonth()])
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    @include('calendar', ['date' => now()])
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 @endsection

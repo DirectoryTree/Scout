@@ -34,12 +34,22 @@
                     </tr><tr>
                 @endif
 
+                @php($dateFormatted = $date->format('Y-m-d'))
+
                 {{-- Output the day. --}}
-                <td class="text-center text-secondary rounded-circle bg-light border" rel="{{ $date->format('Y-m-d') }}">
-                    <div style="height:20px;width:20px">
-                        {{ $date->day }}
-                    </div>
-                </td>
+                @if($events->has($dateFormatted))
+                    <td class="text-center text-secondary rounded-circle border border-success" rel="{{ $dateFormatted }}">
+                        <div class="small d-flex justify-content-center align-items-center" style="height:20px;width:20px">
+                            {{ $date->day }}
+                        </div>
+                    </td>
+                @else
+                    <td class="text-center text-secondary rounded-circle border" rel="{{ $dateFormatted }}">
+                        <div class="small d-flex justify-content-center align-items-center" style="height:20px;width:20px">
+                            {{ $date->day }}
+                        </div>
+                    </td>
+                @endif
 
                 {{-- Add another day and continue. --}}
                 @php($date->addDay())

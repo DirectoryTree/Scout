@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notifications',      'NotificationsController@index')->name('notifications.index');
     Route::get('/notifications/{id}', 'NotificationsController@show')->name('notifications.show');
 
+    Route::post('/objects/{object}/pin', 'ObjectPinController@store')->name('objects.pin.store');
+    Route::delete('/objects/{object}/pin', 'ObjectPinController@destroy')->name('objects.pin.destroy');
+
     Route::get('/domains',                 'DomainsController@index')->name('domains.index');
     Route::get('/domains/add',             'DomainsController@create')->name('domains.create');
     Route::post('/domains',                'DomainsController@store')->name('domains.store');

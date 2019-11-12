@@ -26,7 +26,10 @@ class LdapObject extends Model
      *
      * @var array
      */
-    protected $casts = ['values' => 'array'];
+    protected $casts = [
+        'values' => 'array',
+        'pinned' => 'boolean',
+    ];
 
     /**
      * The accessors to append to the model's array form.

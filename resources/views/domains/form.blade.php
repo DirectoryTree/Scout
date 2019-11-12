@@ -68,6 +68,8 @@
     </div>
 </div>
 
+<hr/>
+
 <div class="form-row">
     <div class="col">
         <div class="form-group">

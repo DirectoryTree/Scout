@@ -14,6 +14,7 @@ class LdapDomain extends Model
     const TYPE_UNKNOWN = 1;
     const TYPE_ACTIVE_DIRECTORY = 2;
     const TYPE_OPEN_LDAP = 3;
+    const TYPE_ACTIVE_DIRECTORY_LDS = 4;
 
     // The LDAP connection statuses.
     const STATUS_ONLINE = 1;
@@ -204,6 +205,7 @@ class LdapDomain extends Model
     {
         switch($this->type) {
             case LdapDomain::TYPE_ACTIVE_DIRECTORY:
+            case LdapDomain::TYPE_ACTIVE_DIRECTORY_LDS:
                 $model = new ActiveDirectoryModel();
                 break;
             case LdapDomain::TYPE_OPEN_LDAP:

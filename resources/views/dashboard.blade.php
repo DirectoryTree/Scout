@@ -28,10 +28,10 @@
     <div class="row mb-4">
         <div class="col">
             <div class="card shadow-sm">
-                <div class="card-body">
+                <div class="card-body mb-n3">
                     <div class="row">
                         @foreach($pinned->get() as $object)
-                            <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                                 <div class="card border rounded">
                                     <div class="card-header">
                                         <div class="row">
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-body pt-0">
+                                    <div class="card-body pt-0 pb-2">
                                         <h6 class="text-center text-muted font-weight-bold">{{ $object->name }}</h6>
 
                                         <hr class="my-2"/>
@@ -63,27 +63,22 @@
                                         >
                                             <i class="fa fa-eye"></i> View
                                         </a>
-
-                                        @if($object->pinned)
-                                            <form method="post" action="{{ route('objects.pin.destroy', $object) }}" data-controller="form">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-sm btn-block btn-primary">
-                                                    <i class="fa fa-thumbtack"></i> Unpin from Dashboard
-                                                </button>
-                                            </form>
-                                        @else
-                                            <form method="post" action="{{ route('objects.pin.store', $object) }}" data-controller="form">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-block btn-primary">
-                                                    <i class="fa fa-thumbtack"></i> Pin to Dashboard
-                                                </button>
-                                            </form>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card border bg-light rounded h-100">
+                                <div class="card-body d-flex flex-column justify-content-center h-100">
+                                    <div class="text-center">
+                                        <a href="#" class="btn btn-success">
+                                            <i class="fa fa-plus-circle"></i> Add
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

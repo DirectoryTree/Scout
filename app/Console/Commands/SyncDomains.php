@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\LdapDomain;
-use Illuminate\Console\Command;
 use App\Jobs\QueueSync;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 
 class SyncDomains extends Command

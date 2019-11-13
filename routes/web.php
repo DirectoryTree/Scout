@@ -85,6 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 
     Route::group(['namespace' => 'Partials', 'prefix' => 'partials', 'as' => 'partials.'], function () {
+        Route::get('/search', 'SearchController@index')->name('search.index');
+
         Route::get('domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
 
         Route::get('domains/{domain}/objects/{object}/tree', 'DomainObjectsTreeController@show')->name('domains.objects.tree.show');

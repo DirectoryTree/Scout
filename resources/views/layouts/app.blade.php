@@ -10,6 +10,8 @@
 @endsection
 
 @section('body')
+    @include('search.partials.modal')
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
             <div class="container">
@@ -24,92 +26,87 @@
                 <div class="collapse navbar-collapse" id="app-navigation">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @auth
-                            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('dashboard') }}">
-                                    <i class="fa fa-tachometer-alt"></i> {{ __('Dashboard') }}
-                                </a>
-                            </li>
+                        <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : null }}">
+                            <a class="nav-link" href="{{ route('dashboard') }}">
+                                <i class="fa fa-tachometer-alt"></i> {{ __('Dashboard') }}
+                            </a>
+                        </li>
 
-                            <li class="nav-item dropdown {{ request()->routeIs('domains.*') ? 'active' : null }}">
-                                <a id="dropdown-domains" class="nav-link dropdown-toggle" href="{{ route('domains.index') }}" data-toggle="dropdown">
-                                    <i class="fa fa-network-wired"></i> {{ __('Domains') }}
+                        <li class="nav-item dropdown {{ request()->routeIs('domains.*') ? 'active' : null }}">
+                            <a id="dropdown-domains" class="nav-link dropdown-toggle" href="{{ route('domains.index') }}" data-toggle="dropdown">
+                                <i class="fa fa-network-wired"></i> {{ __('Domains') }}
 
-                                    @component('components.status-count', ['count' => $addedDomains->count()])
-                                        {{ $addedDomains->count() }}
-                                    @endcomponent
+                                @component('components.status-count', ['count' => $addedDomains->count()])
+                                    {{ $addedDomains->count() }}
+                                @endcomponent
 
-                                    <span class="caret"></span>
-                                </a>
+                                <span class="caret"></span>
+                            </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdown-domains">
-                                    @forelse($addedDomains as $domain)
-                                        <a href="{{ route('domains.show', $domain) }}" class="dropdown-item d-flex align-items-center">
-                                            @component('components.status', [
-                                                'status' => $domain->status == \App\LdapDomain::STATUS_ONLINE
-                                            ])@endcomponent
+                            <div class="dropdown-menu" aria-labelledby="dropdown-domains">
+                                @forelse($addedDomains as $domain)
+                                    <a href="{{ route('domains.show', $domain) }}" class="dropdown-item d-flex align-items-center">
+                                        @component('components.status', [
+                                            'status' => $domain->status == \App\LdapDomain::STATUS_ONLINE
+                                        ])@endcomponent
 
-                                            <span class="ml-2">
+                                        <span class="ml-2">
                                                 {{ $domain->name }}
                                             </span>
-                                        </a>
-                                    @empty
-                                        <a href="{{ route('domains.create') }}" class="dropdown-item">
-                                            <i class="fa fa-plus-circle"></i> Add
-                                        </a>
-                                    @endforelse
-
-                                    <div class="dropdown-divider"></div>
-
-                                    <a href="{{ route('domains.index') }}" class="dropdown-item">
-                                        View All
                                     </a>
-                                </div>
-                            </li>
-                        @endauth
+                                @empty
+                                    <a href="{{ route('domains.create') }}" class="dropdown-item">
+                                        <i class="fa fa-plus-circle"></i> Add
+                                    </a>
+                                @endforelse
+
+                                <div class="dropdown-divider"></div>
+
+                                <a href="{{ route('domains.index') }}" class="dropdown-item">
+                                    View All
+                                </a>
+                            </div>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">
-                                    <i class="fa fa-sign-in-alt"></i>
-                                    {{ __('Login') }}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#search-modal">
+                                <i class="fa fa-search"></i>
+                                <span class="d-inline d-md-none">{{ __('Search') }}</span>
+                            </a>
+                        </li>
+
+                        @include('layouts.notifications')
+
+                        <li class="nav-item dropdown">
+                            <a id="dropdown-user" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fa fa-user-circle"></i>
+                                {{ Auth::user()->name }}
+                                <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+                                <a href="#" class="dropdown-item">
+                                    <i class="fa fa-cogs"></i> Settings
                                 </a>
-                            </li>
-                        @else
-                            @include('layouts.notifications')
 
-                            <li class="nav-item dropdown">
-                                <a id="dropdown-user" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <i class="fa fa-user-circle"></i>
-                                    {{ Auth::user()->name }}
-                                    <span class="caret"></span>
+                                <div class="dropdown-divider"></div>
+
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                                >
+                                    <i class="fa fa-sign-out-alt"></i> {{ __('Logout') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fa fa-cogs"></i> Settings
-                                    </a>
-
-                                    <div class="dropdown-divider"></div>
-
-                                    <a
-                                        class="dropdown-item"
-                                        href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                                    >
-                                        <i class="fa fa-sign-out-alt"></i> {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

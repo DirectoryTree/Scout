@@ -34,7 +34,7 @@ class DomainSearchController extends Controller
                 $query->withTrashed();
             }
 
-            $objects = $query->paginate(25);
+            $objects = $query->get();
         }
 
         return Scout::response()->render(

@@ -7,13 +7,7 @@
     data-controller="notifications"
     data-notifications-url="{{ route('api.notifications.index') }}"
 >
-    <a
-        href="#"
-        class="nav-link dropdown-toggle d-flex align-items-center"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-    >
+    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown">
         <span class="pr-1">
             <i class="far fa-bell pr-1"></i>
             <span class="d-inline d-md-none">{{ __('Notifications') }}</span>

@@ -119,6 +119,16 @@ class LdapObject extends Model
     }
 
     /**
+     * The belongsToMany users relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'ldap_object_pins', 'object_id', 'user_id');
+    }
+
+    /**
      * Determine if the object can have groups.
      *
      * @return bool
@@ -126,6 +136,16 @@ class LdapObject extends Model
     public function canHaveGroups()
     {
         return in_array($this->type, ['group', 'user']);
+    }
+
+    /**
+     * Determine if the object is pinned to the current users dashboard.
+     *
+     * @return bool
+     */
+    public function getPinnedAttribute()
+    {
+        return $this->users()->where('user_id', auth()->id())->exists();
     }
 
     /**

@@ -49,4 +49,14 @@ class User extends Authenticatable
             $user->notifications()->delete();
         });
     }
+
+    /**
+     * The belongsToMany object pins relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function pins()
+    {
+        return $this->belongsToMany(LdapObject::class, 'ldap_object_pins', 'user_id', 'object_id');
+    }
 }

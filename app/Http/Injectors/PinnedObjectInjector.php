@@ -2,7 +2,7 @@
 
 namespace App\Http\Injectors;
 
-use App\LdapObject;
+use Illuminate\Support\Facades\Auth;
 
 class PinnedObjectInjector
 {
@@ -13,8 +13,6 @@ class PinnedObjectInjector
      */
     public function get()
     {
-        return LdapObject::with('domain')
-            ->where('pinned', '=', true)
-            ->get();
+        return Auth::user()->pins()->get();
     }
 }

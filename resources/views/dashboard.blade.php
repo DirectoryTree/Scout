@@ -59,7 +59,7 @@
 
                                         <a
                                             href="{{ route('domains.objects.show', [$object->domain, $object]) }}"
-                                            class="btn btn-block btn-sm btn-dark mb-2"
+                                            class="btn btn-block btn-sm btn-primary mb-2"
                                         >
                                             <i class="fa fa-eye"></i> View
                                         </a>
@@ -72,9 +72,9 @@
                             <div class="card border bg-light rounded h-100">
                                 <div class="card-body d-flex flex-column justify-content-center h-100">
                                     <div class="text-center">
-                                        <a href="#" class="btn btn-success">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#search-modal">
                                             <i class="fa fa-plus-circle"></i> Add
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -18,12 +18,12 @@ class DomainObjectsController extends Controller
      */
     public function index(Request $request, LdapDomain $domain)
     {
-        $query = $domain->objects()
+        // Get the root domain objects.
+        $objects = $domain->objects()
             ->whereNull('parent_id')
             ->withCount('children')
-            ->orderBy('name');
-
-        $objects = $request->view === 'tree' ? $query->get() : $query->paginate(25);
+            ->orderBy('name')
+            ->get();
 
         return view('domains.objects.index', compact('domain', 'objects'));
     }
@@ -44,10 +44,11 @@ class DomainObjectsController extends Controller
             ->withTrashed()
             ->find($objectId);
 
+        // Get the objects descendants.
         $objects = $object->descendants()
             ->withCount('children')
             ->orderBy('name')
-            ->paginate(25);
+            ->get();
 
         return view('domains.objects.show', compact('domain', 'object', 'objects'));
     }

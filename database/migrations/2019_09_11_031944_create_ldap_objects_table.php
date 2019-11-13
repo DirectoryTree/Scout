@@ -24,7 +24,6 @@ class CreateLdapObjectsTable extends Migration
             $table->string('dn');
             $table->string('type')->nullable();
             $table->text('values');
-            $table->boolean('pinned')->default(false);
         });
     }
 

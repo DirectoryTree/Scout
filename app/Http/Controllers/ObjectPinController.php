@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Scout;
 use App\LdapObject;
+use Illuminate\Http\Request;
 
 class ObjectPinController extends Controller
 {
     /**
      * Pin an LDAP object.
      *
+     * @param Request    $request
      * @param LdapObject $object
      *
      * @return \App\Http\ScoutResponse
      */
-    public function store(LdapObject $object)
+    public function store(Request $request, LdapObject $object)
     {
-        $object->pinned = true;
-        $object->save();
+        /** @var \App\User $user */
+        $user = $request->user();
+
+        $user->pins()->attach($object);
 
         return Scout::response()
             ->type('success')
@@ -27,14 +31,17 @@ class ObjectPinController extends Controller
     /**
      * Unpin an LDAP object.
      *
+     * @param Request    $request
      * @param LdapObject $object
      *
      * @return \App\Http\ScoutResponse
      */
-    public function destroy(LdapObject $object)
+    public function destroy(Request $request, LdapObject $object)
     {
-        $object->pinned = false;
-        $object->save();
+        /** @var \App\User $user */
+        $user = $request->user();
+
+        $user->pins()->detach($object);
 
         return Scout::response()
             ->type('success')

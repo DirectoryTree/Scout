@@ -3,13 +3,14 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.search.index', $domain))
 
 @section('page')
-    <form method="get" action="{{ route('partials.domains.search.index', $domain) }}" data-controller="form">
-        <div class="card shadow-sm">
-            <div class="card-header border-bottom">
-                <h6 class="mb-0 font-weight-bold text-secondary">Search Domain</h6>
-            </div>
 
-            <div class="card-body">
+    <div class="card shadow-sm">
+        <div class="card-header border-bottom">
+            <h6 class="mb-0 font-weight-bold text-secondary">Search Domain</h6>
+        </div>
+
+        <div class="card-body">
+            <form method="get" action="{{ route('partials.domains.search.index', $domain) }}" data-controller="form">
                 <div class="form-group">
                     <div class="input-group">
                         {{
@@ -40,9 +41,9 @@
                         }}
                     </div>
                 </details>
-            </div>
+            </form>
         </div>
+    </div>
 
-        <div id="search-results"></div>
-    </form>
+    <div id="search-results"></div>
 @endsection

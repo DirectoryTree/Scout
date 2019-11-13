@@ -3,7 +3,6 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.search.index', $domain))
 
 @section('page')
-
     <div class="card shadow-sm">
         <div class="card-header border-bottom">
             <h6 class="mb-0 font-weight-bold text-secondary">Search Domain</h6>
@@ -45,5 +44,5 @@
         </div>
     </div>
 
-    <div id="search-results"></div>
+    <div id="domain-search-results"></div>
 @endsection

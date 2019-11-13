@@ -88,7 +88,7 @@
     <div class="row">
         <div class="col">
             <h6 class="text-center text-uppercase text-muted font-weight-bold">
-                <i class="fa fa-calendar"></i> Change Calendar
+                <i class="fa fa-sync"></i> Changes
             </h6>
         </div>
     </div>

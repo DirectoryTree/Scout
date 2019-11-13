@@ -39,6 +39,6 @@ class DomainSearchController extends Controller
 
         return Scout::response()->render(
             view('domains.search.partials.results', compact('domain', 'objects'))
-        )->into('search-results');
+        )->into('domain-search-results');
     }
 }

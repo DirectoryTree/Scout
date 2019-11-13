@@ -42,6 +42,6 @@ class SearchController extends Controller
 
         return Scout::response()->render(
             view('search.partials.results', compact('results'))
-        )->into('search-results');
+        )->into('global-search-results');
     }
 }

@@ -29,7 +29,7 @@
                     </div>
                 </form>
 
-                <div id="search-results"></div>
+                <div id="global-search-results"></div>
             </div>
         </div>
     </div>

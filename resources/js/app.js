@@ -1,11 +1,10 @@
 
 import './bootstrap';
-
-import * as Ladda from 'ladda';
 import Swal from 'sweetalert2';
 import Trix from 'trix';
 import Turbolinks from 'turbolinks';
 import { Application } from 'stimulus';
+import Loader from './loading-indicator';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
 
 // Start Stimulus.
@@ -18,7 +17,7 @@ Turbolinks.start();
 
 document.addEventListener('turbolinks:load', () => {
     // Enable ladda.
-    Ladda.bind('button[type=submit]:not(.no-loading)');
+    Loader.bind();
 });
 
 document.addEventListener('turbolinks:before-cache', () => {

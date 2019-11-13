@@ -1,7 +1,7 @@
 import axios from 'axios';
-import * as Ladda from 'ladda';
 import Resolver from "../resolver";
 import { Controller } from 'stimulus';
+import Loader from '../loading-indicator';
 
 export default class extends Controller {
     static targets = ['input', 'error'];
@@ -30,12 +30,15 @@ export default class extends Controller {
                 .then(response => this.success(response))
                 .catch(error => this.error(error))
                 .then(() => {
-                    Ladda.stopAll();
+                    Loader.stopAll();
+
+                    // Rebind loader.
+                    Loader.bind();
 
                     this.done();
                 });
         }).catch(() => {
-            Ladda.stopAll();
+            Loader.stopAll();
         });
     }
 

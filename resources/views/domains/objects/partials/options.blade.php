@@ -15,5 +15,24 @@
         <a href="{{ route('domains.objects.changes.index', [$domain, $object]) }}" class="dropdown-item">
             <i class="fa fa-sync"></i> Changes
         </a>
+
+        <div class="dropdown-divider"></div>
+
+        @if($object->pinned)
+            <form method="post" action="{{ route('objects.pin.destroy', $object) }}" data-controller="form">
+                @csrf
+                @method('delete')
+                <button type="submit" class="dropdown-item">
+                    <i class="fa fa-thumbtack"></i> Unpin from Dashboard
+                </button>
+            </form>
+        @else
+            <form method="post" action="{{ route('objects.pin.store', $object) }}" data-controller="form">
+                @csrf
+                <button type="submit" class="dropdown-item">
+                    <i class="fa fa-thumbtack"></i> Pin to Dashboard
+                </button>
+            </form>
+        @endif
     </div>
 </div>

@@ -14,9 +14,13 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Utilities.
+@import 'utilities';
+
 // Sweet alert
 @import "~sweetalert2/src/sweetalert2";
 
+// Trix WYSIWYG editor.
 @import "~trix";
 
 // Flat pickr
@@ -27,6 +31,10 @@
 
 hr {
     border-top:1px dotted rgba(0, 0, 0, 0.1);
+    .slim {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
 }
 
 .dropdown-menu .dropdown-item {
@@ -46,6 +54,10 @@ hr {
     }
 }
 
+.dropdown-divider {
+    border-top:3px solid $dropdown-divider-bg;
+}
+
 .card-header:first-child {
     border-radius: $border-radius $border-radius 0 0;
 }
@@ -60,6 +72,28 @@ hr {
     }
     &:last-child {
         border-radius: 0 0 $border-radius $border-radius;
+    }
+}
+
+.card.menu {
+    .body {
+        border:none;
+    }
+    .list-group {
+        background-color: rgba(0, 0, 0, 0);
+        .list-group-item {
+            border:none;
+            color:$secondary;
+            margin-top:5px;
+            margin-bottom:5px;
+            border-radius: 5px 5px 5px 5px !important;
+            background-color: rgba(0, 0, 0, 0);
+            &.active {
+                color:$white;
+                background-color:$list-group-active-bg;
+                box-shadow: 0.1rem 0.5rem 0.5rem rgba(0, 0, 0, 0.15) !important;
+            }
+        }
     }
 }
 
@@ -97,33 +131,3 @@ trix-editor:empty:not(:focus)::before {
     color:$input-placeholder-color;
 }
 
-hr.slim {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.dropdown-divider {
-  border-top:3px solid $dropdown-divider-bg;
-}
-
-.card.menu {
-    .body {
-        border:none;
-    }
-    .list-group {
-        background-color: rgba(0, 0, 0, 0);
-        .list-group-item {
-            border:none;
-            color:$secondary;
-            margin-top:5px;
-            margin-bottom:5px;
-            border-radius: 5px 5px 5px 5px !important;
-            background-color: rgba(0, 0, 0, 0);
-            &.active {
-                color:$white;
-                background-color:$list-group-active-bg;
-                box-shadow: 0.1rem 0.5rem 0.5rem rgba(0, 0, 0, 0.15) !important;
-            }
-        }
-    }
-}

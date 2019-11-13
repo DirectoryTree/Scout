@@ -38,13 +38,13 @@
 
                 {{-- Output the day. --}}
                 @if($events->has($dateFormatted))
-                    <td class="text-center text-secondary rounded-circle border border-success" rel="{{ $dateFormatted }}">
+                    <td class="text-center text-secondary rounded-circle border border-2 border-success" rel="{{ $dateFormatted }}">
                         <div class="small d-flex justify-content-center align-items-center" style="height:20px;width:20px">
                             {{ $date->day }}
                         </div>
                     </td>
                 @else
-                    <td class="text-center text-secondary rounded-circle border" rel="{{ $dateFormatted }}">
+                    <td class="text-center text-secondary rounded-circle border border-2" rel="{{ $dateFormatted }}">
                         <div class="small d-flex justify-content-center align-items-center" style="height:20px;width:20px">
                             {{ $date->day }}
                         </div>

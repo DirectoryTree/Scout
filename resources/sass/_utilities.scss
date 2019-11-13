@@ -1,0 +1,7 @@
+$sizes: ("1": 1px, "2": 2px, "4": 4px, "8" : 8px);
+
+@each $name, $size in $sizes {
+    .border-#{$name} {
+        border-width:$size!important;
+    }
+}

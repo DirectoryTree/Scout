@@ -29,13 +29,3 @@
         </div>
     @endforelse
 </div>
-
-@if($objects->total() > $objects->perPage())
-    <div class="row my-4">
-        <div class="col">
-            <div class="d-flex justify-content-center">
-                {{ $objects->appends(request()->query())->links() }}
-            </div>
-        </div>
-    </div>
-@endif

@@ -14,7 +14,7 @@
             <div class="table-responsive">
                 <table class="table mb-0">
                     <thead>
-                        <tr>
+                        <tr class="text-muted text-uppercase bg-light">
                             <th>ID</th>
                             <th>Object</th>
                             <th>Changed Attribute</th>

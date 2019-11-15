@@ -3,7 +3,7 @@
 <table class="calendar m-auto" style="border-spacing:10px;border-collapse: separate;">
     <thead>
         <tr class="text-center text-uppercase text-secondary">
-            <th class="rounded-pill bg-light" colspan="7">{{ $date->format('F Y') }}</th>
+            <th class="rounded-pill border border-2 bg-light" colspan="7">{{ $date->format('F Y') }}</th>
         </tr>
     </thead>
     <thead>

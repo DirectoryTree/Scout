@@ -61,7 +61,7 @@ Breadcrumbs::for('domains.notifiers.edit', function ($trail, $domain, $notifier)
 Breadcrumbs::for('domains.notifiers.conditions.index', function ($trail, $domain, $notifier) {
     $trail->parent('domains.notifiers.show', $domain, $notifier);
 
-    $trail->push('Edit', route('domains.notifiers.show', [$domain, $notifier]));
+    $trail->push('Conditions', route('domains.notifiers.show', [$domain, $notifier]));
 });
 
 Breadcrumbs::for('domains.notifiers.logs.index', function ($trail, $domain, $notifier) {

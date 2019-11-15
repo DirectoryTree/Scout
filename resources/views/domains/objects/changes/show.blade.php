@@ -16,7 +16,7 @@
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
-                        <tr>
+                        <tr class="text-muted text-uppercase bg-light">
                             <th class="pl-4 text-nowrap">
                                 <i class="far fa-clock"></i> Changed
                             </th>

@@ -13,6 +13,8 @@
 
 Auth::routes();
 
+Route::get('/execute/scan', 'ExecuteController@scan');
+
 Route::group(['middleware' => 'can.install'], function () {
     Route::get('/install',           'InstallController@index')->name('install.index');
     Route::post('/install',          'InstallController@store')->name('install.store');

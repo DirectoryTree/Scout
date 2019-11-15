@@ -9,19 +9,16 @@ class DashboardController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\View\View
      */
     public function index()
     {
         $changes = LdapChange::query()
+            ->select('ldap_updated_at')
             ->whereBetween('ldap_updated_at', [now()->subMonths(2), now()])
-            ->select(['ldap_updated_at', 'updated_at'])
             ->get()
             ->groupBy(function (LdapChange $change) {
-                /** @var \Carbon\Carbon $date */
-                $date = $change->ldap_updated_at ?? $change->updated_at;
-
-                return $date->format('Y-m-d');
+                return $change->ldap_updated_at->format('Y-m-d');
             })->transform(function ($changes) {
                  return $changes->count();
             });

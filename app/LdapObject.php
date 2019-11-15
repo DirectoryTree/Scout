@@ -54,6 +54,7 @@ class LdapObject extends Model
             if ($object->isForceDeleting()) {
                 $object->changes()->delete();
                 $object->notifiers()->delete();
+                $object->users()->detach();
             }
         });
     }

@@ -4,6 +4,12 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm">
+                <div class="card-header bg-light border-bottom border-2">
+                    <h5 class="mb-0 text-center text-muted">
+                        {{ __('Login') }}
+                    </h5>
+                </div>
+
                 <div class="card-body">
                     @if($register)
                         <div class="text-center">
@@ -73,22 +79,22 @@
                                 }}
                             </div>
 
-                            <div class="form-group {{ Route::has('password.request') ? null : 'mb-0' }}">
-                                <button type="submit" class="btn btn-block btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-                            </div>
-
-                            @if (Route::has('password.request'))
-                                <div class="text-center">
-                                    <a href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                </div>
-                            @endif
+                            <button type="submit" class="btn btn-block btn-primary">
+                                {{ __('Login') }}
+                            </button>
                         </form>
                     @endif
                 </div>
+
+                @if(\App\Scout::email()->enabled())
+                <div class="card-footer bg-light">
+                    <div class="text-center">
+                        <a href="{{ route('password.request') }}">
+                            {{ __('Forgot Your Password?') }}
+                        </a>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>

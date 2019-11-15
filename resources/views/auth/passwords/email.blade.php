@@ -1,11 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0 text-center">
+                        {{ __('Reset Password') }}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,31 +18,42 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('password.email') }}" data-controller="form">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                        <div class="form-group">
+                            {{
+                                Form::scoutLabel('email', __('E-Mail Address'))
+                            }}
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            {{
+                                Form::scoutInput('email', 'email', old('email'), [
+                                    'required',
+                                    'autofocus',
+                                    'autocomplete' => 'email',
+                                     'data-target' => 'form.input',
+                                    'data-action' => 'change->form#clearError'
+                                ])
+                            }}
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                            {{
+                                Form::scoutError([
+                                    'data-input' => 'email',
+                                    'data-target' => 'form.error',
+                                ])
+                            }}
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-block btn-primary">
+                            {{ __('Send Password Reset Link') }}
+                        </button>
                     </form>
+                </div>
+
+                <div class="card-footer bg-light text-center">
+                    <a href="{{ route('login') }}">
+                        {{ __('Did you remember?') }}
+                    </a>
                 </div>
             </div>
         </div>

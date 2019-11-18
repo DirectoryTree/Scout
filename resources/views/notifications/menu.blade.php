@@ -1,12 +1,12 @@
 @inject('stats', 'App\Http\Injectors\NotificationStatsInjector')
 
-<div class="card menu shadow-sm mb-4">
-    <div class="card-body p-3">
-        <div class="list-group list-group-flush">
-            <div class="list-group-item font-weight-bold">
-                <h5 class="mb-0">Notifications</h5>
-            </div>
+<div class="card menu bg-white shadow-sm rounded mb-4 mb-md-0" data-controller="menu">
+    <div class="card-header pt-4">
+        <h4 class="mb-0 text-muted font-weight-bold">{{ __('Notifications') }}</h4>
+    </div>
 
+    <div class="card-body p-3">
+        <div class="list-group list-group-flush d-none d-md-block" data-target="menu.container">
             <a
                 href="{{ current_route_filter(['unread' => 'yes']) }}"
                 class="list-group-item list-group-item-action font-weight-bold {{ request('unread', 'yes') === 'yes' ? 'active' : null }}"
@@ -33,6 +33,12 @@
                 </div>
             </a>
         </div>
+
+        <button
+            type="button"
+            class="btn btn-sm btn-block btn-outline-secondary d-block d-md-none"
+            data-target="menu.toggleButton"
+        ></button>
 
         @if(request('unread', 'yes') === 'yes')
             <hr/>

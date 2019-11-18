@@ -51,8 +51,8 @@
                                         ])@endcomponent
 
                                         <span class="ml-2">
-                                                {{ $domain->name }}
-                                            </span>
+                                            {{ $domain->name }}
+                                        </span>
                                     </a>
                                 @empty
                                     <a href="{{ route('domains.create') }}" class="dropdown-item">
@@ -88,7 +88,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                <a href="#" class="dropdown-item">
+                                <a href="{{ route('settings.index') }}" class="dropdown-item">
                                     <i class="fa fa-cogs"></i> Settings
                                 </a>
 

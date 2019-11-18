@@ -24,6 +24,8 @@ Route::group(['middleware' => 'can.install'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    Route::get('/settings', 'SettingsController@index')->name('settings.index');
+
     Route::get('/notifications',      'NotificationsController@index')->name('notifications.index');
     Route::get('/notifications/{id}', 'NotificationsController@show')->name('notifications.show');
 

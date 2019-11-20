@@ -132,6 +132,7 @@ class FormFactory
      */
     public function error()
     {
-        return Span::create()->class('invalid-feedback');
+        return Span::create()
+            ->class(['invalid-feedback', 'font-weight-bold']);
     }
 }

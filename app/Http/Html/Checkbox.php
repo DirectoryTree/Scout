@@ -24,7 +24,7 @@ class Checkbox extends Input
     public function label($label)
     {
         $this->label = form()->label()
-            ->for($this->getAttribute('name'))
+            ->for($this->getAttribute('id'))
             ->class('custom-control-label')
             ->text($label);
 

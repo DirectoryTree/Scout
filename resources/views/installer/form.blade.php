@@ -1,114 +1,86 @@
 @inject('databases', 'App\Http\Injectors\DatabaseTypeInjector')
 
 <div class="form-group">
-    {{ Form::scoutLabel('driver', __('Driver')) }}
+    {{ form()->label()->for('driver')->text(__('Driver')) }}
 
     {{
-        Form::scoutSelect('driver', $databases->get(), null, [
-            'data-target' => 'form.input',
-            'data-action' => 'change->form#clearError'
-        ])
+        form()->select()
+            ->name('driver')
+            ->options($databases->get())
+            ->data('target', 'form.input')
+            ->data('action', 'change->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'driver',
-            'data-target' => 'form.error',
-        ])
-    }}
+    {{ form()->error()->data('input', 'driver')->data('target', 'form.error') }}
 </div>
 
 <div class="form-group">
-    {{ Form::scoutLabel('host', __('Host')) }}
+    {{ form()->label()->for('host')->text(__('Host')) }}
 
     {{
-        Form::scoutText('host', null, [
-            'placeholder' => '127.0.0.1',
-            'data-target' => 'form.input',
-            'data-action' => 'keyup->form#clearError',
-        ])
+        form()->input()
+            ->name('host')
+            ->placeholder('127.0.0.1')
+            ->data('target', 'form.input')
+            ->data('action', 'keyup->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'host',
-            'data-target' => 'form.error'
-        ])
-    }}
+    {{ form()->error()->data('input', 'host')->data('target', 'form.error') }}
 </div>
 
 <div class="form-group">
-    {{ Form::scoutLabel('port', __('Port')) }}
+    {{ form()->label()->for('port')->text(__('Port')) }}
 
     {{
-        Form::scoutText('port', 3306, [
-            'placeholder' => '3306',
-            'data-target' => 'form.input',
-            'data-action' => 'keyup->form#clearError',
-        ])
+        form()->input()
+            ->name('port')
+            ->value(3306)
+            ->placeholder('3306')
+            ->data('target', 'form.input')
+            ->data('action', 'keyup->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'port',
-            'data-target' => 'form.error'
-        ])
-    }}
+    {{ form()->error()->data('input', 'port')->data('target', 'form.error') }}
 </div>
 
 <div class="form-group">
-    {{ Form::scoutLabel('database', __('Database')) }}
+    {{ form()->label()->for('database')->text(__('Database')) }}
 
     {{
-        Form::scoutText('database', null, [
-            'placeholder' => 'scout',
-            'data-target' => 'form.input',
-            'data-action' => 'keyup->form#clearError',
-        ])
+        form()->input()
+            ->name('database')
+            ->placeholder('scout')
+            ->data('target', 'form.input')
+            ->data('action', 'keyup->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'database',
-            'data-target' => 'form.error'
-        ])
-    }}
+    {{ form()->error()->data('input', 'database')->data('target', 'form.error') }}
 </div>
 
 <div class="form-group">
-    {{ Form::scoutLabel('username', __('Username')) }}
+    {{ form()->label()->for('username')->text(__('Username')) }}
 
     {{
-        Form::scoutText('username', null, [
-            'placeholder' => 'Username',
-            'data-target' => 'form.input',
-            'data-action' => 'keyup->form#clearError',
-        ])
+        form()->input()
+            ->name('username')
+            ->placeholder('Username')
+            ->data('target', 'form.input')
+            ->data('action', 'keyup->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'username',
-            'data-target' => 'form.error'
-        ])
-    }}
+    {{ form()->error()->data('input', 'username')->data('target', 'form.error') }}
 </div>
 
 <div class="form-group">
-    {{ Form::scoutLabel('password', __('Password')) }}
+    {{ form()->label()->for('password')->text(__('Password')) }}
 
     {{
-        Form::scoutPassword('password', [
-            'placeholder' => 'Password',
-            'data-target' => 'form.input',
-            'data-action' => 'keyup->form#clearError',
-        ])
+        form()->password()
+            ->name('password')
+            ->placeholder('Password')
+            ->data('target', 'form.input')
+            ->data('action', 'keyup->form#clearError')
     }}
 
-    {{
-        Form::scoutError([
-            'data-input' => 'password',
-            'data-target' => 'form.error'
-        ])
-    }}
+    {{ form()->error()->data('input', 'password')->data('target', 'form.error') }}
 </div>

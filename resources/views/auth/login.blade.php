@@ -4,14 +4,8 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-light border-bottom border-2">
-                    <h5 class="mb-0 text-center text-muted">
-                        {{ __('Login') }}
-                    </h5>
-                </div>
-
-                <div class="card-body">
-                    @if($register)
+                @if($register)
+                    <div class="card-body">
                         <div class="text-center">
                             <h4 class="text-muted font-weight-bold">Welcome</h4>
 
@@ -27,55 +21,62 @@
 
                             <a class="btn btn-block btn-primary" href="{{ route('register') }}">Register</a>
                         </div>
-                    @else
+                    </div>
+                @else
+                    <div class="card-header bg-light border-bottom border-2">
+                        <h5 class="mb-0 text-center text-muted">
+                            {{ __('Login') }}
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
                         <form method="POST" action="{{ route('login') }}" data-controller="form">
                             @csrf
 
                             <div class="form-group">
-                                {{ Form::scoutLabel('email', __('Email Address')) }}
+                                {{ form()->label()->for('email')->text(__('Email Address')) }}
 
                                 {{
-                                    Form::scoutText('email', null, [
-                                        'required',
-                                        'autofocus',
-                                        'data-target' => 'form.input',
-                                        'data-action' => 'keyup->form#clearError'
-                                    ])
+                                    form()->input()
+                                        ->name('email')
+                                        ->required()
+                                        ->autofocus()
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
 
                                 {{
-                                    Form::scoutError([
-                                        'data-input' => 'email',
-                                        'data-target' => 'form.error'
-                                    ])
+                                    form()->error()
+                                        ->data('input', 'email')
+                                        ->data('target', 'form.error')
                                 }}
                             </div>
 
                             <div class="form-group">
-                                {{ Form::scoutLabel('password', __('Password')) }}
+                                {{ form()->label()->for('password')->text(__('Password')) }}
 
                                 {{
-                                    Form::scoutPassword('password', [
-                                        'required',
-                                        'data-target' => 'form.input',
-                                        'data-action' => 'keyup->form#clearError'
-                                    ])
+                                    form()->password()
+                                        ->name('password')
+                                        ->required()
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
 
                                 {{
-                                     Form::scoutError([
-                                         'data-input' => 'password',
-                                         'data-target' => 'form.error'
-                                     ])
-                                 }}
+                                    form()->error()
+                                        ->data('input', 'password')
+                                        ->data('target', 'form.error')
+                                }}
                             </div>
 
                             <div class="form-group">
                                 {{
-                                    Form::scoutCheckbox('remember', true, old('remember') != null, [
-                                        'id' => 'remember',
-                                        'label' => __('Keep me logged in'),
-                                    ])
+                                    form()->checkbox()
+                                        ->name('remember')
+                                        ->value(true)
+                                        ->id('remember')
+                                        ->label('Keep me logged in')
                                 }}
                             </div>
 
@@ -83,17 +84,17 @@
                                 {{ __('Login') }}
                             </button>
                         </form>
-                    @endif
-                </div>
-
-                @if(\App\Scout::email()->enabled())
-                <div class="card-footer bg-light">
-                    <div class="text-center">
-                        <a href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
                     </div>
-                </div>
+
+                    @if(\App\Scout::email()->enabled())
+                        <div class="card-footer bg-light">
+                            <div class="text-center">
+                                <a href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>

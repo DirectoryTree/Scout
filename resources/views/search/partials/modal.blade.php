@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header py-2">
-                <h6 class="modal-title text-muted font-weight-bold">Search Domains</h6>
+                <h6 class="modal-title text-muted font-weight-bold">Search All Domains</h6>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-xs fa-times-circle"></i>
@@ -14,10 +14,11 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{
-                                Form::scoutSearch('term', request('term'), [
-                                    'data-target' => 'form.input',
-                                    'placeholder' => 'Search...',
-                                ])
+                                form()->search()
+                                    ->name('term')
+                                    ->value(request('term'))
+                                    ->placeholder('Search...')
+                                    ->data('target', 'form.input')
                             }}
 
                             <div class="input-group-append">

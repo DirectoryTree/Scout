@@ -3,46 +3,47 @@
 <div class="form-row">
     <div class="col-md-6">
         <div class="form-group">
-            {{ Form::scoutLabel('encryption', __('Connection Encryption')) }}
+            {{ form()->label()->for('encryption')->text(__('Connection Encryption')) }}
 
             <div class="d-flex justify-content-start">
                 <div class="mr-2">
                     {{
-                        Form::scoutRadio('encryption', '', $domain->encryption == '', [
-                            'id' => 'none',
-                            'label' => 'No Encryption',
-                            'data-target' => 'form.input',
-                        ])
+                        form()->radio()
+                            ->id('none')
+                            ->name('encryption')
+                            ->label('No Encryption')
+                            ->value('')
+                            ->checked($domain->encryption == '')
+                            ->data('target', 'form.input')
                     }}
                 </div>
 
                 <div class="mr-2">
                     {{
-                        Form::scoutRadio('encryption', 'tls', $domain->encryption == 'tls', [
-                            'id' => 'radio-use-tls',
-                            'label' => 'Use TLS',
-                            'data-target' => 'form.input',
-                        ])
+                        form()->radio()
+                            ->id('radio-use-tls')
+                            ->name('encryption')
+                            ->label('Use TLS')
+                            ->value('tls')
+                            ->checked($domain->encryption == 'tls')
+                            ->data('target', 'form.input')
                     }}
                 </div>
 
                 <div class="mr-2">
                     {{
-                        Form::scoutRadio('encryption', 'ssl', $domain->encryption == 'ssl', [
-                            'id' => 'radio-use-ssl',
-                            'label' => 'Use SSL',
-                            'data-target' => 'form.input',
-                        ])
+                        form()->radio()
+                            ->id('radio-use-ssl')
+                            ->name('encryption')
+                            ->label('Use SSL')
+                            ->value('ssl')
+                            ->checked($domain->encryption == 'ssl')
+                            ->data('target', 'form.input')
                     }}
                 </div>
             </div>
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'encryption',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'encryption')->data('target', 'form.error') }}
 
             <small class="form-text text-muted">
                 <strong>Note:</strong> You must select TLS or SSL encryption to be able to perform all password related LDAP tasks.
@@ -52,13 +53,15 @@
 
     <div class="col-md-6">
         <div class="form-group">
-            {{ Form::scoutLabel('write_back', __('Write-Back')) }}
+            {{ form()->label()->for('write_back')->text(__('Write-Back')) }}
 
             {{
-                Form::scoutCheckbox('write_back', 'Domain Write Back', $domain->write_back, [
-                    'id' => 'checkbox-domain-write-back',
-                    'label' => 'Enable Domain Write Back',
-                ])
+                form()->checkbox()
+                    ->id('checkbox-domain-write-back')
+                    ->name('write_back')
+                    ->value(true)
+                    ->checked($domain->write_back)
+                    ->label('Enable Domain Write Back')
             }}
 
             <small class="form-text text-muted">
@@ -73,45 +76,37 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('type', __('Connection Type')) }}
+            {{ form()->label()->for('type')->text(__('Connection Type')) }}
 
             {{
-                Form::scoutSelect('type', $types->get(), $domain->type, [
-                    'required',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                ])
+                form()->select()
+                    ->name('type')
+                    ->options($types->get())
+                    ->value($domain->type)
+                    ->data('target', 'form.input')
+                    ->data('action', 'change->form#clearError')
             }}
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'type',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'type')->data('target', 'form.error') }}
         </div>
     </div>
 
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('name', __('Connection Name')) }}
+            {{ form()->label()->for('name')->text(__('Connection Name')) }}
 
             {{
-                Form::scoutText('name', $domain->name, [
-                    'required',
-                    'autofocus',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => 'Domain Name / Company',
-                ])
+                form()->input()
+                    ->name('name')
+                    ->value($domain->name)
+                    ->required()
+                    ->autofocus()
+                    ->placeholder('Domain Name / Company')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'name',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'name')->data('target', 'form.error') }}
         </div>
     </div>
 </div>
@@ -119,24 +114,19 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('hosts', __('Hosts / Controllers')) }}
+            {{ form()->label()->for('hosts')->text(__('Hosts / Controllers')) }}
 
             {{
-                Form::scoutText('hosts', implode(',', $domain->hosts ?? []), [
-                    'required',
-                    'autofocus',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => '10.0.0.1,10.0.0.2',
-                ])
+                form()->input()
+                    ->name('hosts')
+                    ->value(implode(',', $domain->hosts ?? []))
+                    ->required()
+                    ->placeholder('10.0.0.1,10.0.0.2')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'hosts',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'hosts')->data('target', 'form.error') }}
 
             <small class="form-text text-muted">
                 Enter each host separated by a comma.
@@ -146,53 +136,45 @@
 
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('port', __('Port')) }}
+            {{ form()->label()->for('port')->text(__('Port')) }}
 
             {{
-                Form::scoutNumber('port', $domain->port ?? 389, [
-                    'required',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => '389',
-                ])
+                form()->number()
+                    ->name('port')
+                    ->value($domain->port ?? 389)
+                    ->required()
+                    ->placeholder('389')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
             <small class="form-text text-muted">
                 This is usually <strong>389</strong> or <strong>587</strong>.
             </small>
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'port',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'port')->data('target', 'form.error') }}
         </div>
     </div>
 
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('timeout', __('Timeout')) }}
+            {{ form()->label()->for('timeout')->text(__('Timeout')) }}
 
             {{
-                Form::scoutNumber('timeout', $domain->timeout ?? 5, [
-                    'required',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => '5',
-                ])
+                form()->number()
+                    ->name('timeout')
+                    ->value($domain->timeout ?? 5)
+                    ->required()
+                    ->placeholder('5')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
             <small class="form-text text-muted">
                 The amount of <strong>seconds</strong> to wait for LDAP connectivity.
             </small>
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'timeout',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'timeout')->data('target', 'form.error') }}
         </div>
     </div>
 </div>
@@ -200,23 +182,19 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('base_dn', __('Search Base DN')) }}
+            {{ form()->label()->for('base_dn')->text(__('Search Base DN')) }}
 
             {{
-                Form::scoutText('base_dn', $domain->base_dn, [
-                    'required',
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => 'dc=local,dc=com',
-                ])
+                form()->input()
+                    ->name('base_dn')
+                    ->value($domain->base_dn)
+                    ->required()
+                    ->placeholder('dc=local,dc=com')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'base_dn',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'base_dn')->data('target', 'form.error') }}
 
             <small class="form-text text-muted">
                 The <strong>Search Base DN</strong> is critical to scanning your directory.
@@ -226,22 +204,18 @@
 
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('filter', __('Global Search Filter')) }}
+            {{ form()->label()->for('filter')->text(__('Global Search Filter')) }}
 
             {{
-                Form::scoutText('filter', $domain->filter, [
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => '(example=value)',
-                ])
+                form()->input()
+                    ->name('filter')
+                    ->value($domain->filter)
+                    ->placeholder('(example=value)')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'filter',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'filter')->data('target', 'form.error') }}
 
             <small class="form-text text-muted">
                 This filter is applied on <strong>every scan</strong> on your directory.
@@ -261,39 +235,37 @@
 <div class="form-row">
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('username', __('Username')) }}
+            {{ form()->label()->for('username')->text(__('Username')) }}
 
             {{
-                Form::scoutText('username', $domain->username ? decrypt($domain->username) : null, [
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => 'admin',
-                ])
+                form()->input()
+                    ->name('username')
+                    ->value($domain->username ? decrypt($domain->username) : null)
+                    ->required()
+                    ->placeholder('admin')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
             <small class="form-text text-muted">
                 This must be a full <strong>Distinguished Name</strong> or <strong>User Principal Name.</strong>
             </small>
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'username',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'username')->data('target', 'form.error') }}
         </div>
     </div>
 
     <div class="col">
         <div class="form-group">
-            {{ Form::scoutLabel('password', __('Password')) }}
+            {{ form()->label()->for('password')->text(__('Password')) }}
 
             {{
-                Form::scoutPassword('password', [
-                    'data-target' => 'form.input',
-                    'data-action' => 'keyup->form#clearError',
-                    'placeholder' => 'secret',
-                ])
+                form()->password()
+                    ->name('password')
+                    ->required(!isset($domain->password))
+                    ->placeholder('secret')
+                    ->data('target', 'form.input')
+                    ->data('action', 'keyup->form#clearError')
             }}
 
             @if($domain->exists)
@@ -302,12 +274,7 @@
                 </small>
             @endif
 
-            {{
-                Form::scoutError([
-                    'data-input' => 'password',
-                    'data-target' => 'form.error',
-                ])
-            }}
+            {{ form()->error()->data('input', 'password')->data('target', 'form.error') }}
         </div>
     </div>
 </div>

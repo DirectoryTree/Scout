@@ -14,82 +14,69 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-sm-12 col-md-8 col-lg-6">
-                                {{ Form::scoutLabel('name', 'Name') }}
+                                {{ form()->label()->for('name')->text(__('Name')) }}
 
                                 {{
-                                    Form::scoutText('name', null, [
-                                        'required',
-                                        'autofocus',
-                                        'placeholder' => 'Enter your name',
-                                        'data-target' => 'form.input',
-                                        'data-action' => 'keyup->form#clearError'
-                                    ])
+                                    form()->input()
+                                        ->name('name')
+                                        ->required()
+                                        ->autofocus()
+                                        ->placeholder('Enter your name')
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
 
-                                {{
-                                     Form::scoutError([
-                                         'data-input' => 'name',
-                                         'data-target' => 'form.error'
-                                     ])
-                                 }}
+                                {{ form()->error()->data('input', 'name')->data('target', 'form.error') }}
                             </div>
                         </div>
 
                         <div class="form-group row justify-content-center">
                             <div class="col-sm-12 col-md-8 col-lg-6">
-                                {{ Form::scoutLabel('email', 'Email') }}
+                                {{ form()->label()->for('email')->text(__('Email')) }}
 
                                 {{
-                                    Form::scoutEmail('email', null, [
-                                        'required',
-                                        'placeholder' => 'Enter your email',
-                                        'data-target' => 'form.input',
-                                        'data-action' => 'keyup->form#clearError'
-                                    ])
+                                    form()->input()
+                                        ->name('email')
+                                        ->required()
+                                        ->placeholder('Enter your email')
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
 
-                                {{
-                                     Form::scoutError([
-                                         'data-input' => 'email',
-                                         'data-target' => 'form.error'
-                                     ])
-                                 }}
+                                {{ form()->error()->data('input', 'email')->data('target', 'form.error') }}
                             </div>
                         </div>
 
                         <div class="form-group row justify-content-center">
                             <div class="col-sm-12 col-md-8 col-lg-6">
-                                {{ Form::scoutLabel('password', 'Password') }}
+                                {{ form()->label()->for('password')->text(__('Password')) }}
 
                                 {{
-                                    Form::scoutPassword('password', [
-                                        'required',
-                                        'placeholder' => 'Enter a password',
-                                        'autocomplete' => 'new-password',
-                                        'data-target' => 'form.input',
-                                        'data-action' => 'keyup->form#clearError'
-                                    ])
+                                    form()->password()
+                                        ->name('password')
+                                        ->required()
+                                        ->placeholder('Enter a password')
+                                        ->attribute('autocomplete', 'new-password')
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
 
-                                {{
-                                     Form::scoutError([
-                                         'data-input' => 'password',
-                                         'data-target' => 'form.error'
-                                     ])
-                                 }}
+                                {{ form()->error()->data('input', 'password')->data('target', 'form.error') }}
                             </div>
                         </div>
 
                         <div class="form-group row justify-content-center">
                             <div class="col-sm-12 col-md-8 col-lg-6">
-                                {{ Form::scoutLabel('password_confirmation', 'Confirm Password') }}
+                                {{ form()->label()->for('password_confirmation')->text(__('Confirm Password')) }}
 
                                 {{
-                                    Form::scoutPassword('password_confirmation', [
-                                        'required',
-                                        'autocomplete' => 'new-password',
-                                        'placeholder' => 'Confirm your above password'
-                                    ])
+                                    form()->password()
+                                        ->name('password_confirmation')
+                                        ->required()
+                                        ->placeholder('Confirm your above password')
+                                        ->attribute('autocomplete', 'new-password')
+                                        ->data('target', 'form.input')
+                                        ->data('action', 'keyup->form#clearError')
                                 }}
                             </div>
                         </div>
@@ -97,7 +84,7 @@
                         <hr/>
 
                         <div class="form-group row justify-content-center mb-0">
-                            <div class="col-md-4">
+                            <div class="col-12 col-sm-8 col-md-6">
                                 <button type="submit" class="btn btn-block btn-primary">
                                     {{ __('Register') }}
                                 </button>

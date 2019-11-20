@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "849253f5329f9200f7b4af56a9f4aafe",
+    "content-hash": "59fafd78655e55c02c69c564cdc28244",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -681,58 +681,57 @@
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
-            "name": "laracasts/flash",
-            "version": "3.0.3",
+            "name": "larapacks/setting",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laracasts/flash.git",
-                "reference": "77fe3a0f0ebf32c66d9c891782e3fa4b305df249"
+                "url": "https://github.com/larapacks/setting.git",
+                "reference": "6106e39ee055f2adf11e8ce9400ae1c879c0a78c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/flash/zipball/77fe3a0f0ebf32c66d9c891782e3fa4b305df249",
-                "reference": "77fe3a0f0ebf32c66d9c891782e3fa4b305df249",
+                "url": "https://api.github.com/repos/larapacks/setting/zipball/6106e39ee055f2adf11e8ce9400ae1c879c0a78c",
+                "reference": "6106e39ee055f2adf11e8ce9400ae1c879c0a78c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "~5.0|^6.0",
-                "php": ">=5.4.0"
+                "illuminate/database": "6.*",
+                "php": ">=7.2"
             },
             "require-dev": {
-                "mockery/mockery": "dev-master",
-                "phpunit/phpunit": "^6.1"
+                "orchestra/testbench": "~4.0",
+                "phpunit/phpunit": "~8.0"
             },
-            "type": "library",
+            "type": "project",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Laracasts\\Flash\\FlashServiceProvider"
+                        "Larapacks\\Setting\\SettingServiceProvider"
                     ],
                     "aliases": {
-                        "Flash": "Laracasts\\Flash\\Flash"
+                        "Setting": "Larapacks\\Setting\\Facades\\Setting"
                     }
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Laracasts\\Flash": "src/"
-                },
                 "files": [
-                    "src/Laracasts/Flash/functions.php"
-                ]
+                    "src/helper.php"
+                ],
+                "psr-4": {
+                    "Larapacks\\Setting\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@laracasts.com"
-                }
+            "description": "Persistent Laravel configuration settings.",
+            "keywords": [
+                "Settings",
+                "configuration",
+                "setting"
             ],
-            "description": "Easy flash notifications",
-            "time": "2019-09-03T18:59:42+00:00"
+            "time": "2019-11-15T19:28:02+00:00"
         },
         {
             "name": "laravel/framework",
@@ -998,74 +997,6 @@
                 "ui"
             ],
             "time": "2019-10-11T12:16:52+00:00"
-        },
-        {
-            "name": "laravelcollective/html",
-            "version": "v6.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "bcc317d21a7e04eebcc81c4109fa84feaab63590"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/bcc317d21a7e04eebcc81c4109fa84feaab63590",
-                "reference": "bcc317d21a7e04eebcc81c4109fa84feaab63590",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "^6.0",
-                "illuminate/routing": "^6.0",
-                "illuminate/session": "^6.0",
-                "illuminate/support": "^6.0",
-                "illuminate/view": "^6.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "illuminate/database": "^6.0",
-                "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~7.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.0-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Collective\\Html\\HtmlServiceProvider"
-                    ],
-                    "aliases": {
-                        "Form": "Collective\\Html\\FormFacade",
-                        "Html": "Collective\\Html\\HtmlFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Collective\\Html\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adam Engebretson",
-                    "email": "adam@laravelcollective.com"
-                },
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "HTML and Form Builders for the Laravel Framework",
-            "homepage": "https://laravelcollective.com",
-            "time": "2019-10-02T00:37:39+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1942,6 +1873,74 @@
                 "user"
             ],
             "time": "2019-10-15T07:39:07+00:00"
+        },
+        {
+            "name": "spatie/laravel-html",
+            "version": "2.24.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-html.git",
+                "reference": "577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-html/zipball/577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5",
+                "reference": "577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Html\\HtmlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Html": "Spatie\\Html\\Facades\\Html"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Html\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A fluent html builder",
+            "homepage": "https://github.com/spatie/laravel-html",
+            "keywords": [
+                "html",
+                "spatie"
+            ],
+            "time": "2019-09-24T19:35:00+00:00"
         },
         {
             "name": "spatie/string",
@@ -3916,6 +3915,60 @@
                 "test"
             ],
             "time": "2016-01-20T08:20:44+00:00"
+        },
+        {
+            "name": "laracasts/flash",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/flash.git",
+                "reference": "77fe3a0f0ebf32c66d9c891782e3fa4b305df249"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/flash/zipball/77fe3a0f0ebf32c66d9c891782e3fa4b305df249",
+                "reference": "77fe3a0f0ebf32c66d9c891782e3fa4b305df249",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0|^6.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laracasts\\Flash\\FlashServiceProvider"
+                    ],
+                    "aliases": {
+                        "Flash": "Laracasts\\Flash\\Flash"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Laracasts\\Flash": "src/"
+                },
+                "files": [
+                    "src/Laracasts/Flash/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Easy flash notifications",
+            "time": "2019-09-03T18:59:42+00:00"
         },
         {
             "name": "mockery/mockery",

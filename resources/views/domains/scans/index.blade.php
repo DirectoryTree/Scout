@@ -22,6 +22,7 @@
                                 <th class="pl-4"></th>
                                 <th>Started</th>
                                 <th>Completed</th>
+                                <th class="text-center">Duration</th>
                                 <th class="text-center">Synchronized</th>
                                 <th>Message</th>
                             </tr>
@@ -51,6 +52,9 @@
                                     @else
                                         <em class="text-muted">Not completed</em>
                                     @endif
+                                </td>
+                                <td class="text-center align-middle text-nowrap">
+                                    {{ $scan->duration }}
                                 </td>
                                 <td class="text-center align-middle">{{ $scan->synchronized }}</td>
                                 <td class="align-middle">

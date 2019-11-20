@@ -45,4 +45,16 @@ class LdapScan extends Model
     {
         return $this->belongsTo(LdapDomain::class, 'domain_id');
     }
+
+    /**
+     * Get the duration of the scan.
+     *
+     * @return string|null
+     */
+    public function getDurationAttribute()
+    {
+        if ($this->started_at && $this->completed_at) {
+            return $this->started_at->longAbsoluteDiffForHumans($this->completed_at);
+        }
+    }
 }

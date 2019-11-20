@@ -19,8 +19,8 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.0",
-        "laravelcollective/html": "^6.0",
         "spatie/laravel-activitylog": "^3.8",
+        "spatie/laravel-html": "^2.24",
         "spatie/valuestore": "^1.2"
     },
     "require-dev": {

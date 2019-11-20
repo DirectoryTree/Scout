@@ -1,5 +1,17 @@
 <?php
 
+if (! function_exists('form')) {
+    /**
+     * Create a new form input factory.
+     *
+     * @return \App\Http\Html\FormFactory
+     */
+    function form()
+    {
+        return new \App\Http\Html\FormFactory();
+    }
+}
+
 if (! function_exists('route_filter')) {
     /**
      * Generates a URL to the specific route including the parameters and additional query params.

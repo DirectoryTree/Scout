@@ -62,9 +62,12 @@ class LdapDomainRequest extends FormRequest
         $domain->base_dn = $this->base_dn;
         $domain->filter = $this->filter;
         $domain->username = $this->username;
-        $domain->password = $this->password;
         $domain->encryption = $this->encryption ?? null;
         $domain->write_back = $this->write_back ?? false;
+
+        if ($this->has('password')) {
+            $domain->password = $this->password;
+        }
 
         // Set the domains initial status.
         $domain->status = LdapDomain::STATUS_ONLINE;

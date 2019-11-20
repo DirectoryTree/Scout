@@ -46,9 +46,7 @@ class SyncObjectAction extends Action
      */
     public function execute()
     {
-        $connector = new DomainConnector($this->domain);
-
-        $connector->connect();
+        (new DomainConnector($this->domain))->connect();
 
         $entry = $this->domain->getLdapModel()->findOrFail($this->object->dn);
 

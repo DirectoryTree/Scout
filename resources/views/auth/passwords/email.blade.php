@@ -22,25 +22,20 @@
                         @csrf
 
                         <div class="form-group">
+                            {{ form()->label()->for('email')->text(__('Email Address')) }}
+
                             {{
-                                Form::scoutLabel('email', __('E-Mail Address'))
+                                form()->input()
+                                    ->name('email')
+                                    ->autofocus()
+                                    ->data('target', 'form.input')
+                                    ->data('action', 'change->form#clearError')
                             }}
 
                             {{
-                                Form::scoutInput('email', 'email', old('email'), [
-                                    'required',
-                                    'autofocus',
-                                    'autocomplete' => 'email',
-                                     'data-target' => 'form.input',
-                                    'data-action' => 'change->form#clearError'
-                                ])
-                            }}
-
-                            {{
-                                Form::scoutError([
-                                    'data-input' => 'email',
-                                    'data-target' => 'form.error',
-                                ])
+                                form()->error()
+                                    ->data('input', 'email')
+                                    ->data('target', 'form.error')
                             }}
                         </div>
 

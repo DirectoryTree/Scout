@@ -13,10 +13,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         {{
-                            Form::scoutSearch('term', request('term'), [
-                                'data-target' => 'form.input',
-                                'placeholder' => 'Search...',
-                            ])
+                            form()->search()
+                                ->name('term')
+                                ->value(request('term'))
+                                ->data('target', 'form.input')
+                                ->placeholder('Search...')
                         }}
 
                         <div class="input-group-append">
@@ -32,11 +33,12 @@
 
                     <div class="ml-3 mt-2">
                         {{
-                            Form::scoutCheckbox('deleted', '1', request('deleted') == '1', [
-                                'id' => 'search-deleted',
-                                'label' => 'Include Deleted',
-                                'data-target' => 'form.input',
-                            ])
+                            form()->checkbox()
+                                ->id('search-deleted')
+                                ->value(true)
+                                ->label('Include Deleted')
+                                ->checked(request('deleted') == true)
+                                ->data('target', 'form.input')
                         }}
                     </div>
                 </details>

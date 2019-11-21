@@ -2,15 +2,16 @@
     <div class="d-flex justify-content-start align-items-center">
         <div class="mr-2">
             {{
-                Form::scoutCheckbox('enabled', true, $notifier->enabled, [
-                    'id' => "notifier_$notifier->id",
-                    'switch' => true,
-                    'label' => $notifier->name,
-                    'data-controller' => 'toggle',
-                    'data-action' => 'click->toggle#update',
-                    'data-toggle-url' => route('api.notifier.toggle', $notifier),
-                    'disabled' => $notifier->conditions_count === 0,
-                ])
+                form()->toggle()
+                    ->id("notifier_$notifier->id")
+                    ->name('enabled')
+                    ->value(true)
+                    ->checked($notifier->enabled)
+                    ->label($notifier->name)
+                    ->disabled($notifier->conditions_count === 0)
+                    ->data('controller', 'toggle')
+                    ->data('action', 'click->toggle#update')
+                    ->data('toggle-url', route('api.notifier.toggle', $notifier))
             }}
         </div>
 

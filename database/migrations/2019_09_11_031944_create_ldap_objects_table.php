@@ -23,7 +23,7 @@ class CreateLdapObjectsTable extends Migration
             $table->string('name');
             $table->string('dn');
             $table->string('type')->nullable();
-            $table->text('values');
+            $table->text('values')->nullable();
         });
     }
 

@@ -25,7 +25,7 @@ class ObjectImporter
     protected $object;
 
     /**
-     * The object pipes to run through the pipeline.
+     * The pipes to run through the pipeline.
      *
      * @var array
      */
@@ -35,7 +35,6 @@ class ObjectImporter
         Pipes\AssociateParent::class,
         Pipes\DetectChanges::class,
         Pipes\HydrateProperties::class,
-        Pipes\SaveModel::class,
     ];
 
     /**
@@ -70,6 +69,10 @@ class ObjectImporter
         return app(Pipeline::class)
             ->send($model)
             ->through($pipes)
-            ->thenReturn();
+            ->then(function (DatabaseModel $model) {
+                $model->save();
+
+                return $model;
+            });
     }
 }

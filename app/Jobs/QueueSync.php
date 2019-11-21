@@ -4,10 +4,12 @@ namespace App\Jobs;
 
 use App\LdapScan;
 use App\LdapDomain;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class QueueSync
 {
+    use Dispatchable;
+
     /**
      * The LDAP domain being synchronized.
      *
@@ -36,6 +38,6 @@ class QueueSync
             $scan->domain()->associate($this->domain)->save();
         });
 
-        Bus::dispatch(new SyncDomain($this->domain, $scan));
+        SyncDomain::dispatch($this->domain, $scan);
     }
 }

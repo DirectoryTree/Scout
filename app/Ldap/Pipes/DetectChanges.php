@@ -56,6 +56,7 @@ class DetectChanges extends Pipe
 
         $timestamp = $this->object->{$attribute};
 
+        // We must set the timezone, as LDAP timestamps are formatted for UTC.
         return $timestamp instanceof Carbon ?
             $timestamp->setTimezone(config('app.timezone')) :
             now();

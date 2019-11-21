@@ -22,14 +22,14 @@
             <form method="post" action="{{ route('objects.pin.destroy', $object) }}" data-controller="form">
                 @csrf
                 @method('delete')
-                <button type="submit" class="dropdown-item">
+                <button type="submit" class="dropdown-item" data-turbolinks-scroll>
                     <i class="fa fa-thumbtack"></i> Unpin from Dashboard
                 </button>
             </form>
         @else
             <form method="post" action="{{ route('objects.pin.store', $object) }}" data-controller="form">
                 @csrf
-                <button type="submit" class="dropdown-item">
+                <button type="submit" class="dropdown-item" data-turbolinks-scroll>
                     <i class="fa fa-thumbtack"></i> Pin to Dashboard
                 </button>
             </form>

@@ -63,4 +63,22 @@ class ObjectPinTest extends FeatureTestCase
 
         $this->get(route('dashboard'))->assertDontSee($object->name);
     }
+
+    public function test_pins_are_detached_when_objects_are_force_deleted()
+    {
+        $this->signIn();
+
+        $object = factory(LdapObject::class)->create();
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        $user->pins()->attach($object);
+
+        $this->assertNotEmpty($user->pins()->get());
+
+        $object->forceDelete();
+
+        $this->assertEmpty($user->pins()->get());
+    }
 }

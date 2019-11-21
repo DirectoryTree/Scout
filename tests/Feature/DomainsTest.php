@@ -101,6 +101,36 @@ class DomainsTest extends FeatureTestCase
             ->assertSessionHasErrors('hosts');
     }
 
+    public function test_editing_domain_does_not_require_password_and_does_not_modify_it()
+    {
+        $this->signIn();
+
+        $connector = m::mock(ConfigConnector::class);
+        $connector->shouldReceive('with')->once()->andReturnSelf();
+        $connector->shouldReceive('connect')->once()->andReturnTrue();
+
+        $this->app->instance(ConfigConnector::class, $connector);
+
+        $domain = factory(LdapDomain::class)->create();
+
+        $data = [
+            'type' => LdapDomain::TYPE_ACTIVE_DIRECTORY,
+            'name' => 'localhost',
+            'hosts' => 'localhost',
+            'username' => 'username',
+            'base_dn' => 'dc=local,dc=com',
+            'filter' => '(attribute=value)',
+            'port' => 389,
+            'timeout' => 5,
+            'encryption' => 'tls',
+        ];
+
+        $this->patch(route('domains.update', $domain), $data)
+            ->assertSessionDoesntHaveErrors();
+
+        $this->assertEquals(decrypt($domain->password), decrypt($domain->fresh()->password));
+    }
+
     public function test_viewing_added_domain_works()
     {
         $this->signIn();

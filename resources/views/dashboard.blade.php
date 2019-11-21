@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Dashboard'))
+
 @inject('pinned', 'App\Http\Injectors\PinnedObjectInjector')
 
 @section('content')

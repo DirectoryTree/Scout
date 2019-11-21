@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Domains'))
+
 @section('content')
     <div class="row py-2">
         <div class="col">

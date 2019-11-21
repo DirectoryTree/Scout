@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __('Delete Domain'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.delete', $domain))
 
 @section('page')

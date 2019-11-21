@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Add Domain'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.create'))
 
 @section('content')

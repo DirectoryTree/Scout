@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __(':attribute Changes', ['attribute' => ucfirst($attribute)]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.changes.show', $domain, $attribute))
 
 @section('page')

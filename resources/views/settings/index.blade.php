@@ -1,10 +1,12 @@
 @extends('settings.layout')
 
+@section('title', __('Application Settings'))
+
 @section('page')
     <form>
         <div class="card shadow-sm">
             <div class="card-header border-bottom">
-                <h6 class="mb-0 text-muted font-weight-bold">Application Settings</h6>
+                <h6 class="mb-0 text-muted font-weight-bold">{{ __('Application Settings') }}</h6>
             </div>
 
             <div class="card-body">

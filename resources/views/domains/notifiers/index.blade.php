@@ -1,12 +1,14 @@
 @extends('domains.layout')
 
+@section('title', __('Domain Notifiers'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.index', $domain))
 
 @section('page')
     @if ($systemNotifiers->isNotEmpty())
         <div class="card shadow-sm mb-4">
             <div class="card-header border-bottom">
-                <h6 class="mb-0 font-weight-bold text-secondary">Domain Notifiers</h6>
+                <h6 class="mb-0 font-weight-bold text-secondary">{{ __('Domain Notifiers') }}</h6>
             </div>
 
             <div class="card-body p-0">

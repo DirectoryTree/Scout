@@ -1,11 +1,13 @@
 @extends('domains.layout')
 
+@section('title', __('Search Domain'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.search.index', $domain))
 
 @section('page')
     <div class="card shadow-sm">
         <div class="card-header border-bottom">
-            <h6 class="mb-0 font-weight-bold text-secondary">Search Domain</h6>
+            <h6 class="mb-0 font-weight-bold text-secondary">{{ __('Search Domain') }}</h6>
         </div>
 
         <div class="card-body">

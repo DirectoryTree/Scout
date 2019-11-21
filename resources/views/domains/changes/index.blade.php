@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __('Domain Changes'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.changes.index', $domain))
 
 @section('page')

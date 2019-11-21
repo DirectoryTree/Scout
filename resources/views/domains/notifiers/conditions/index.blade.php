@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __(':notifier Conditions', ['notifier' => $notifier->notifiable_name]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.conditions.index', $domain, $notifier))
 
 @section('page')

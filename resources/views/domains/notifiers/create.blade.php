@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __('Add Domain Notifier'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.create', $domain))
 
 @section('page')

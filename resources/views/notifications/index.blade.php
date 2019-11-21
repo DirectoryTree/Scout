@@ -1,5 +1,7 @@
 @extends('notifications.layout')
 
+@section('title', __('Notifications'))
+
 @section('page')
     @if($notifications->isNotEmpty())
         <div class="card shadow-sm overflow-hidden">

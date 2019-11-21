@@ -11,6 +11,8 @@
                     ->disabled($notifier->conditions_count === 0)
                     ->data('controller', 'toggle')
                     ->data('action', 'click->toggle#update')
+                    ->data('toggle-message-enabled', 'Enabled notifier.')
+                    ->data('toggle-message-disabled', 'Disabled notifier.')
                     ->data('toggle-url', route('api.notifier.toggle', $notifier))
             }}
         </div>

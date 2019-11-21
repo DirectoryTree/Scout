@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', __(':notifier Logs', ['notifier' => $notifier->notifiable_name]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.logs.index', $domain, $notifier))
 
 @section('page')

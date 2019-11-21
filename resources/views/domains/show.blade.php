@@ -1,5 +1,7 @@
 @extends('domains.layout')
 
+@section('title', $domain->name)
+
 @section('breadcrumbs', Breadcrumbs::render('domains.show', $domain))
 
 @section('page')

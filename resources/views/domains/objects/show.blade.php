@@ -1,5 +1,7 @@
 @extends('domains.objects.layout')
 
+@section('title', __('Nested Objects'))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.show', $domain, $object))
 
 @section('page')

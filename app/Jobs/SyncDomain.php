@@ -72,6 +72,8 @@ class SyncDomain implements ShouldQueue
                 'completed_at' => now(),
             ])->save();
         } catch (Exception $ex) {
+            report($ex);
+
             $this->scan->fill([
                 'success' => false,
                 'message' => $ex->getMessage(),

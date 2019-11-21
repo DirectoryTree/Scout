@@ -2,15 +2,10 @@
 
 namespace App\Ldap;
 
-use Carbon\Carbon;
 use App\LdapDomain;
 use App\LdapObject;
-use LdapRecord\Utilities;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Bus;
-use App\Jobs\GenerateObjectChanges;
+use Illuminate\Pipeline\Pipeline;
 use LdapRecord\Models\Model as LdapModel;
-use LdapRecord\Models\Types\ActiveDirectory;
 use Illuminate\Database\Eloquent\Model as DatabaseModel;
 
 class ObjectImporter
@@ -28,6 +23,20 @@ class ObjectImporter
      * @var LdapModel
      */
     protected $object;
+
+    /**
+     * The object pipes to run through the pipeline.
+     *
+     * @var array
+     */
+    protected $pipes = [
+        Pipes\RestoreModelWhenTrashed::class,
+        Pipes\AssociateDomain::class,
+        Pipes\AssociateParent::class,
+        Pipes\DetectChanges::class,
+        Pipes\HydrateProperties::class,
+        Pipes\SaveModel::class,
+    ];
 
     /**
      * Constructor.
@@ -50,131 +59,17 @@ class ObjectImporter
      */
     public function run(DatabaseModel $parent = null)
     {
-        $model = $this->firstOrNewModelByGuid($this->getObjectGuid());
+        $guid = $this->object->getConvertedGuid();
 
-        // If the object has been deleted but the relating
-        // LDAP object exists, we must restore it.
-        if ($model->trashed()) {
-            $model->restore();
-        }
+        $model = LdapObject::withTrashed()->firstOrNew(['guid' => $guid]);
 
-        $newAttributes = $this->object->jsonSerialize();
-        ksort($newAttributes);
+        $pipes = collect($this->pipes)->transform(function ($pipe) use ($parent) {
+            return new $pipe($this->domain, $this->object, $parent);
+        })->toArray();
 
-        $oldAttributes = $model->values ?? [];
-
-        // Determine any differences from our last sync.
-        $modifications = array_diff(
-            array_map('serialize', $newAttributes),
-            array_map('serialize', $oldAttributes)
-        );
-
-        $model->domain()->associate($this->domain);
-
-        if ($parent) {
-            $model->parent()->associate($parent);
-        } else {
-            $model->parent()->dissociate();
-        }
-
-        $model->name = $this->getObjectName();
-        $model->dn = $this->getObjectDn();
-        $model->type = $this->getObjectType();
-        $model->values = $newAttributes;
-
-        $model->save();
-
-        // We don't want to create changes for newly imported objects.
-        if (!$model->wasRecentlyCreated && count($modifications) > 0) {
-            $when = $this->getObjectUpdatedDate();
-
-            Bus::dispatch(new GenerateObjectChanges($model, $when, $modifications, $oldAttributes));
-        }
-
-        return $model;
-    }
-
-    /**
-     * Returns the objects GUID.
-     *
-     * @return string|null
-     */
-    protected function getObjectGuid()
-    {
-        return $this->object->getConvertedGuid();
-    }
-
-    /**
-     * Returns the objects distinguished named.
-     *
-     * @return string|null
-     */
-    protected function getObjectDn()
-    {
-        return $this->object->getDn();
-    }
-
-    /**
-     * Get the LDAP objects name.
-     *
-     * @return mixed
-     */
-    protected function getObjectName()
-    {
-        $parts = Utilities::explodeDn($this->object->getRdn(), true);
-
-        return Arr::first($parts);
-    }
-
-    /**
-     * Get the LDAP objects modified date.
-     *
-     * @return Carbon
-     */
-    protected function getObjectUpdatedDate()
-    {
-        $attribute = 'modifytimestamp';
-
-        if ($this->object instanceof ActiveDirectory) {
-            $attribute = 'whenchanged';
-        }
-
-        $timestamp = $this->object->{$attribute};
-
-        return $timestamp instanceof Carbon ?
-            $timestamp->setTimezone(config('app.timezone')) :
-            now();
-    }
-
-    /**
-     * Get the LDAP objects type.
-     *
-     * @var string
-     */
-    protected function getObjectType()
-    {
-        return (new TypeGuesser($this->object->objectclass ?? []))->get();
-    }
-
-    /**
-     * Get the first matching model by its guid, or a new instance.
-     *
-     * @param string $guid
-     *
-     * @return LdapObject
-     */
-    protected function firstOrNewModelByGuid($guid)
-    {
-        return $this->getNewModel()->withTrashed()->firstOrNew(['guid' => $guid]);
-    }
-
-    /**
-     * Get a new model for importing.
-     *
-     * @return LdapObject
-     */
-    protected function getNewModel()
-    {
-        return new LdapObject();
+        return app(Pipeline::class)
+            ->send($model)
+            ->through($pipes)
+            ->thenReturn();
     }
 }

@@ -15,10 +15,10 @@ class CreateLdapScansTable extends Migration
     {
         Schema::create('ldap_scans', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('domain_id');
             $table->timestamps();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
-            $table->unsignedBigInteger('domain_id');
             $table->boolean('success')->default(false);
             $table->integer('synchronized')->default(0);
             $table->text('message')->nullable();

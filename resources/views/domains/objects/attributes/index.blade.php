@@ -13,8 +13,8 @@
                         Updated
 
                         <span class="badge badge-secondary" title="{{ $object->updated_at }}">
-                                    {{ $object->updated_at->diffForHumans() }}
-                                </span>
+                            {{ $object->updated_at->diffForHumans() }}
+                        </span>
                     </small>
                 </div>
 

@@ -28,9 +28,9 @@
                     @forelse($changes as $change)
                         <tr>
                             <td class="pl-4 text-nowrap align-middle">
-                                    <span title="{{ $change->created_at }}">
-                                        {{ $change->created_at->diffForHumans() }}
-                                    </span>
+                                <span title="{{ $change->created_at }}">
+                                    {{ $change->created_at->diffForHumans() }}
+                                </span>
                             </td>
                             <td class="table-success align-middle">
                                 @if (count($change->after) > 1)

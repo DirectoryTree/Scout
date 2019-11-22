@@ -18,6 +18,7 @@ $green: #55ad72;
 $teal: #4dc0b5;
 $cyan: #39afd1;
 $dark: #322867;
+$danger: #d4442e;
 
 // Expand default container widths.
 $container-max-widths: (
@@ -44,6 +45,7 @@ $input-placeholder-color: #cbcbcb;
 
 // Swal
 $swal2-confirm-button-background-color: $dark;
+$swal2-border-radius: 2rem;
 
 $list-group-item-padding-y: 0.5rem;
 $card-spacer-y: 0.5rem;

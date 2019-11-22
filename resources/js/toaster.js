@@ -13,7 +13,7 @@ export default class Toaster {
             toast: true,
             position: 'top',
             showConfirmButton: false,
-            timer: 50000,
+            timer: 3000,
             type: type,
             title: title,
             text: message,

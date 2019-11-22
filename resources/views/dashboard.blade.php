@@ -94,7 +94,7 @@
 
         @php
             $start = $calendar->getStartDate();
-            $end = $calendar->getEndDate()
+            $end = $calendar->getEndDate();
         @endphp
 
         <div class="row">

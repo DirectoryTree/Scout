@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Notifications;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

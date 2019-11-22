@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Scout;
 use Closure;
+use App\Scout;
 
 class EmailEnabled
 {
@@ -17,7 +17,7 @@ class EmailEnabled
      */
     public function handle($request, Closure $next)
     {
-        if (Scout::email()->enabled()) {
+        if (setting('app.email', false)) {
             return $next($request);
         }
 

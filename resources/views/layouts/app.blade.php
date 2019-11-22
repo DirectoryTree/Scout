@@ -88,7 +88,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                                <a href="{{ route('settings.index') }}" class="dropdown-item">
+                                <a href="{{ route('settings.edit') }}" class="dropdown-item">
                                     <i class="fa fa-cogs"></i> Settings
                                 </a>
 

@@ -24,7 +24,16 @@ Route::group(['middleware' => 'can.install'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::get('/settings', 'SettingsController@index')->name('settings.index');
+    Route::group(['prefix' => 'settings', 'namespace' => 'Settings'], function () {
+        Route::get('/', 'GlobalController@edit')->name('settings.edit');
+        Route::patch('/', 'GlobalController@update')->name('settings.update');
+
+        Route::get('/users', 'UsersController@index')->name('settings.users.index');
+        Route::get('/users/add', 'UsersController@create')->name('settings.users.create');
+        Route::get('/users/{user}/edit', 'UsersController@edit')->name('settings.users.edit');
+
+        Route::get('/email', 'EmailController@edit')->name('settings.email.edit');
+    });
 
     Route::get('/notifications',      'NotificationsController@index')->name('notifications.index');
     Route::get('/notifications/{id}', 'NotificationsController@show')->name('notifications.show');

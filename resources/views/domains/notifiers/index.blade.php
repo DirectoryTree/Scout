@@ -25,9 +25,7 @@
         <div class="card-header border-bottom d-flex justify-content-between align-items-center">
             <h6 class="mb-0 font-weight-bold text-secondary">Custom Domain Notifiers</h6>
 
-            <a href="{{ route('domains.notifiers.create', $domain) }}" class="btn btn-sm btn-success">
-                <i class="fas fa-plus-circle"></i> Add
-            </a>
+            <a href="{{ route('domains.notifiers.create', $domain) }}">Add Notifier</a>
         </div>
 
         <div class="card-body p-0">

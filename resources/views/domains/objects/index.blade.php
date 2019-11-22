@@ -6,7 +6,7 @@
 
 @section('page')
     <div class="card bg-white shadow-sm">
-        <div class="card-header mb-2 border-bottom">
+        <div class="card-header border-bottom">
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 text-muted font-weight-bold">
                     <i class="fa fa-cubes"></i> {{ __('Domain Objects') }}

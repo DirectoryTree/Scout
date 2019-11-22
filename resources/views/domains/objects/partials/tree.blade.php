@@ -8,7 +8,7 @@
                 data-object-tree-id="{{ $object->id }}"
                 data-object-tree-children="{{ $object->children_count }}"
             >
-                <div class="d-flex align-items-center mb-2 position-relative">
+                <div class="d-flex align-items-center my-2 position-relative">
                     @if($object->children_count > 0)
                         <button
                             id="btn_expand_{{ $object->id }}"
@@ -34,7 +34,7 @@
                 </div>
             </form>
 
-            <hr class="slim"/>
+            <hr class="m-0"/>
 
             <div id="leaves_{{ $object->id }}"></div>
         </li>

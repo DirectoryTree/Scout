@@ -34,8 +34,16 @@
                                             <i class="fa fa-search"></i> Search
                                         </a>
 
+                                        <a href="{{ route('domains.scans.index', $domain) }}" class="dropdown-item">
+                                            <i class="fas fa-heartbeat"></i> Scans
+                                        </a>
+
                                         <a href="{{ route('domains.objects.index', $domain) }}" class="dropdown-item">
                                             <i class="fa fa-cubes"></i> Objects
+                                        </a>
+
+                                        <a href="{{ route('domains.changes.index', $domain) }}" class="dropdown-item">
+                                            <i class="fa fa-sync"></i> Changes
                                         </a>
 
                                         <div class="dropdown-divider"></div>

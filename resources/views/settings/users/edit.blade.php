@@ -3,9 +3,12 @@
 @section('title', $user->name)
 
 @section('page')
-    <div class="row">
-        <div class="col-12 col-sm-12 col-md-10 col-lg-6">
-            <form method="post" action="#" class="mb-4">
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-sm-12 col-md-10 col-lg-6 mb-4">
+            <form method="post" action="{{ route('settings.users.update', $user) }}" data-controller="form">
+                @csrf
+                @method('patch')
+
                 <div class="card shadow-sm">
                     <div class="card-header border-bottom">
                         <h6 class="mb-0 text-muted font-weight-bold">
@@ -48,7 +51,7 @@
 
                     <div class="card-footer d-flex justify-content-center bg-light">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i> Save
+                            Save changes
                         </button>
                     </div>
                 </div>
@@ -94,11 +97,31 @@
 
                     <div class="card-footer d-flex justify-content-center bg-light">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i> Save
+                            Change password
                         </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+    @if(!$user->is(auth()->user()))
+        <div class="row justify-content-center">
+            <form
+                method="post"
+                action="{{ route('settings.users.destroy', $user) }}"
+                class="col-12 col-sm-12 col-md-10 col-lg-4"
+                data-controller="form-confirmation"
+                data-form-confirmation-title="Are you sure?"
+                data-form-confirmation-message="This cannot be undone."
+            >
+                @csrf
+                @method('delete')
+
+                <button type="submit" class="btn btn-block btn-danger">
+                    <i class="fa fa-times-circle"></i> Delete
+                </button>
+            </form>
+        </div>
+    @endif
 @endsection

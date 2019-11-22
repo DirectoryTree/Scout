@@ -4,8 +4,12 @@
 
 @section('page')
     <div class="card shadow-sm">
-        <div class="card-header border-bottom">
-            <h6 class="mb-0 text-muted font-weight-bold">{{ __('Users') }}</h6>
+        <div class="card-header border-bottom d-flex justify-content-between">
+            <h6 class="mb-0 text-muted font-weight-bold">
+                <i class="fas fa-user-friends"></i> {{ __('Users') }}
+            </h6>
+
+            <a href="{{ route('settings.users.create') }}">Add user</a>
         </div>
 
         <div class="card-body p-0">

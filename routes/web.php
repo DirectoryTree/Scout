@@ -30,7 +30,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/users', 'UsersController@index')->name('settings.users.index');
         Route::get('/users/add', 'UsersController@create')->name('settings.users.create');
+        Route::post('/users', 'UsersController@store')->name('settings.users.store');
         Route::get('/users/{user}/edit', 'UsersController@edit')->name('settings.users.edit');
+        Route::patch('/users/{user}', 'UsersController@update')->name('settings.users.update');
+        Route::delete('/users/{user}', 'UsersController@destroy')->name('settings.users.destroy');
 
         Route::get('/email', 'EmailController@edit')->name('settings.email.edit');
     });

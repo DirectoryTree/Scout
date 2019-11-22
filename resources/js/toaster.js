@@ -13,7 +13,7 @@ export default class Toaster {
             toast: true,
             position: 'top',
             showConfirmButton: false,
-            timer: 3000,
+            timer: 50000,
             type: type,
             title: title,
             text: message,
@@ -39,5 +39,17 @@ export default class Toaster {
                 throw "Cancelled";
             }
         });
+    }
+
+    /**
+     * Remove all toasters from the DOM.
+     */
+    static clear()
+    {
+        let toasters = document.getElementsByClassName('swal2-container');
+
+        for(let i = 0; i < toasters.length; i++) {
+            toasters[i].remove();
+        }
     }
 }

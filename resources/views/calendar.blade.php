@@ -39,8 +39,10 @@
                 {{-- Output the day. --}}
                 @if($events->has($dateFormatted))
                     <td class="text-center text-secondary rounded-circle border border-2 border-success" rel="{{ $dateFormatted }}">
-                        <div class="small d-flex justify-content-center align-items-center" style="height:20px;width:20px">
-                            {{ $date->day }}
+                        <div class="small font-weight-bold d-flex justify-content-center align-items-center" style="height:20px;width:20px">
+                            <a href="{{ current_route_filter(['day' => $date->toDateString()]) }}" data-turbolinks-scroll>
+                                {{ $date->day }}
+                            </a>
                         </div>
                     </td>
                 @else

@@ -4,6 +4,7 @@ namespace App\Http\Injectors;
 
 use DatePeriod;
 use DateInterval;
+use Carbon\Carbon;
 use App\LdapChange;
 
 class ChangeCalendarInjector
@@ -12,20 +13,50 @@ class ChangeCalendarInjector
      * Get the start date.
      *
      * @return \Carbon\CarbonInterface
+     *
+     * @throws \Exception
      */
     public function getStartDate()
     {
-        return now()->subMonths(2);
+        $date = request('start', now()->subMonths(2));
+
+        return $date instanceof Carbon ? $date : new Carbon($date);
     }
 
     /**
      * Get the end date.
      *
      * @return \Carbon\CarbonInterface
+     *
+     * @throws \Exception
      */
     public function getEndDate()
     {
-        return now()->addMonth();
+        return $this->getStartDate()->addMonths(3);
+    }
+
+    /**
+     * Get the selected day.
+     *
+     * @return Carbon|null
+     *
+     * @throws \Exception
+     */
+    public function getSelectedDay()
+    {
+        if ($this->hasSelectedDay()) {
+            return new Carbon(request('day'));
+        }
+    }
+
+    /**
+     * Determine if a day has been selected.
+     *
+     * @return bool
+     */
+    public function hasSelectedDay()
+    {
+        return request()->has('day');
     }
 
     /**
@@ -44,18 +75,38 @@ class ChangeCalendarInjector
     }
 
     /**
+     * Get the changes that occurred on the specific day.
+     *
+     * @param Carbon $date
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     *
+     * @throws \Exception
+     */
+    public function getChangesOn($date)
+    {
+        // We must clone the date so it is not mutated in the view.
+        $date = $date->clone();
+
+        return LdapChange::query()
+            ->with('object.domain')
+            ->whereBetween('ldap_updated_at', [$date->toDateString(), $date->addDay()->toDateString()])
+            ->latest('ldap_updated_at')
+            ->get();
+    }
+
+    /**
      * Get the changes for the given range.
      *
-     * @param \Carbon\Carbon $start
-     * @param \Carbon\Carbon $end
+     * @param DatePeriod $period
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getChanges($start, $end)
+    public function getChangesCountByPeriod(DatePeriod $period)
     {
         return LdapChange::query()
             ->select('ldap_updated_at')
-            ->whereBetween('ldap_updated_at', [$start, $end])
+            ->whereBetween('ldap_updated_at', [$period->start, $period->end])
             ->get()
             ->groupBy(function (LdapChange $change) {
                 return $change->ldap_updated_at->format('Y-m-d');

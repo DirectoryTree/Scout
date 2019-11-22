@@ -97,12 +97,11 @@ class InstallTest extends TestCase
 
     public function test_migrations_are_ran_setting_up_database()
     {
-        $installer = new Installer();
-
         $store = m::mock(Valuestore::class);
         $store->shouldReceive('get')->withArgs(['scout.installed', false])->twice()->andReturnFalse();
+        $store->shouldReceive('get')->withArgs(['scout.configured', false])->twice()->andReturnFalse();
 
-        $installer->setStore($store);
+        $installer = new Installer($store);
 
         $this->app->instance(Installer::class, $installer);
 

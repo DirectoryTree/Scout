@@ -3,27 +3,20 @@
 namespace App;
 
 use App\Http\ScoutResponse;
-use App\Managers\EmailManager;
 
 class Scout
 {
     /**
      * Create a new response.
      *
+     * @param array $data
+     * @param int   $status
+     * @param array $headers
+     *
      * @return ScoutResponse
      */
-    public static function response()
+    public static function response(array $data = [], $status = 200, array $headers = [])
     {
-        return new ScoutResponse();
-    }
-
-    /**
-     * Create a new email manager.
-     *
-     * @return EmailManager
-     */
-    public static function email()
-    {
-        return new EmailManager();
+        return new ScoutResponse($data, $status, $headers);
     }
 }

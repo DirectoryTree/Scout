@@ -6,7 +6,9 @@
 
     {{ $object['name'] }}
 
-    @if($object->pinned)
-        <i class="ml-1 fa fa-xs fa-thumbtack"></i>
+    @if(setting('app.pinning', true))
+        @if($object->pinned)
+            <i class="ml-1 fa fa-xs fa-thumbtack"></i>
+        @endif
     @endif
 </a>

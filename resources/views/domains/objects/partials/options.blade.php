@@ -16,23 +16,25 @@
             <i class="fa fa-sync"></i> Changes
         </a>
 
-        <div class="dropdown-divider"></div>
+        @if(setting('app.pinning', true))
+            <div class="dropdown-divider"></div>
 
-        @if($object->pinned)
-            <form method="post" action="{{ route('objects.pin.destroy', $object) }}" data-controller="form">
-                @csrf
-                @method('delete')
-                <button type="submit" class="dropdown-item" data-turbolinks-scroll>
-                    <i class="fa fa-thumbtack"></i> Unpin from Dashboard
-                </button>
-            </form>
-        @else
-            <form method="post" action="{{ route('objects.pin.store', $object) }}" data-controller="form">
-                @csrf
-                <button type="submit" class="dropdown-item" data-turbolinks-scroll>
-                    <i class="fa fa-thumbtack"></i> Pin to Dashboard
-                </button>
-            </form>
+            @if($object->pinned)
+                <form method="post" action="{{ route('objects.pin.destroy', $object) }}" data-controller="form">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="dropdown-item" data-turbolinks-scroll>
+                        <i class="fa fa-thumbtack"></i> Unpin from Dashboard
+                    </button>
+                </form>
+            @else
+                <form method="post" action="{{ route('objects.pin.store', $object) }}" data-controller="form">
+                    @csrf
+                    <button type="submit" class="dropdown-item" data-turbolinks-scroll>
+                        <i class="fa fa-thumbtack"></i> Pin to Dashboard
+                    </button>
+                </form>
+            @endif
         @endif
     </div>
 </div>

@@ -1,12 +1,31 @@
 @extends('domains.layout')
 
+@section('title', __(':notifier Notifier', ['notifier' => $notifier->notifiable_name]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.notifiers.show', $domain, $notifier))
 
 @section('page')
+    <div class="modal fade" id="select-users-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header py-2">
+                    <h6 class="modal-title text-muted font-weight-bold">Select Users to Notify</h6>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-xs fa-times-circle"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if($notifier->system)
         <div class="alert alert-warning shadow-sm">
             <strong>System Notifier -</strong>
-
             This is a built-in system notifier. You cannot make changes to it.
         </div>
     @endif
@@ -52,6 +71,14 @@
                     @endif
                 </div>
 
+                <div class="card-footer">
+                    <button
+                        type="button"
+                        class="btn btn-block btn-primary btn-sm"
+                        data-toggle="modal"
+                        data-target="#select-users-modal"
+                    >Select Users</button>
+                </div>
             </div>
         </div>
 

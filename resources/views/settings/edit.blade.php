@@ -3,7 +3,10 @@
 @section('title', __('Application Settings'))
 
 @section('page')
-    <form>
+    <form method="post" action="{{ route('settings.update') }}" data-controller="form">
+        @csrf
+        @method('patch')
+
         <div class="card shadow-sm">
             <div class="card-header border-bottom">
                 <h6 class="mb-0 text-muted font-weight-bold">{{ __('Application Settings') }}</h6>
@@ -12,10 +15,13 @@
             <div class="card-body">
                 <div class="form-group">
                     {{
-                        Form::scoutCheckbox('pinning', true, old('pinning', setting('app.pinning', true)) != null, [
-                            'id' => 'pinning',
-                            'label' => __('Enable pinning objects to dashboard'),
-                        ])
+                        form()->checkbox()
+                            ->name('pinning')
+                            ->value(true)
+                            ->checked(setting('app.pinning', true))
+                            ->id('pinning')
+                            ->label(__('Enable pinning objects to dashboard'))
+                            ->data('target', 'form.input')
                     }}
 
                     <small class="text-muted">
@@ -25,10 +31,13 @@
 
                 <div class="form-group">
                     {{
-                        Form::scoutCheckbox('calendar', true, old('calendar', setting('app.calendar', true)) != null, [
-                            'id' => 'calendar',
-                            'label' => __('Enable dashboard change calendar'),
-                        ])
+                        form()->checkbox()
+                            ->name('calendar')
+                            ->value(true)
+                            ->checked(setting('app.calendar', true))
+                            ->id('calendar')
+                            ->label(__('Enable dashboard change calendar'))
+                            ->data('target', 'form.input')
                     }}
 
                     <small class="text-muted">

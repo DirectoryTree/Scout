@@ -88,7 +88,7 @@
                         </form>
                     </div>
 
-                    @if(\App\Scout::email()->enabled())
+                    @if(setting('app.email', false))
                         <div class="card-footer bg-light">
                             <div class="text-center">
                                 <a href="{{ route('password.request') }}">

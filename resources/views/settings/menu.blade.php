@@ -7,17 +7,24 @@
     <div class="card-body pt-0">
         <div class="list-group list-group-flush d-none d-md-block" data-target="menu.container">
             <a
-                href="{{ route('settings.index') }}"
-                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('settings.index') ? 'active' : null }}"
+                href="{{ route('settings.edit') }}"
+                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('settings.edit') ? 'active' : null }}"
             >
                 <i class="fas fa-tools"></i> {{ __('Application') }}
             </a>
 
             <a
-                href="#"
-                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('settings.users') ? 'active' : null }}"
+                href="{{ route('settings.users.index') }}"
+                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('settings.users.*') ? 'active' : null }}"
             >
                 <i class="fas fa-user-friends"></i> {{ __('Users') }}
+            </a>
+
+            <a
+                href="{{ route('settings.email.edit') }}"
+                class="list-group-item list-group-item-action font-weight-bold {{ request()->routeIs('settings.email.edit') ? 'active' : null }}"
+            >
+                <i class="fas fa-envelope-open-text"></i> {{ __('Email') }}
             </a>
 
             <a

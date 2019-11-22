@@ -38,10 +38,12 @@ class Installer
 
     /**
      * Create a new installer instance.
+     *
+     * @param Valuestore $store
      */
-    public function __construct()
+    public function __construct(Valuestore $store)
     {
-        $this->store = Valuestore::make($this->getInstallerFilePath());
+        $this->store = $store;
         $this->config = new Configuration($this->store);
     }
 
@@ -138,15 +140,5 @@ class Installer
     public function wasRecentlyPrepared()
     {
         return $this->initialPreparation;
-    }
-
-    /**
-     * Get the installer file path.
-     *
-     * @return string
-     */
-    public function getInstallerFilePath()
-    {
-        return storage_path('app/installer');
     }
 }

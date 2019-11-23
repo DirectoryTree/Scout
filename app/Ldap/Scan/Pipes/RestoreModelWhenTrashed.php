@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ldap\Pipes;
+namespace App\Ldap\Scan\Pipes;
 
 use Closure;
 use App\LdapObject;
@@ -10,17 +10,17 @@ class RestoreModelWhenTrashed extends Pipe
     /**
      * Restore the model if it's trashed.
      *
-     * @param LdapObject $model
+     * @param LdapObject $object
      * @param Closure    $next
      *
      * @return void
      */
-    public function handle(LdapObject $model, Closure $next)
+    public function handle(LdapObject $object, Closure $next)
     {
-        if ($model->trashed()) {
-            $model->restore();
+        if ($object->trashed()) {
+            $object->restore();
         }
 
-        return $next($model);
+        return $next($object);
     }
 }

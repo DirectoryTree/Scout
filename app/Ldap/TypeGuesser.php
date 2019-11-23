@@ -4,6 +4,11 @@ namespace App\Ldap;
 
 class TypeGuesser
 {
+    const TYPE_USER = 'user';
+    const TYPE_GROUP = 'group';
+    const TYPE_DOMAIN = 'domain';
+    const TYPE_CONTAINER = 'container';
+
     /**
      * The LDAP entry's object classes.
      *
@@ -17,18 +22,18 @@ class TypeGuesser
      * @var array
      */
     protected $map = [
-        'user'                  => 'user',
-        'inetorgperson'         => 'user',
-        'group'                 => 'group',
-        'groupofnames'          => 'group',
-        'groupofentries'        => 'group',
-        'groupofuniquenames'    => 'group',
-        'domain'                => 'domain',
-        'locality'              => 'container',
-        'container'             => 'container',
-        'lostandfound'          => 'container',
-        'organizationalunit'    => 'container',
-        'msds-quotacontainer'   => 'container',
+        'user'                  => TypeGuesser::TYPE_USER,
+        'inetorgperson'         => TypeGuesser::TYPE_USER,
+        'group'                 => TypeGuesser::TYPE_GROUP,
+        'groupofnames'          => TypeGuesser::TYPE_GROUP,
+        'groupofentries'        => TypeGuesser::TYPE_GROUP,
+        'groupofuniquenames'    => TypeGuesser::TYPE_GROUP,
+        'domain'                => TypeGuesser::TYPE_DOMAIN,
+        'locality'              => TypeGuesser::TYPE_CONTAINER,
+        'container'             => TypeGuesser::TYPE_CONTAINER,
+        'lostandfound'          => TypeGuesser::TYPE_CONTAINER,
+        'organizationalunit'    => TypeGuesser::TYPE_CONTAINER,
+        'msds-quotacontainer'   => TypeGuesser::TYPE_CONTAINER,
     ];
 
     /**
@@ -44,7 +49,7 @@ class TypeGuesser
     /**
      * Determine the LDAP objects type.
      *
-     * @return mixed
+     * @return string|null
      */
     public function get()
     {

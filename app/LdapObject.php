@@ -2,12 +2,13 @@
 
 namespace App;
 
+use App\Ldap\TypeGuesser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LdapObject extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, IsSelfReferencing;
 
     /**
      * The attributes that are mass assignable.
@@ -70,36 +71,6 @@ class LdapObject extends Model
     }
 
     /**
-     * The belongsTo parent relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function parent()
-    {
-        return $this->belongsTo(self::class, 'parent_id');
-    }
-
-    /**
-     * The hasMany children relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function children()
-    {
-        return $this->hasMany(self::class, 'parent_id')->latest();
-    }
-
-    /**
-     * The hasMany descendants relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function descendants()
-    {
-        return $this->children()->with('descendants');
-    }
-
-    /**
      * The hasMany changes relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -136,7 +107,10 @@ class LdapObject extends Model
      */
     public function canHaveGroups()
     {
-        return in_array($this->type, ['group', 'user']);
+        return in_array($this->type, [
+            TypeGuesser::TYPE_GROUP,
+            TypeGuesser::TYPE_USER
+        ]);
     }
 
     /**
@@ -157,11 +131,11 @@ class LdapObject extends Model
     public function getIconAttribute()
     {
         switch ($this->type) {
-            case 'group':
+            case TypeGuesser::TYPE_GROUP:
                 return 'fas fa-users';
-            case 'container':
+            case TypeGuesser::TYPE_CONTAINER:
                 return 'far fa-folder';
-            case 'user':
+            case TypeGuesser::TYPE_USER:
                 return 'far fa-user';
             case 'domain':
                 return '';

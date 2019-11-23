@@ -1,5 +1,5 @@
-@if($icon = $object['icon'])
-    <span class="text-muted" title="{{ ucfirst($object['type']) }}">
+@if($icon = $object->icon)
+    <span class="text-muted" title="{{ ucfirst($object->type) }}">
        <i class="{{ $icon }}"></i>
     </span>
 @else

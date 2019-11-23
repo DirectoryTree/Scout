@@ -1,10 +1,8 @@
 <a
-    href="{{ route('domains.objects.show', [$object['domain']['slug'], $object['id']]) }}"
+    href="{{ route('domains.objects.show', [$object->domain->slug, $object]) }}"
     class="badge badge-light border badge-pill"
 >
-    @include('domains.objects.partials.icon')
-
-    {{ $object['name'] }}
+    @include('domains.objects.partials.icon') {{ $object->name }}
 
     @if(setting('app.pinning', true))
         @if($object->pinned)

@@ -36,7 +36,7 @@ class LdapObject extends Model
      *
      * @var array
      */
-    protected $appends = ['icon'];
+    protected $appends = ['icon', 'pinned'];
 
     /**
      * The "booting" method of the model.

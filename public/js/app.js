@@ -46558,7 +46558,8 @@ document.addEventListener('turbolinks:load', function () {
       turbolinks__WEBPACK_IMPORTED_MODULE_3___default.a.scroll['top'] = document.scrollingElement.scrollTop;
     });
   });
-
+});
+document.addEventListener('turbolinks:render', function () {
   if (turbolinks__WEBPACK_IMPORTED_MODULE_3___default.a.scroll['top']) {
     document.scrollingElement.scrollTo(0, turbolinks__WEBPACK_IMPORTED_MODULE_3___default.a.scroll['top']);
   }

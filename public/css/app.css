@@ -14157,15 +14157,6 @@ span.flatpickr-weekday {
   left: 25% !important;
 }
 
-hr {
-  border-top: 1px dotted rgba(0, 0, 0, 0.1);
-}
-
-hr .slim {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .dropdown-menu .dropdown-item {
   color: #fff;
   background-color: #322867;

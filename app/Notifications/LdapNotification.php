@@ -4,10 +4,7 @@ namespace App\Notifications;
 
 use App\LdapObject;
 use App\LdapNotifier;
-use App\Http\Resources\LdapObject as LdapObjectResource;
-use App\Http\Resources\LdapNotifier as LdapNotifierResource;
 use Illuminate\Support\Collection;
-use Illuminate\Notifications\Notification;
 
 class LdapNotification extends Notification
 {
@@ -54,21 +51,18 @@ class LdapNotification extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * Returns the modified attributes names.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
-     */
-    public function toArray($notifiable)
+    public function getName()
     {
-        return [
-            'object' => LdapObjectResource::make($this->object),
-            'notifier' => LdapNotifierResource::make($this->notifier),
-            'logs' => $this->logs,
-        ];
+        return $this->object->name;
+    }
+
+    public function getTitle()
+    {
+        return $this->notifier->notifiable_name;
+    }
+
+    public function getBody()
+    {
+        return $this->object->dn;
     }
 }

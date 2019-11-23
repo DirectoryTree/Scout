@@ -23,7 +23,7 @@ document.addEventListener('turbolinks:load', () => {
     // Enable ladda.
     Loader.bind();
 
-    const elements = document.querySelectorAll("[data-turbolinks-scroll]");
+    let elements = document.querySelectorAll("[data-turbolinks-scroll]");
 
     elements.forEach((element) => {
         element.addEventListener("click", () => {
@@ -34,7 +34,9 @@ document.addEventListener('turbolinks:load', () => {
             Turbolinks.scroll['top'] = document.scrollingElement.scrollTop;
         });
     });
+});
 
+document.addEventListener('turbolinks:render', () => {
     if (Turbolinks.scroll['top']) {
         document.scrollingElement.scrollTo(0, Turbolinks.scroll['top']);
     }

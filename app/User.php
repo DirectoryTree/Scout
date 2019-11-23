@@ -59,4 +59,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(LdapObject::class, 'ldap_object_pins', 'user_id', 'object_id');
     }
+
+    /**
+     * Get the users last unread notifications.
+     *
+     * @param int $limit
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function lastUnreadNotifications($limit = 10)
+    {
+        return $this->unreadNotifications()->limit($limit);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Injectors\NotificationInjector;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NotificationsController
@@ -24,17 +25,28 @@ class NotificationsController
     public function index(Request $request)
     {
         return new StreamedResponse(function() use ($request) {
-            $notifications = $request->user()->unreadNotifications()->limit(10)->get()->transform(function ($notification) {
-                return view('notifications.notification', compact('notification'))->render();
-            });
+            $latestNotifications = (new NotificationInjector($request))->get()
+                ->transform(function ($notification) {
+                    return view('notifications.notification', compact('notification'))->render();
+                });
 
-            echo "data:$notifications \n\nretry:{$this->refreshInterval}\n\n";
+            echo "data:$latestNotifications \n\nretry:{$this->refreshInterval}\n\n";
             ob_flush();
             flush();
-        }, 200, [
+        }, 200, $this->getHeaders());
+    }
+
+    /**
+     * Get the stream headers.
+     *
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return [
             'Content-Type' => 'text/event-stream',
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
-        ]);
+        ];
     }
 }

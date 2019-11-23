@@ -11,7 +11,7 @@ abstract class Notification extends BaseNotification implements ScoutNotificatio
      */
     public function getType()
     {
-        return 'success';
+        return 'info';
     }
 
     /**

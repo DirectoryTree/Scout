@@ -37,18 +37,6 @@ class LdapScan extends Model
     protected $casts = ['success' => 'boolean'];
 
     /**
-     * Get the last unprocessed scan.
-     *
-     * @return static|null
-     */
-    public static function lastUnprocessed()
-    {
-        return static::oldest()->whereHas('entries', function ($query) {
-            $query->whereProcessed(false);
-        })->first();
-    }
-
-    /**
      * The belongsTo domain relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -76,6 +64,18 @@ class LdapScan extends Model
     public function rootEntries()
     {
         return $this->entries()->roots();
+    }
+
+    /**
+     * Begin querying successful scans.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSuccessful($query)
+    {
+        return $query->where('success', '=', true);
     }
 
     /**

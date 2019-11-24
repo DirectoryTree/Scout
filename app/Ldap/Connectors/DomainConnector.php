@@ -28,6 +28,18 @@ class DomainConnector extends Connector
     }
 
     /**
+     * Create a new domain connector.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return static
+     */
+    public static function on(LdapDomain $domain)
+    {
+        return new static($domain);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function attempt(Connection $connection)
@@ -76,16 +88,6 @@ class DomainConnector extends Connector
      */
     public function getConnection()
     {
-        return Container::getInstance()->get($this->getConnectionName());
-    }
-
-    /**
-     * Get the domains connection name.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return $this->domain->getLdapConnectionName();
+        return Container::getInstance()->get($this->domain->getLdapConnectionName());
     }
 }

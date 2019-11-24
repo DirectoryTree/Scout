@@ -4,8 +4,6 @@ namespace App\Jobs;
 
 use App\LdapScan;
 use App\LdapDomain;
-use App\Ldap\DomainModelFactory;
-use App\Ldap\Connectors\DomainConnector;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 class ScanDomain
@@ -38,13 +36,6 @@ class ScanDomain
      */
     public function handle()
     {
-        app()
-            ->when([DomainConnector::class, DomainModelFactory::class])
-            ->needs(LdapDomain::class)
-            ->give(function () {
-                return $this->domain;
-            });
-
         /** @var LdapScan $scan */
         $scan = $this->domain->scans()->create();
 

@@ -28,6 +28,18 @@ class DomainModelFactory
     }
 
     /**
+     * Create a new model factory.
+     *
+     * @param LdapDomain $domain
+     *
+     * @return static
+     */
+    public static function on(LdapDomain $domain)
+    {
+        return new static($domain);
+    }
+
+    /**
      * Create a new model for the given type and connection.
      *
      * @return ActiveDirectoryModel|UnknownModel|OpenLdapModel

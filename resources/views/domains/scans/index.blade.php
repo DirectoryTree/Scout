@@ -61,7 +61,7 @@
                                 <td class="text-center align-middle">{{ $scan->synchronized }}</td>
                                 <td class="align-middle">
                                     @if($scan->message)
-                                        <pre class="mb-0 text-wrap">
+                                        <pre class="mb-0 text-wrap bg-light rounded p-2">
                                             <code>{{ $scan->message }}</code>
                                         </pre>
                                     @else

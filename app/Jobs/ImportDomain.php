@@ -50,18 +50,17 @@ class ImportDomain implements ShouldQueue
     /**
      * Import all of the domains objects.
      *
-     * @param DomainConnector    $connector
-     * @param DomainModelFactory $factory
-     *
      * @return void
      *
      * @throws Exception
      */
-    public function handle(DomainConnector $connector, DomainModelFactory $factory)
+    public function handle()
     {
-        $connector->connect();
-
         $this->scan->update(['started_at' => now()]);
+
+        DomainConnector::on($this->scan->domain)->connect();
+
+        $factory = DomainModelFactory::on($this->scan->domain);
 
         // We'll initialize a database transaction so all of our
         // inserts and updates are pushed at once. Otherwise

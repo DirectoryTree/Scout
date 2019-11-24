@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\LdapDomain;
-use App\Jobs\QueueSync;
+use App\Jobs\ScanDomain;
 use Illuminate\Console\Command;
 
 class SyncDomains extends Command
@@ -39,7 +39,7 @@ class SyncDomains extends Command
         $bar->start();
 
         $domains->each(function (LdapDomain $domain) use ($bar) {
-            QueueSync::dispatch($domain);
+            ScanDomain::dispatch($domain);
 
             $bar->advance();
         });

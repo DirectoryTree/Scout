@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ldap\Scan\Pipes;
+namespace App\Jobs\Pipes;
 
 use Closure;
 use App\LdapObject;

@@ -94,9 +94,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('/conditions/{condition}', 'ConditionsController@update')->name('conditions.update');
     Route::delete('/conditions/{condition}', 'ConditionsController@destroy')->name('conditions.destroy');
 
-    Route::patch('domains/{domain}/objects/{object}/sync', 'DomainObjectSyncController@update')
-        ->name('domains.objects.sync');
-
     Route::patch('notifications/mark-all', 'NotificationMarkAllController@update')->name('notifications.mark.all');
     Route::patch('notifications/{notification}/mark', 'NotificationMarkController@update')->name('notifications.mark.update');
 

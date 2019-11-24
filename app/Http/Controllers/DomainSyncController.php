@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Scout;
 use App\LdapDomain;
-use App\Jobs\QueueSync;
-use Illuminate\Support\Facades\Bus;
+use App\Jobs\ScanDomain;
 
 class DomainSyncController
 {
@@ -18,7 +17,7 @@ class DomainSyncController
      */
     public function store(LdapDomain $domain)
     {
-        Bus::dispatch(new QueueSync($domain));
+        ScanDomain::dispatch($domain);
 
         return Scout::response()
             ->notifyWithMessage('Queued synchronization.')

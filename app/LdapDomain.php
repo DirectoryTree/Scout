@@ -4,9 +4,6 @@ namespace App;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use LdapRecord\Models\Entry as UnknownModel;
-use LdapRecord\Models\OpenLDAP\Entry as OpenLdapModel;
-use LdapRecord\Models\ActiveDirectory\Entry as ActiveDirectoryModel;
 
 class LdapDomain extends Model
 {
@@ -194,31 +191,6 @@ class LdapDomain extends Model
         $attributes['use_tls'] = $this->encryption == 'tls';
 
         return $attributes;
-    }
-
-    /**
-     * Get the domains LDAP model.
-     *
-     * @return ActiveDirectoryModel|UnknownModel|OpenLdapModel
-     */
-    public function getLdapModel()
-    {
-        switch($this->type) {
-            case LdapDomain::TYPE_ACTIVE_DIRECTORY:
-            case LdapDomain::TYPE_ACTIVE_DIRECTORY_LDS:
-                $model = new ActiveDirectoryModel();
-                break;
-            case LdapDomain::TYPE_OPEN_LDAP:
-                $model = new OpenLdapModel();
-                break;
-            default:
-                $model = new UnknownModel();
-                break;
-        }
-
-        $model->setConnection($this->getLdapConnectionName());
-
-        return $model;
     }
 
     /**

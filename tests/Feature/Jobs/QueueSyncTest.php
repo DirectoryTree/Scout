@@ -5,7 +5,7 @@ namespace Tests\Feature\Jobs;
 use App\LdapScan;
 use App\LdapDomain;
 use App\Jobs\QueueSync;
-use App\Jobs\SyncDomain;
+use App\Jobs\ScanDomain;
 use Tests\Feature\FeatureTestCase;
 
 class QueueSyncTest extends FeatureTestCase
@@ -16,7 +16,7 @@ class QueueSyncTest extends FeatureTestCase
 
         $job = new QueueSync($domain);
 
-        $this->expectsJobs(SyncDomain::class);
+        $this->expectsJobs(ScanDomain::class);
 
         $job->handle();
 

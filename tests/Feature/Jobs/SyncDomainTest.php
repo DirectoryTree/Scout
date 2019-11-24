@@ -4,7 +4,7 @@ namespace Tests\Feature\Jobs;
 
 use Mockery as m;
 use App\LdapDomain;
-use App\Jobs\SyncDomain;
+use App\Jobs\ScanDomain;
 use App\Actions\ImportDomainAction;
 use App\Ldap\Connectors\DomainConnector;
 use Tests\Feature\FeatureTestCase;
@@ -32,7 +32,7 @@ class SyncDomainTest extends FeatureTestCase
             return $action;
         });
 
-        (new SyncDomain($domain, $scan))->handle();
+        (new ScanDomain($domain, $scan))->handle();
 
         $scan->refresh();
 
@@ -61,7 +61,7 @@ class SyncDomainTest extends FeatureTestCase
             return $action;
         });
 
-        (new SyncDomain($domain, $scan))->handle();
+        (new ScanDomain($domain, $scan))->handle();
 
         $scan->refresh();
 
@@ -84,7 +84,7 @@ class SyncDomainTest extends FeatureTestCase
 
         $scan = $domain->scans()->create(['synchronized' => 0]);
 
-        $job = new SyncDomain($domain, $scan);
+        $job = new ScanDomain($domain, $scan);
 
         Bus::shouldReceive('dispatch')->never();
 

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Scout;
 use App\LdapDomain;
-use App\Jobs\QueueSync;
+use App\Jobs\ScanDomain;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Requests\ExecuteScanRequest;
 
@@ -23,7 +22,7 @@ class ExecuteController extends Controller
     {
         $domain = LdapDomain::whereToken($request->token)->firstOrFail();
 
-        Bus::dispatch(new QueueSync($domain));
+        ScanDomain::dispatch($domain);
 
         return Scout::response()->type('success')->message('Queued.');
     }

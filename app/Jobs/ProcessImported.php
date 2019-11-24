@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Ldap\Scan;
+namespace App\Jobs;
 
 use App\LdapScan;
 use App\LdapObject;
 use App\LdapScanEntry;
+use Illuminate\Bus\Queueable;
 use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\LazyCollection;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
-class Processor
+class ProcessImported implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * The LDAP scan being processed.
      *
@@ -41,30 +47,23 @@ class Processor
     }
 
     /**
-     * Process the scan.
+     * Process the imported scan entries.
      *
      * @return void
      */
-    public function run()
+    public function handle()
     {
-        $query = $this->scan->rootEntries();
-
-        $this->synchronize($query->cursor());
-
-        // Mark the entries as processed.
-        $query->update(['processed' => true]);
+        $this->process($this->scan->rootEntries());
     }
 
     /**
      * Synchronize the entries.
      *
-     * @param LazyCollection $entries
-     *
-     * @param $domainId
+     * @param \Illuminate\Database\Eloquent\Builder $query
      */
-    protected function synchronize(LazyCollection $entries)
+    protected function process($query)
     {
-        $entries->each(function (LdapScanEntry $entry) {
+        $query->cursor()->each(function (LdapScanEntry $entry) {
             /** @var LdapObject $object */
             $object = LdapObject::withTrashed()->firstOrNew(['guid' => $entry->guid]);
 
@@ -79,11 +78,10 @@ class Processor
                     $object->save();
                 });
 
-            $children = $entry->children()->cursor();
-
-            if ($children->isNotEmpty()) {
-                $this->synchronize($children);
-            }
+            $this->process($entry->children());
         });
+
+        // Mark the entries as processed.
+        $query->update(['processed' => true]);
     }
 }

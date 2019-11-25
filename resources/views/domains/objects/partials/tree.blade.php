@@ -1,42 +1,46 @@
-<ul id="domain-objects" class="list-unstyled mb-0{{ isset($parent) ? ' ml-4' : null }}">
-    @foreach($objects as $object)
-        <li>
-            <form
-                method="get"
-                action="{{ route('partials.domains.objects.tree.show', [$domain, $object]) }}"
-                data-controller="object-tree"
-                data-object-tree-id="{{ $object->id }}"
-                data-object-tree-children="{{ $object->children_count }}"
-            >
-                <div class="d-flex align-items-center my-2 position-relative">
-                    @if($object->children_count > 0)
-                        <button
-                            id="btn_expand_{{ $object->id }}"
-                            type="submit"
-                            class="btn btn-sm btn-light border position-absolute no-loading"
-                        >
-                            <i class="fa fa-xs fa-chevron-right"></i>
-                        </button>
+@if($objects->isNotEmpty())
+    <ul id="domain-objects" class="list-unstyled mb-0{{ isset($parent) ? ' ml-4' : null }}">
+        @foreach($objects as $object)
+            <li>
+                <form
+                    method="get"
+                    action="{{ route('partials.domains.objects.tree.show', [$domain, $object]) }}"
+                    data-controller="object-tree"
+                    data-object-tree-id="{{ $object->id }}"
+                    data-object-tree-children="{{ $object->children_count }}"
+                >
+                    <div class="d-flex align-items-center my-2 position-relative">
+                        @if($object->children_count > 0)
+                            <button
+                                id="btn_expand_{{ $object->id }}"
+                                type="submit"
+                                class="btn btn-sm btn-light border position-absolute no-loading"
+                            >
+                                <i class="fa fa-xs fa-chevron-right"></i>
+                            </button>
 
-                        <button
-                            id="btn_shrink_{{ $object->id }}"
-                            type="button"
-                            class="btn btn-sm btn-light border position-absolute d-none"
-                            data-action="click->object-tree#shrink"
-                        >
-                            <i class="fa fa-xs fa-chevron-down"></i>
-                        </button>
-                    @endif
+                            <button
+                                id="btn_shrink_{{ $object->id }}"
+                                type="button"
+                                class="btn btn-sm btn-light border position-absolute d-none"
+                                data-action="click->object-tree#shrink"
+                            >
+                                <i class="fa fa-xs fa-chevron-down"></i>
+                            </button>
+                        @endif
 
-                    <h5 class="mb-0" style="margin-left:40px;">
-                        @include('domains.objects.partials.badge')
-                    </h5>
-                </div>
-            </form>
+                        <h5 class="mb-0" style="margin-left:40px;">
+                            @include('domains.objects.partials.badge')
+                        </h5>
+                    </div>
+                </form>
 
-            <hr class="m-0"/>
+                <hr class="m-0"/>
 
-            <div id="leaves_{{ $object->id }}"></div>
-        </li>
-    @endforeach
-</ul>
+                <div id="leaves_{{ $object->id }}"></div>
+            </li>
+        @endforeach
+    </ul>
+@else
+    <div class="text-center text-muted">There are no objects to list.</div>
+@endif

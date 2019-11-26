@@ -5,7 +5,7 @@ namespace Tests\Feature\Jobs;
 use Mockery as m;
 use App\LdapDomain;
 use App\Jobs\ScanDomain;
-use App\Actions\ImportDomainAction;
+use App\Jobs\ImportDomain;
 use App\Ldap\Connectors\DomainConnector;
 use Tests\Feature\FeatureTestCase;
 use Illuminate\Support\Facades\Bus;
@@ -16,29 +16,11 @@ class SyncDomainTest extends FeatureTestCase
     {
         $domain = factory(LdapDomain::class)->create();
 
-        $this->app->bind(DomainConnector::class, function () use ($domain) {
-            $connector = m::mock(DomainConnector::class, [$domain]);
-            $connector->shouldReceive('connect')->once()->andReturnTrue();
+        $this->expectsJobs(ImportDomain::class);
 
-            return $connector;
-        });
+        (new ScanDomain($domain))->handle();
 
-        $scan = $domain->scans()->create(['synchronized' => 0]);
-
-        $this->app->bind(ImportDomainAction::class, function () {
-            $action = m::mock(ImportDomainAction::class);
-            $action->shouldReceive('execute')->once()->andReturn(5);
-
-            return $action;
-        });
-
-        (new ScanDomain($domain, $scan))->handle();
-
-        $scan->refresh();
-
-        $this->assertEquals(5, $scan->synchronized);
-        $this->assertTrue($scan->success);
-        $this->assertNotEmpty($scan->completed_at);
+        $this->assertTrue($domain->scans()->exists());
     }
 
     public function test_scan_contains_error_message_and_is_not_successful_when_scan_fails()

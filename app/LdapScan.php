@@ -37,6 +37,20 @@ class LdapScan extends Model
     protected $casts = ['success' => 'boolean'];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(LdapScan $scan) {
+            $scan->entries()->delete();
+        });
+    }
+
+    /**
      * The belongsTo domain relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

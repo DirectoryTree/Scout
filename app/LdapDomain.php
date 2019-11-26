@@ -70,12 +70,18 @@ class LdapDomain extends Model
         });
 
         static::deleting(function(LdapDomain $domain) {
-            // Delete any scans that have been performed.
-            $domain->scans()->delete();
-
-            // Delete any LDAP notifiers.
+            // We will ensure we loop over each notifier and
+            // call their delete method separately so its
+            // deletion events are properly fired.
             $domain->notifiers()->each(function (LdapNotifier $notifier) {
                 $notifier->delete();
+            });
+
+            // As with above, we will ensure each scan's
+            // deletion events are properly fired by
+            // retrieving each individually.
+            $domain->scans()->each(function (LdapScan $scan) {
+                $scan->delete();
             });
 
             // The domain may have a large amount of objects. We

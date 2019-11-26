@@ -67,10 +67,16 @@ class ProcessImported implements ShouldQueue
             /** @var LdapObject $object */
             $object = LdapObject::withTrashed()->firstOrNew(['guid' => $entry->guid]);
 
+            // We will go through our process pipes an construct a
+            // new instance so they can be used in the pipeline.
             $pipes = collect($this->pipes)->transform(function ($pipe) use ($entry) {
                 return new $pipe($this->scan, $entry);
             })->toArray();
 
+            // Here we will create a new pipeline and pipe the
+            // database model through our pipes to assemble
+            // and perform operations upon it, and then
+            // finally saving the assembled model.
             app(Pipeline::class)
                 ->send($object)
                 ->through($pipes)
@@ -78,10 +84,12 @@ class ProcessImported implements ShouldQueue
                     $object->save();
                 });
 
+            // We will mark the scanned entry as processed so
+            // it is not re-processed again in the event of
+            // an exception being generated during.
+            $entry->update(['processed' => true]);
+
             $this->process($entry->children());
         });
-
-        // Mark the entries as processed.
-        $query->update(['processed' => true]);
     }
 }

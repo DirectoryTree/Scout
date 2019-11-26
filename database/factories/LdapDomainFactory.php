@@ -17,6 +17,9 @@ $factory->define(LdapDomain::class, function (Faker $faker) {
         'username' => $faker->userName,
         'password' => $faker->password,
         'hosts' => [$faker->ipv4],
+        'port' => 389,
+        'timeout' => 5,
+        'follow_referrals' => false,
         'base_dn' => 'dc=local,dc=com',
     ];
 });

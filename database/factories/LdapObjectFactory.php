@@ -17,7 +17,6 @@ $factory->define(LdapObject::class, function (Faker $faker) {
 $factory->afterMaking(LdapObject::class, function (LdapObject $object, Faker $faker) {
     if (!$object->domain_id) {
         $domain = factory(LdapDomain::class)->create();
-
         $object->domain()->associate($domain);
     }
 

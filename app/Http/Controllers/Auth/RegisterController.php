@@ -6,6 +6,7 @@ use App\User;
 use App\Scout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -52,6 +53,9 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        // Set the app token.
+        setting()->set('app.token', Str::random(40));
+
         return Scout::response()->redirect(route('login'));
     }
 

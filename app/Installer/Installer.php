@@ -67,6 +67,7 @@ class Installer
     public function install(array $data)
     {
         try {
+            // Update the .env configuration.
             $this->config->update($data);
         } catch (Exception $ex) {
             // Re-throw the exception.

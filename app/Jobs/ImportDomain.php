@@ -162,7 +162,7 @@ class ImportDomain implements ShouldQueue
      */
     protected function getObjectType(Model $object)
     {
-        return (new TypeGuesser($object->getAttribute('objectclass')))->get();
+        return (new TypeGuesser($object->getAttribute('objectclass') ?? []))->get();
     }
 
     /**

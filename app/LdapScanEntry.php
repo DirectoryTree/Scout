@@ -9,6 +9,13 @@ class LdapScanEntry extends Model
     use IsSelfReferencing;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['processed'];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

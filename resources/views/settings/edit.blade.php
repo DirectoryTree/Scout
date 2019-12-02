@@ -3,6 +3,8 @@
 @section('title', __('Application Settings'))
 
 @section('page')
+    @inject('timezones', 'App\Http\Injectors\TimezoneInjector')
+
     <form method="post" action="{{ route('settings.update') }}" data-controller="form">
         @csrf
         @method('patch')
@@ -13,6 +15,16 @@
             </div>
 
             <div class="card-body">
+                <div class="form-group">
+                    {{ form()->label()->for('timezone')->text('Timezone') }}
+
+                    {{
+                        form()->select()
+                            ->name('timezone')
+                            ->options($timezones->get())
+                    }}
+                </div>
+
                 <div class="form-group">
                     {{
                         form()->checkbox()

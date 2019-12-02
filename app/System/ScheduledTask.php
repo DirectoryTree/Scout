@@ -4,10 +4,11 @@ namespace App\System;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\File;
 use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-class ScheduledTask extends Fluent
+abstract class ScheduledTask extends Fluent
 {
     /**
      * The format to use for the scheduled task dates.
@@ -15,6 +16,32 @@ class ScheduledTask extends Fluent
      * @var string
      */
     protected $dateFormat = 'Y-m-d\TH:i:s';
+
+    /**
+     * Create the scheduled task XML file.
+     *
+     * @return string
+     */
+    public function create()
+    {
+        $path = storage_path(sprintf('%s.xml', $this->name));
+
+        File::put($path, $this->generate());
+
+        return $path;
+    }
+
+    /**
+     * Generate a command for importing the scheduled task.
+     *
+     * @param string $path The path to the scheduled task XML file.
+     *
+     * @return string
+     */
+    public function command($path)
+    {
+        return sprintf('schtasks /Create /TN "%s" /XML "%s" /F', $this->name, $path);
+    }
 
     /**
      * Generate the XML document.
@@ -34,6 +61,16 @@ class ScheduledTask extends Fluent
     }
 
     /**
+     * Get the start date of the task.
+     *
+     * @return string
+     */
+    protected function getStartDate()
+    {
+        return $this->get('start', now()->format($this->dateFormat));
+    }
+
+    /**
      * The XML template.
      *
      * @return array
@@ -43,17 +80,17 @@ class ScheduledTask extends Fluent
         return [
             'RegistrationInfo' => [
                 'Date' => $this->get('date', now()->format($this->dateFormat)),
-                'Author' => $this->get('author', 'Scout'),
-                'Description' => $this->get('description', 'Processes the Scout job queue.'),
-                'URI' => Str::start($this->get('name', 'ScoutQueueRunner'), '\\'),
+                'Author' => $this->author,
+                'Description' => $this->description,
+                'URI' => Str::start($this->name, '\\'),
             ],
             'Triggers' => [
                 'CalendarTrigger' => [
                     'Repetition' => [
-                        'Interval' => $this->get('interval', 'PT5M'),
+                        'Interval' => $this->interval,
                         'StopAtDurationEnd' => 'false',
                     ],
-                    'StartBoundary' => $this->get('start', now()->format($this->dateFormat)),
+                    'StartBoundary' => $this->getStartDate(),
                     'Enabled' => 'true',
                     'ScheduleByDay' => [
                         'DaysInterval' => 1
@@ -65,7 +102,7 @@ class ScheduledTask extends Fluent
                     '_attributes' => [
                         'id' => 'Author',
                     ],
-                    'UserId' => $this->get('user_id', 'S-1-5-18'),
+                    'UserId' => $this->user_id,
                     'RunLevel' => 'LeastPrivilege',
                 ],
             ],

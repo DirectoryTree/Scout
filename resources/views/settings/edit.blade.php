@@ -22,9 +22,44 @@
                         form()->select()
                             ->name('timezone')
                             ->options($timezones->get())
+                            ->required()
+                            ->value(setting('app.timezone', env('APP_TIMEZONE')))
+                            ->data('target', 'form.input')
+                            ->data('action', 'form->change#clearError')
                     }}
                 </div>
 
+                <div class="form-group">
+                    {{ form()->label()->for('frequency')->text('Scan Frequency (Minutes)') }}
+
+                    <div class="input-group">
+                        {{
+                            form()->number()
+                                ->name('frequency')
+                                ->required()
+                                ->value(setting('app.scan.frequency', '15'))
+                                ->data('target', 'form.input')
+                                ->data('action', 'change->form#clearError')
+                        }}
+
+                        <div class="input-group-append">
+                            <span class="input-group-text">minutes</span>
+                        </div>
+                    </div>
+
+                    {{ form()->error()->data('input', 'frequency')->data('target', 'form.error') }}
+
+                    <small class="text-muted">
+                        This setting controls how frequently domains are scanned.
+                    </small>
+                </div>
+            </div>
+
+            <div class="card-header border-bottom">
+                <h6 class="mb-0 text-muted font-weight-bold">{{ __('Feature Settings') }}</h6>
+            </div>
+
+            <div class="card-body">
                 <div class="form-group">
                     {{
                         form()->checkbox()

@@ -24,7 +24,7 @@ abstract class ScheduledTask extends Fluent
      */
     public function create()
     {
-        $path = storage_path(sprintf('%s.xml', $this->name));
+        $path = storage_path(sprintf('app/%s.xml', $this->name));
 
         File::put($path, $this->generate());
 
@@ -122,7 +122,7 @@ abstract class ScheduledTask extends Fluent
                 'Hidden' => 'false',
                 'RunOnlyIfIdle' => 'false',
                 'WakeToRun' => 'false',
-                'ExecutionTimeLimit' => 'PT72H',
+                'ExecutionTimeLimit' => $this->time_limit,
                 'Priority' => 7,
             ],
             'Actions' => [
@@ -131,7 +131,7 @@ abstract class ScheduledTask extends Fluent
                 ],
                 'Exec' => [
                     'Command' => $this->phpExecutable(),
-                    'Arguments' => 'artisan queue:listen --tries=3',
+                    'Arguments' => sprintf('artisan %s', $this->command),
                     'WorkingDirectory' => $this->get('path', base_path()),
                 ],
             ]

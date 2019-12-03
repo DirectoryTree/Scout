@@ -2,7 +2,7 @@
 
 namespace App\System;
 
-class ScoutQueueTask extends ScheduledTask
+class QueueTask extends ScheduledTask
 {
     /**
      * The task attributes.
@@ -15,5 +15,7 @@ class ScoutQueueTask extends ScheduledTask
         'description' => 'Processes the Scout job queue.',
         'user_id' => 'S-1-5-18',
         'interval' => 'PT5M',
+        'time_limit' => 'PT72H',
+        'command' => 'queue:listen --tries=3',
     ];
 }

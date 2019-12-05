@@ -6,6 +6,7 @@ use App\Scout;
 use App\LdapDomain;
 use AdSystemNotifierSeeder;
 use App\Http\Requests\LdapDomainRequest;
+use Illuminate\Support\Facades\Artisan;
 
 class DomainsController extends Controller
 {
@@ -48,6 +49,9 @@ class DomainsController extends Controller
         if ($domain->type == LdapDomain::TYPE_ACTIVE_DIRECTORY) {
             (new AdSystemNotifierSeeder())->run();
         }
+
+        // Initialize a new scan for the newly added domain.
+        Artisan::call('scout:sync');
 
         return Scout::response()
             ->notifyWithMessage('Added domain.')

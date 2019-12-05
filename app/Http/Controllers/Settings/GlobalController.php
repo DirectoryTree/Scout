@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Http\Injectors\TimezoneInjector;
 use App\Scout;
-use App\Http\Controllers\Controller;
+use App\System\QueueTask;
+use App\System\SchedulerTask;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Http\Injectors\TimezoneInjector;
+use SebastianBergmann\Environment\OperatingSystem;
 
 class GlobalController extends Controller
 {
@@ -17,7 +20,15 @@ class GlobalController extends Controller
      */
     public function edit()
     {
-        return view('settings.edit');
+        $os = (new OperatingSystem)->getFamily();
+
+        return view('settings.edit', [
+            'os' => $os,
+            'tasks' => [
+                'queue' => new QueueTask(),
+                'scheduler' => new SchedulerTask(),
+            ]
+        ]);
     }
 
     /**
@@ -34,7 +45,7 @@ class GlobalController extends Controller
         $this->validate($request, [
             'pinning' => 'boolean',
             'calendar' => 'boolean',
-            'frequency' => 'required|integer|max:59',
+            'frequency' => 'required|integer|min:5|max:59',
             'timezone' => [
                 'required',
                 Rule::in((new TimezoneInjector)->get())

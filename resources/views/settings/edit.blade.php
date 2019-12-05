@@ -5,7 +5,7 @@
 @section('page')
     @inject('timezones', 'App\Http\Injectors\TimezoneInjector')
 
-    <form method="post" action="{{ route('settings.update') }}" data-controller="form">
+    <form method="post" action="{{ route('settings.update') }}" data-controller="form" class="mb-4">
         @csrf
         @method('patch')
 
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form()->label()->for('frequency')->text('Scan Frequency (Minutes)') }}
+                    {{ form()->label()->for('frequency')->text('Scan Frequency') }}
 
                     <div class="input-group">
                         {{
@@ -50,7 +50,7 @@
                     {{ form()->error()->data('input', 'frequency')->data('target', 'form.error') }}
 
                     <small class="text-muted">
-                        This setting controls how frequently domains are scanned.
+                        This setting controls how frequently domains are scanned in minutes. (Allowed: 5-59)
                     </small>
                 </div>
             </div>
@@ -100,4 +100,65 @@
             </div>
         </div>
     </form>
+
+    @if($os == 'Windows')
+    <div class="card shadow-sm">
+        <div class="card-header border-bottom">
+            <h6 class="mb-0 text-muted font-weight-bold">{{ __('Setup Task Scheduling & Queue (Windows Only)') }}</h6>
+        </div>
+
+        <div class="card-body">
+            <h5 class="font-weight-bold text-muted">Setting up the schedule and queue workers in Windows</h5>
+
+            <p>
+                To easily get Scout up and running with automated scanning, you must created scheduled tasks on your Windows server.
+            </p>
+
+            <p>
+                Scout provides the automated generation of <a href="https://docs.microsoft.com/en-us/windows/win32/taskschd/daily-trigger-example--xml-">Scheduled Task XML files</a>
+                that you can import into your server with a single command so the entire setup is done for you.
+            </p>
+
+            <p>
+                Click the <strong>Generate</strong> buttons below and then run the command (<strong>as an administrator</strong>) that is shown to import the generated XML files into the task scheduler. Once you've imported both XML files, Scout will automatically scan your domains at your configured frequency.
+            </p>
+
+            <p>
+                <strong>Note:</strong> If you ever change the directory of the Scout application, you will need to regenerate and re-run these commands.
+            </p>
+
+            <hr/>
+
+            <form method="post" action="{{ route('settings.generate.scheduler') }}" data-controller="form" class="mb-2">
+                @csrf
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-redo"></i>
+                    {{ $tasks['scheduler']->exists() ? 'Regenerate' : 'Generate' }}
+                    Scheduler Task XML
+                </button>
+            </form>
+
+            @if($tasks['scheduler']->exists())
+                <pre class="bg-dark text-white rounded p-2 shadow-sm"><code>{{ $tasks['scheduler']->command() }}
+</code></pre>
+            @endif
+
+            <hr/>
+
+            <form method="post" action="{{ route('settings.generate.queue') }}" data-controller="form" class="mb-2">
+                @csrf
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-redo"></i>
+                    {{ $tasks['queue']->exists() ? 'Regenerate' : 'Generate' }}
+                    Queue Runner Task XML
+                </button>
+            </form>
+
+            @if($tasks['queue']->exists())
+                <pre class="bg-dark text-white rounded p-2 shadow-sm"><code>{{ $tasks['queue']->command() }}
+</code></pre>
+            @endif
+        </div>
+    </div>
+    @endif
 @endsection

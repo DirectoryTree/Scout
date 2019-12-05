@@ -22,18 +22,22 @@ Route::group(['middleware' => 'can.install'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::group(['prefix' => 'settings', 'namespace' => 'Settings'], function () {
-        Route::get('/', 'GlobalController@edit')->name('settings.edit');
-        Route::patch('/', 'GlobalController@update')->name('settings.update');
+    Route::group(['prefix' => 'settings', 'namespace' => 'Settings', 'as' => 'settings.'], function () {
+        Route::get('/', 'GlobalController@edit')->name('edit');
+        Route::patch('/', 'GlobalController@update')->name('update');
 
-        Route::get('/users', 'UsersController@index')->name('settings.users.index');
-        Route::get('/users/add', 'UsersController@create')->name('settings.users.create');
-        Route::post('/users', 'UsersController@store')->name('settings.users.store');
-        Route::get('/users/{user}/edit', 'UsersController@edit')->name('settings.users.edit');
-        Route::patch('/users/{user}', 'UsersController@update')->name('settings.users.update');
-        Route::delete('/users/{user}', 'UsersController@destroy')->name('settings.users.destroy');
+        Route::get('/users', 'UsersController@index')->name('users.index');
+        Route::get('/users/add', 'UsersController@create')->name('users.create');
+        Route::post('/users', 'UsersController@store')->name('users.store');
+        Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+        Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
+        Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
 
-        Route::get('/email', 'EmailController@edit')->name('settings.email.edit');
+        Route::get('/email', 'EmailController@edit')->name('email.edit');
+        Route::patch('/email', 'EmailController@update')->name('email.update');
+
+        Route::post('/generate/scheduler-task', 'GenerateTaskController@scheduler')->name('generate.scheduler');
+        Route::post('/generate/queue-task', 'GenerateTaskController@queue')->name('generate.queue');
     });
 
     Route::get('/notifications',      'NotificationsController@index')->name('notifications.index');

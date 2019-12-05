@@ -24,7 +24,7 @@ abstract class ScheduledTask extends Fluent
      */
     public function create()
     {
-        $path = storage_path(sprintf('app/%s.xml', $this->name));
+        $path = $this->path();
 
         File::put($path, $this->generate());
 
@@ -32,15 +32,33 @@ abstract class ScheduledTask extends Fluent
     }
 
     /**
-     * Generate a command for importing the scheduled task.
+     * Determine if the scheduled task file exists.
      *
-     * @param string $path The path to the scheduled task XML file.
+     * @return bool
+     */
+    public function exists()
+    {
+        return File::exists($this->path());
+    }
+
+    /**
+     * Get the full file path of the XML document.
      *
      * @return string
      */
-    public function command($path)
+    public function path()
     {
-        return sprintf('schtasks /Create /TN "%s" /XML "%s" /F', $this->name, $path);
+        return storage_path(sprintf('app'.DIRECTORY_SEPARATOR.'%s.xml', $this->name));
+    }
+
+    /**
+     * Generate a command for importing the scheduled task.
+     *
+     * @return string
+     */
+    public function command()
+    {
+        return sprintf('schtasks /Create /TN "%s" /XML "%s" /F', $this->name, $this->path());
     }
 
     /**
@@ -85,6 +103,14 @@ abstract class ScheduledTask extends Fluent
                 'URI' => Str::start($this->name, '\\'),
             ],
             'Triggers' => [
+                // We will enable a registration trigger to trigger the task as soon
+                // as it's imported. Then, the calendar trigger will take over.
+                'RegistrationTrigger' => [
+                    'Enabled' => 'true',
+                ],
+                // We will create a daily calendar trigger to regularly try starting
+                // the task in case it fails. This trigger should begin once the
+                // task is imported for the first time.
                 'CalendarTrigger' => [
                     'Repetition' => [
                         'Interval' => $this->interval,

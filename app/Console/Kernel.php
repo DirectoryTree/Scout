@@ -32,8 +32,7 @@ class Kernel extends ConsoleKernel
 
             $cron = sprintf('*/%s * * * *', $minutes);
 
-            $schedule->command('scout:sync')
-                ->cron($cron);
+            $schedule->command('scout:sync')->cron($cron);
         } catch (Exception $ex) {
             // Migrations have not yet been ran.
         }

@@ -58,6 +58,8 @@ class ImportDomain implements ShouldQueue
     {
         $this->scan->update(['started_at' => now()]);
 
+        info(sprintf("Starting to scan domain '%s'", $this->scan->domain->slug));
+
         DomainConnector::on($this->scan->domain)->connect();
 
         $factory = DomainModelFactory::on($this->scan->domain);
@@ -70,13 +72,17 @@ class ImportDomain implements ShouldQueue
             $this->import($factory->make());
         });
 
+        $imported = count($this->guids);
+
         // Upon successful completion, we'll update our scan
         // stats to ensure it is not processed again.
         $this->scan->fill([
             'success' => true,
-            'synchronized' => count($this->guids),
+            'synchronized' => $imported,
             'completed_at' => now(),
         ])->save();
+
+        info(sprintf('Successfully completed scan. Imported %s record(s).', $imported));
     }
 
     /**

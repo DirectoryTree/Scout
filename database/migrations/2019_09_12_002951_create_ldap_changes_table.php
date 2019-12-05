@@ -19,8 +19,8 @@ class CreateLdapChangesTable extends Migration
             $table->timestamp('ldap_updated_at')->nullable();
             $table->unsignedBigInteger('object_id');
             $table->string('attribute');
-            $table->text('before')->nullable();
-            $table->text('after');
+            $table->longText('before')->nullable();
+            $table->longText('after');
         });
     }
 

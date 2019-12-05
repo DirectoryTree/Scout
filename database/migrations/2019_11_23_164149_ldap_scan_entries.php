@@ -23,7 +23,7 @@ class LdapScanEntries extends Migration
             $table->string('name');
             $table->string('dn');
             $table->string('type')->nullable();
-            $table->text('values')->nullable();
+            $table->longText('values')->nullable();
             $table->boolean('processed')->default(false);
         });
     }

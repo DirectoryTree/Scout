@@ -32,7 +32,11 @@ class SyncDomains extends Command
         $this->info("---- Scout ----");
         $this->info("Starting to queue directory synchronization...");
 
-        $domains = LdapDomain::all();
+        $domains = LdapDomain::toSynchronize();
+
+        if ($domains->isEmpty()) {
+            return $this->info('No domains are scheduled to be synchronized.');
+        }
 
         $bar = $this->output->createProgressBar($domains->count());
 

@@ -97,6 +97,30 @@ class LdapDomain extends Model
     }
 
     /**
+     * Returns the domains that should be synchronized.
+     *
+     * @return LdapDomain[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function toSynchronize()
+    {
+        $frequencyInMinutes = setting('app.scan.frequency', 15);
+
+        return static::all()->filter(function (LdapDomain $domain) use ($frequencyInMinutes)  {
+            // Get the last scan that was performed on the domain.
+            $lastScan = $domain->scans()->latest()->first();
+
+            // No scan has taken place yet. Include this domain to be synchronized.
+            if (! $lastScan) {
+                return true;
+            }
+
+            $startedAt = $lastScan->started_at ?? now()->subMinutes($frequencyInMinutes);
+
+            return now()->diffInMinutes($startedAt) >= $frequencyInMinutes;
+        });
+    }
+
+    /**
      * Get the route key for the model.
      *
      * @return string

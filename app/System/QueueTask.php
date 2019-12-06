@@ -13,7 +13,7 @@ class QueueTask extends ScheduledTask
         'name' => 'ScoutQueueRunner',
         'author' => 'Scout',
         'description' => 'Processes the Scout job queue.',
-        'user_id' => 'S-1-5-18',
+        'user_id' => ScheduledTask::USER_SYSTEM,
         'interval' => 'PT5M',
         'time_limit' => 'PT72H',
         // We will use the queue:listen command in case updates are

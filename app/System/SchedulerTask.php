@@ -13,7 +13,7 @@ class SchedulerTask extends ScheduledTask
         'name' => 'ScoutScheduleRunner',
         'author' => 'Scout',
         'description' => 'Processes the Scout scheduled commands.',
-        'user_id' => 'S-1-5-18',
+        'user_id' => ScheduledTask::USER_SYSTEM,
         'interval' => 'PT1M',
         'time_limit' => 'PT30M',
         'command' => 'schedule:run',

@@ -11,6 +11,8 @@ class ScheduledTask extends Fluent
 {
     use GeneratesXml;
 
+    const USER_SYSTEM = 'S-1-5-18';
+
     /**
      * The format to use for the scheduled task dates.
      *

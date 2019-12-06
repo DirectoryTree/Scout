@@ -48,7 +48,8 @@ class ObjectPinTest extends FeatureTestCase
         $user = auth()->user();
         $user->pins()->attach($object);
 
-        $this->get(route('dashboard'))->assertSee($object->name);
+        $this->get(route('dashboard'))
+            ->assertSee(route('domains.objects.show', [$object->domain, $object]));
     }
 
     public function test_users_cannot_see_others_pins()
@@ -61,7 +62,8 @@ class ObjectPinTest extends FeatureTestCase
 
         $user->pins()->attach($object);
 
-        $this->get(route('dashboard'))->assertDontSee($object->name);
+        $this->get(route('dashboard'))
+            ->assertDontSee(route('domains.objects.show', [$object->domain, $object]));
     }
 
     public function test_pins_are_detached_when_objects_are_force_deleted()

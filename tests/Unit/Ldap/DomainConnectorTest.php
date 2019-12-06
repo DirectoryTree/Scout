@@ -34,8 +34,7 @@ class DomainConnectorTest extends TestCase
 
         Container::getInstance()->add($conn, $domain->getLdapConnectionName());
 
-        $conn->shouldReceive('getLdapConnection')->once()->andReturnSelf();
-        $conn->shouldReceive('isBound')->once()->andReturnFalse();
+        $conn->shouldReceive('isConnected')->once()->andReturnFalse();
         $conn->shouldReceive('connect')->once();
 
         $config = new DomainConfiguration($domain->getLdapConnectionAttributes());

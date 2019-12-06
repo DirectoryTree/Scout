@@ -7,6 +7,7 @@ use App\LdapDomain;
 use App\LdapObject;
 use App\LdapNotifier;
 use LdapRecord\LdapRecordException;
+use Illuminate\Support\Facades\Artisan;
 use App\Ldap\Connectors\ConfigConnector;
 
 class DomainsTest extends FeatureTestCase
@@ -27,6 +28,8 @@ class DomainsTest extends FeatureTestCase
         $connector->shouldReceive('connect')->once()->andReturnTrue();
 
         $this->app->instance(ConfigConnector::class, $connector);
+
+        Artisan::shouldReceive('call')->once()->withArgs(['scout:sync']);
 
         $this->post(route('domains.store'), [
             'type' => LdapDomain::TYPE_ACTIVE_DIRECTORY,

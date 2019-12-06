@@ -6,9 +6,11 @@ use Mockery as m;
 use App\LdapDomain;
 use App\Jobs\ScanDomain;
 use App\Jobs\ImportDomain;
-use App\Ldap\Connectors\DomainConnector;
+use LdapRecord\Container;
+use LdapRecord\Connection;
+use LdapRecord\Query\Model\Builder;
+use LdapRecord\Configuration\DomainConfiguration;
 use Tests\Feature\FeatureTestCase;
-use Illuminate\Support\Facades\Bus;
 
 class SyncDomainTest extends FeatureTestCase
 {
@@ -27,54 +29,61 @@ class SyncDomainTest extends FeatureTestCase
     {
         $domain = factory(LdapDomain::class)->create();
 
-        $this->app->bind(DomainConnector::class, function () use ($domain) {
-            $connector = m::mock(DomainConnector::class, [$domain]);
-            $connector->shouldReceive('connect')->once()->andReturnTrue();
+        $builder = m::mock(Builder::class);
+        $builder->shouldReceive('listing')->once()->withNoArgs()->andReturnSelf();
+        $builder->shouldReceive('select')->once()->withArgs(['*'])->andReturnSelf();
+        $builder->shouldReceive('paginate')->once()->withArgs([1000])->andThrow(new \Exception('Cannot scan'));
 
-            return $connector;
-        });
+        $connection = m::mock(Connection::class);
+        $connection->shouldReceive('getConfiguration')->andReturn(new DomainConfiguration([
+            'username' => encrypt('user'),
+            'password' => encrypt('secret'),
+        ]));
+        $connection->shouldReceive('isConnected')->once()->andReturnTrue();
+        $connection->shouldReceive('query')->once()->andReturnSelf();
+        $connection->shouldReceive('model')->once()->andReturn($builder);
 
-        $scan = $domain->scans()->create(['synchronized' => 0]);
+        Container::getInstance()->add($connection, $domain->getLdapConnectionName());
 
-        $this->app->bind(ImportDomainAction::class, function () {
-            $action = m::mock(ImportDomainAction::class);
-            $action->shouldReceive('execute')->once()->andThrow(new \Exception('Cannot scan'));
+        try {
+            ScanDomain::dispatch($domain);
 
-            return $action;
-        });
+            $this->fail('Exception not thrown.');
+        } catch (\Exception $ex) {
+            $scan = $domain->scans()->latest()->firstOrFail();
 
-        (new ScanDomain($domain, $scan))->handle();
-
-        $scan->refresh();
-
-        $this->assertEquals('Cannot scan', $scan->message);
-        $this->assertEquals(0, $scan->synchronized);
-        $this->assertFalse($scan->success);
-        $this->assertNotEmpty($scan->completed_at);
+            $this->assertEquals('Cannot scan', $scan->message);
+            $this->assertEquals(0, $scan->synchronized);
+            $this->assertFalse($scan->success);
+            $this->assertNotEmpty($scan->completed_at);
+        }
     }
 
     public function test_scan_contains_error_message_and_is_not_successful_when_connecting_fails()
     {
         $domain = factory(LdapDomain::class)->create();
 
-        $this->app->bind(DomainConnector::class, function () use ($domain) {
-            $connector = m::mock(DomainConnector::class, [$domain]);
-            $connector->shouldReceive('connect')->once()->andThrow(new \Exception('Cannot connect'));
+        $connection = m::mock(Connection::class);
+        $connection->shouldReceive('getConfiguration')->andReturn(new DomainConfiguration([
+            'username' => encrypt('user'),
+            'password' => encrypt('secret'),
+        ]));
+        $connection->shouldReceive('isConnected')->once()->andReturnFalse();
+        $connection->shouldReceive('connect')->once()->andThrow(new \Exception('Cannot connect'));
 
-            return $connector;
-        });
+        Container::getInstance()->add($connection, $domain->getLdapConnectionName());
 
-        $scan = $domain->scans()->create(['synchronized' => 0]);
+        try {
+            ScanDomain::dispatch($domain);
 
-        $job = new ScanDomain($domain, $scan);
+            $this->fail('Exception not thrown.');
+        } catch (\Exception $ex) {
+            $scan = $domain->scans()->latest()->firstOrFail();
 
-        Bus::shouldReceive('dispatch')->never();
-
-        $job->handle();
-
-        $this->assertEquals('Cannot connect', $scan->message);
-        $this->assertEquals(0, $scan->synchronized);
-        $this->assertFalse($scan->success);
-        $this->assertNotEmpty($scan->completed_at);
+            $this->assertEquals('Cannot connect', $scan->message);
+            $this->assertEquals(0, $scan->synchronized);
+            $this->assertFalse($scan->success);
+            $this->assertNotEmpty($scan->completed_at);
+        }
     }
 }

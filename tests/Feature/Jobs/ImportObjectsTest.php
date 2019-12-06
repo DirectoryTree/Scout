@@ -26,11 +26,8 @@ class ImportObjectsTest extends FeatureTestCase
         $builder->shouldReceive('select')->once()->withArgs(['*'])->andReturnSelf();
         $builder->shouldReceive('paginate')->once()->withArgs([1000])->andReturn($models);
 
-        $ldap = m::mock(Ldap::class);
-        $ldap->shouldReceive('isBound')->andReturnTrue();
-
         $connection = m::mock(Connection::class);
-        $connection->shouldReceive('getLdapConnection')->once()->andReturn($ldap);
+        $connection->shouldReceive('isConnected')->once()->andReturnTrue();
         $connection->shouldReceive('query')->once()->andReturnSelf();
         $connection->shouldReceive('model')->once()->andReturn($builder);
         $connectionName = 'default';

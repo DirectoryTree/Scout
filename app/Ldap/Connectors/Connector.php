@@ -21,7 +21,7 @@ abstract class Connector
         try {
             // We'll only attempt connecting if we're not already bound to
             // the LDAP server so we prevent multiple rebind attempts.
-            if (! $connection->getLdapConnection()->isBound()) {
+            if (! $connection->isConnected()) {
                 $this->attempt($connection);
             }
 

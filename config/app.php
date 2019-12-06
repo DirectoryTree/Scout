@@ -171,6 +171,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\LdapConnectionProvider::class,
         App\Providers\InstallationServiceProvider::class,
+        App\Providers\SettingServiceProvider::class,
     ],
 
     /*

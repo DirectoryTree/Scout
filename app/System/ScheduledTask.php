@@ -5,11 +5,12 @@ namespace App\System;
 use Illuminate\Support\Str;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Facades\File;
-use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-abstract class ScheduledTask extends Fluent
+class ScheduledTask extends Fluent
 {
+    use GeneratesXml;
+
     /**
      * The format to use for the scheduled task dates.
      *
@@ -26,7 +27,7 @@ abstract class ScheduledTask extends Fluent
     {
         $path = $this->path();
 
-        File::put($path, $this->generate());
+        File::put($path, $this->toXml());
 
         return $path;
     }
@@ -62,20 +63,60 @@ abstract class ScheduledTask extends Fluent
     }
 
     /**
-     * Generate the XML document.
+     * Get the triggers for the scheduled task.
      *
-     * @return string
+     * @return TaskTrigger[]
      */
-    public function generate()
+    public function triggers()
     {
-        return ArrayToXml::convert(
-            $this->template(),
-            $this->rootAttributes(),
-            $replaceSpacesByUnderScoresInKeyNames = true,
-            $xmlEncoding = 'UTF-16',
-            $xmlVersion = '1.0',
-            ['formatOutput' => true]
-        );
+        return [
+            // We will enable a registration trigger to trigger the task
+            // as soon as it's imported. Then, the boot trigger will
+            // take over if the server is ever restarted.
+            TaskTrigger::registration([
+                'Repetition' => [
+                    'Interval' => $this->interval,
+                    'StopAtDurationEnd' => 'false',
+                ],
+                'StartBoundary' => $this->getStartDate(),
+            ]),
+            TaskTrigger::boot([
+                'Repetition' => [
+                    'Interval' => $this->interval,
+                    'StopAtDurationEnd' => 'false',
+                ],
+                'StartBoundary' => $this->getStartDate(),
+            ]),
+            // We will create a daily calendar trigger to regularly try starting
+            // the task in case it fails. This trigger should begin once the
+            // task is imported for the first time.
+            TaskTrigger::calendar([
+                'Repetition' => [
+                    'Interval' => $this->interval,
+                    'StopAtDurationEnd' => 'false',
+                ],
+                'StartBoundary' => $this->getStartDate(),
+                'ScheduleByDay' => [
+                    'DaysInterval' => 1
+                ],
+            ]),
+        ];
+    }
+
+    /**
+     * Get the scheduled task triggers mapped via key.
+     *
+     * @return array
+     */
+    protected function getMappedTriggers()
+    {
+        $triggers = [];
+
+        foreach ($this->triggers() as $trigger) {
+            $triggers[$trigger->getRootElementName()] = $trigger->toArray();
+        }
+
+        return $triggers;
     }
 
     /**
@@ -85,7 +126,7 @@ abstract class ScheduledTask extends Fluent
      */
     protected function getStartDate()
     {
-        return $this->get('start', now()->format($this->dateFormat));
+        return $this->get('start', now()->subMinute()->format($this->dateFormat));
     }
 
     /**
@@ -102,27 +143,7 @@ abstract class ScheduledTask extends Fluent
                 'Description' => $this->description,
                 'URI' => Str::start($this->name, '\\'),
             ],
-            'Triggers' => [
-                // We will enable a registration trigger to trigger the task as soon
-                // as it's imported. Then, the calendar trigger will take over.
-                'RegistrationTrigger' => [
-                    'Enabled' => 'true',
-                ],
-                // We will create a daily calendar trigger to regularly try starting
-                // the task in case it fails. This trigger should begin once the
-                // task is imported for the first time.
-                'CalendarTrigger' => [
-                    'Repetition' => [
-                        'Interval' => $this->interval,
-                        'StopAtDurationEnd' => 'false',
-                    ],
-                    'StartBoundary' => $this->getStartDate(),
-                    'Enabled' => 'true',
-                    'ScheduleByDay' => [
-                        'DaysInterval' => 1
-                    ],
-                ],
-            ],
+            'Triggers' => $this->getMappedTriggers(),
             'Principals' => [
                 'Principal' => [
                     '_attributes' => [

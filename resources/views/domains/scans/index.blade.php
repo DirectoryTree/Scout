@@ -13,10 +13,8 @@
         </div>
 
         <div class="card-body p-0">
-            <div class="list-group list-group-flush">
-                <div class="table-responsive">
-                    @include('domains.scans.partials.table')
-                </div>
+            <div class="table-responsive">
+                @include('domains.scans.partials.table')
             </div>
         </div>
     </div>

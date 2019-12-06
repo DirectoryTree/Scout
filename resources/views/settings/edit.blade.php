@@ -124,14 +124,14 @@
             </p>
 
             <p>
-                <strong>Note:</strong> If you ever change the directory of the Scout application, you will need to regenerate and re-run these commands.
+                <strong>Note:</strong> If you ever change the directory of the Scout application, you will need to regenerate each file and re-run their commands.
             </p>
 
             <hr/>
 
-            <form method="post" action="{{ route('settings.generate.scheduler') }}" data-controller="form" class="mb-2">
+            <form method="post" action="{{ route('settings.generate.scheduler') }}" class="mb-2" data-controller="form" data-turbolinks-scroll>
                 @csrf
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-sm {{ $tasks['scheduler']->exists() ? 'btn-success' : 'btn-primary' }}">
                     <i class="fa fa-redo"></i>
                     {{ $tasks['scheduler']->exists() ? 'Regenerate' : 'Generate' }}
                     Scheduler Task XML
@@ -145,9 +145,9 @@
 
             <hr/>
 
-            <form method="post" action="{{ route('settings.generate.queue') }}" data-controller="form" class="mb-2">
+            <form method="post" action="{{ route('settings.generate.queue') }}" class="mb-2" data-controller="form" data-turbolinks-scroll>
                 @csrf
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-sm {{ $tasks['queue']->exists() ? 'btn-success' : 'btn-primary' }}">
                     <i class="fa fa-redo"></i>
                     {{ $tasks['queue']->exists() ? 'Regenerate' : 'Generate' }}
                     Queue Runner Task XML

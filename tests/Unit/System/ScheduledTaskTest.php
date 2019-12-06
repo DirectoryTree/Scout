@@ -20,7 +20,7 @@ class ScheduledTaskTest extends TestCase
     {
         $task = new ScheduledTask();
         $task->name = 'Test';
-        $this->assertTrue(Str::contains($task->path(), 'storage\app\Test.xml'));
+        $this->assertTrue(Str::contains($task->path(), storage_path('app'.DIRECTORY_SEPARATOR.'Test.xml')));
     }
 
     public function test_command()

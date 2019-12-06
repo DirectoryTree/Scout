@@ -27,7 +27,7 @@ class ScheduledTaskTest extends TestCase
     {
         $task = new ScheduledTask();
         $task->name = 'Test';
-        $this->assertEquals('schtasks /Create /TN "Test" /XML "C:\laragon\www\Scout\storage\app\Test.xml" /F', $task->command());
+        $this->assertEquals(sprintf('schtasks /Create /TN "Test" /XML "%s" /F', $task->path()), $task->command());
     }
 
     public function test_create()

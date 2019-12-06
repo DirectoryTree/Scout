@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use Exception;
 use App\Console\Commands\SyncDomains;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,15 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        try {
-            $minutes = setting('app.scan.frequency', '15');
-
-            $cron = sprintf('*/%s * * * *', $minutes);
-
-            $schedule->command('scout:sync')->cron($cron);
-        } catch (Exception $ex) {
-            // Migrations have not yet been ran.
-        }
+        $schedule->command('scout:sync');
     }
 
     /**

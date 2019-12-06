@@ -30,7 +30,7 @@ class SyncDomains extends Command
     public function handle()
     {
         $this->info("---- Scout ----");
-        $this->info("Starting to queue directory synchronization...");
+        $this->info("Starting to queue domain synchronization...");
 
         $domains = LdapDomain::toSynchronize();
 

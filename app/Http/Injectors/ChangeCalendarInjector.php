@@ -18,7 +18,9 @@ class ChangeCalendarInjector
      */
     public function getStartDate()
     {
-        $date = request('start', now()->subMonths(2));
+        // We must use the start of the month to ensure all changes
+        // for the entire calendar range are queried for.
+        $date = request('start', now()->subMonths(2)->startOfMonth());
 
         return $date instanceof Carbon ? $date : new Carbon($date);
     }

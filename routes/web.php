@@ -104,6 +104,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('domains/{domain}/search', 'DomainSearchController@index')->name('domains.search.index');
 
+        Route::get('domains/{domain}/scans/table', 'DomainScanTableController@show')->name('domains.scans.table.show');
+        Route::get('domains/{domain}/scans/{scan}/row', 'DomainScanRowController@show')->name('domains.scans.row.show');
+
         Route::get('domains/{domain}/objects/{object}/tree', 'DomainObjectsTreeController@show')->name('domains.objects.tree.show');
     });
 

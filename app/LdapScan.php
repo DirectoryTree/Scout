@@ -93,6 +93,16 @@ class LdapScan extends Model
     }
 
     /**
+     * Determine whether the scan is running.
+     *
+     * @return bool
+     */
+    public function getRunningAttribute()
+    {
+        return !is_null($this->started_at) && is_null($this->completed_at);
+    }
+
+    /**
      * Get the duration of the scan.
      *
      * @return string|null

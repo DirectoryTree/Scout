@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LdapDomain;
+use App\Queries\LdapDomainScanQuery;
 
 class DomainScansController extends Controller
 {
@@ -15,7 +16,7 @@ class DomainScansController extends Controller
      */
     public function index(LdapDomain $domain)
     {
-        $scans = $domain->scans()->latest()->paginate(10);
+        $scans = (new LdapDomainScanQuery($domain))->paginate();
 
         return view('domains.scans.index', compact('domain', 'scans'));
     }

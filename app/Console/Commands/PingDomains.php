@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\LdapDomain;
-use App\Ldap\Connectors\DomainConnector;
+use App\Ldap\Connectors\DomainHostConnector;
 use Illuminate\Console\Command;
 
 class PingDomains extends Command
@@ -33,13 +33,17 @@ class PingDomains extends Command
         $this->info("Starting to ping configured directories...");
 
         LdapDomain::all()->each(function (LdapDomain $domain) {
-            rescue(function () use ($domain) {
-                DomainConnector::on($domain)->connect();
+            foreach(array_unique($domain->hosts) as $host) {
+                $connector = new DomainHostConnector($domain, $host);
 
-                $this->info(sprintf("Successfully connected to '%s'", $domain->name));
-            }, function () use ($domain) {
-                $this->info(sprintf("Unable to connect to '%s'", $domain->name));
-            });
+                rescue(function () use ($domain, $host, $connector) {
+                    $connector->connect();
+
+                    $this->info(sprintf("Successfully connected to '%s' on domain '%s'", $host, $domain->name));
+                }, function () use ($domain, $host, $connector)  {
+                    $this->info(sprintf("Unable to connect to '%s' on domain '%s'", $host, $domain->name));
+                });
+            }
         });
 
         $this->info('Completed pinging configured domains.');

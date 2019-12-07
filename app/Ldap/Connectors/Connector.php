@@ -8,6 +8,14 @@ use LdapRecord\Connection;
 abstract class Connector
 {
     /**
+     * Whether re-binding should performed even
+     * when a connection is already present.
+     *
+     * @var bool
+     */
+    protected $force = false;
+
+    /**
      * Connect to the LDAP server.
      *
      * @return void
@@ -21,7 +29,7 @@ abstract class Connector
         try {
             // We'll only attempt connecting if we're not already bound to
             // the LDAP server so we prevent multiple rebind attempts.
-            if (! $connection->isConnected()) {
+            if (! $connection->isConnected() && ! $this->force) {
                 $this->attempt($connection);
             }
 

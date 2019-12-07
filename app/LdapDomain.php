@@ -141,6 +141,16 @@ class LdapDomain extends Model
     }
 
     /**
+     * The hasMany LDAP pings relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pings()
+    {
+        return $this->hasMany(LdapDomainPing::class, 'domain_id');
+    }
+
+    /**
      * The hasMany LDAP scans relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

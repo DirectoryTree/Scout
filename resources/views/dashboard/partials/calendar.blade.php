@@ -20,8 +20,8 @@
     <div class="row">
         <div class="col">
             <div class="card shadow-sm">
-                <div class="card-header bg-light d-flex justify-content-between border-bottom">
-                    <a href="{{ current_route_filter(['start' =>  $previous]) }}" class="h4 mb-0" data-turbolinks-scroll>
+                <div class="card-header bg-light d-flex justify-content-between align-items-center border-bottom">
+                    <a href="{{ current_route_filter(['start' =>  $previous]) }}" class="h4 btn mb-0" data-turbolinks-scroll>
                         <i class="fa fa-chevron-circle-left"></i>
                     </a>
 
@@ -33,7 +33,11 @@
                         <a href="{{ route('dashboard') }}" data-turbolinks-scroll>Reset</a>
                     @endif
 
-                    <a href="{{ current_route_filter(['start' => $next]) }}" class="h4 mb-0" data-turbolinks-scroll>
+                    <a
+                        href="{{ current_route_filter(['start' => $next]) }}"
+                        class="h4 btn mb-0 @if($end->isFuture()) disabled @endif"
+                        data-turbolinks-scroll
+                    >
                         <i class="fa fa-chevron-circle-right"></i>
                     </a>
                 </div>

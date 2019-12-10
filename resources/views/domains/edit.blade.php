@@ -5,7 +5,7 @@
 @section('breadcrumbs', Breadcrumbs::render('domains.edit', $domain))
 
 @section('page')
-    <form method="post" action="{{ route('domains.update', $domain) }}" data-controller="form">
+    <form method="post" action="{{ route('domains.update', $domain) }}" data-controller="form" data-turbolinks-scroll>
         @csrf
         @method('patch')
 

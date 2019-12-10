@@ -100,9 +100,7 @@ class DomainsController extends Controller
     {
         $request->persist($domain);
 
-        return Scout::response()
-            ->notifyWithMessage('Updated domain.')
-            ->redirect(route('domains.show', $domain));
+        return Scout::response()->notifyWithMessage('Updated domain.');
     }
 
     /**

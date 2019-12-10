@@ -34,6 +34,9 @@ document.addEventListener('turbolinks:load', () => {
             Turbolinks.scroll['top'] = document.scrollingElement.scrollTop;
         });
     });
+
+    // Enable tooltips everywhere.
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 document.addEventListener('turbolinks:render', () => {

@@ -40,7 +40,13 @@
                 @if($events->has($dateFormatted))
                     <td class="text-center text-secondary rounded-circle border border-2 border-success" rel="{{ $dateFormatted }}">
                         <div class="small font-weight-bold d-flex justify-content-center align-items-center" style="height:20px;width:20px">
-                            <a href="{{ current_route_filter(['day' => $date->toDateString()]) }}" data-turbolinks-scroll>
+                            <a
+                                href="{{ current_route_filter(['day' => $date->toDateString()]) }}"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="{{ $events->get($dateFormatted) }} changes"
+                                data-turbolinks-scroll
+                            >
                                 {{ $date->day }}
                             </a>
                         </div>

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Scout;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Setting\EmailRequest;
 
 class EmailController extends Controller
 {
@@ -21,27 +21,26 @@ class EmailController extends Controller
     /**
      * Updates the application email settings.
      *
-     * @param Request $request
+     * @param EmailRequest $request
      *
      * @return \App\Http\ScoutResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request)
+    public function update(EmailRequest $request)
     {
-        $this->validate($request, [
-            'enabled' => 'boolean',
-            'port' => 'required_with:enabled',
-            'encryption' => '',
-            'username' => 'required_with:enabled',
-            'password' => 'confirmed',
-            'from_name' => 'required_with:enabled',
-            'from_address' => 'required_with:enabled',
-        ]);
-
-        setting()->set([
-            'app.email.enabled' => $request->has('enabled'),
-        ]);
+        if ($request->has('enabled')) {
+            setting()->set([
+                'app.email.enabled' => true,
+                'app.email.driver' => $request->driver,
+                'app.email.port' => $request->port,
+                'app.email.encryption' => $request->encryption,
+                'app.email.username' => $request->username,
+                'app.email.password' => $request->password,
+                'app.email.from.name' => $request->from_name,
+                'app.email.from.address' => $request->from_address,
+            ]);
+        } else {
+            setting()->set('app.email.enabled', false);
+        }
 
         return Scout::response()->notifyWithMessage('Updated settings.');
     }

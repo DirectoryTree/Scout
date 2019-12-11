@@ -28,30 +28,67 @@
                             ->data('action', 'form->change#clearError')
                     }}
                 </div>
+            </div>
 
-                <div class="form-group">
-                    {{ form()->label()->for('frequency')->text('Scan Frequency') }}
+            <div class="card-header border-bottom">
+                <h6 class="mb-0 text-muted font-weight-bold">{{ __('Routines') }}</h6>
+            </div>
 
-                    <div class="input-group">
-                        {{
-                            form()->number()
-                                ->name('frequency')
-                                ->required()
-                                ->value(setting('app.scan.frequency', '15'))
-                                ->data('target', 'form.input')
-                                ->data('action', 'change->form#clearError')
-                        }}
+            <div class="card-body">
+                <div class="form-group row">
+                    {{
+                        form()->label()
+                            ->for('scan_frequency')
+                            ->text('Domain Scan Frequency')
+                            ->class(['col-md-6 col-lg-4 col-xl-3', 'col-form-label text-left text-md-right'])
+                    }}
 
-                        <div class="input-group-append">
-                            <span class="input-group-text">minutes</span>
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="input-group">
+                            {{
+                                form()->number()
+                                    ->name('scan_frequency')
+                                    ->required()
+                                    ->value(setting('app.scan.frequency', '15'))
+                                    ->data('target', 'form.input')
+                                    ->data('action', 'change->form#clearError')
+                            }}
+
+                            <div class="input-group-append">
+                                <span class="input-group-text">minutes</span>
+                            </div>
                         </div>
+
+                        {{ form()->error()->data('input', 'scan_frequency')->data('target', 'form.error') }}
                     </div>
+                </div>
 
-                    {{ form()->error()->data('input', 'frequency')->data('target', 'form.error') }}
+                <div class="form-group row">
+                    {{
+                        form()->label()
+                            ->for('ping_frequency')
+                            ->text('Domain Ping Frequency')
+                            ->class(['col-md-6 col-lg-4 col-xl-3', 'col-form-label text-left text-md-right'])
+                    }}
 
-                    <small class="text-muted">
-                        This setting controls how frequently domains are scanned in minutes. (Allowed: 5-59)
-                    </small>
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="input-group">
+                            {{
+                                form()->number()
+                                    ->name('ping_frequency')
+                                    ->required()
+                                    ->value(setting('app.ping.frequency', '5'))
+                                    ->data('target', 'form.input')
+                                    ->data('action', 'change->form#clearError')
+                            }}
+
+                            <div class="input-group-append">
+                                <span class="input-group-text">minutes</span>
+                            </div>
+                        </div>
+
+                        {{ form()->error()->data('input', 'ping_frequency')->data('target', 'form.error') }}
+                    </div>
                 </div>
             </div>
 

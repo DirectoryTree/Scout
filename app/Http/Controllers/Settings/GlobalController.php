@@ -45,7 +45,8 @@ class GlobalController extends Controller
         $this->validate($request, [
             'pinning' => 'boolean',
             'calendar' => 'boolean',
-            'frequency' => 'required|integer|min:5|max:59',
+            'scan_frequency' => 'required|integer|min:5|max:59',
+            'ping_frequency' => 'required|integer|min:5|max:59',
             'timezone' => [
                 'required',
                 Rule::in((new TimezoneInjector)->get())
@@ -56,7 +57,8 @@ class GlobalController extends Controller
             'app.pinning' => $request->has('pinning'),
             'app.calendar' => $request->has('calendar'),
             'app.timezone' => $request->get('timezone', 'UTC'),
-            'app.scan.frequency' => $request->get('frequency', '15'),
+            'app.ping.frequency' => $request->get('ping_frequency', '5'),
+            'app.scan.frequency' => $request->get('scan_frequency', '15'),
         ]);
 
         return Scout::response()->notifyWithMessage('Updated settings.');

@@ -16,20 +16,37 @@ class EmailRequest extends FormRequest
      */
     public function rules()
     {
-        $availableDrivers = array_keys((new EmailDriverInjector())->get());
+        if (!$this->has('enabled')) {
+            return ['enabled' => 'boolean'];
+        }
+
+        $availableDrivers = array_keys((new EmailDriverInjector)->get());
 
         return [
             'enabled' => 'boolean',
             'driver' => [
                 Rule::in($availableDrivers)
             ],
-            'hosts' => 'required',
+            'host' => 'required',
             'port' => 'required|integer',
             'username' => 'required',
-            'password' => [new RequiredIf('')],
+            'password' => [
+                new RequiredIf($this->passwordIsAlreadySet()),
+                'confirmed',
+            ],
             'encryption' => 'nullable|in:tls,ssl',
-            'from_name' => '',
-            'from_address' => '',
+            'from_name' => 'required',
+            'from_address' => 'required',
         ];
+    }
+
+    /**
+     * Determine if the the password is already set.
+     *
+     * @return bool
+     */
+    protected function passwordIsAlreadySet()
+    {
+        return setting()->has('app.email.password');
     }
 }

@@ -189,31 +189,105 @@
                         </div>
 
                         <div data-target="email.driver" data-type="mailgun">
-                            Mailgun
-                            <!-- MAILGUN_DOMAIN, MAILGUN_SECRET, MAILGUN_ENDPOINT -->
+                            <hr/>
+
+                            <div class="form-row">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        {{ form()->label()->for('mailgun_domain')->text('Mailgun Domain') }}
+
+                                        {{
+                                            form()->email()
+                                                ->name('mailgun_domain')
+                                                ->value(setting('app.email.mailgun.domain'))
+                                                ->placeholder('Your domain name')
+                                                ->data('target', 'form.input')
+                                                ->data('action', 'keyup->form#clearError')
+                                        }}
+
+                                        {{ form()->error()->data('input', 'mailgun_domain')->data('target', 'form.error') }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        {{ form()->label()->for('mailgun_secret')->text('Mailgun Secret') }}
+
+                                        {{
+                                            form()->email()
+                                                ->name('mailgun_secret')
+                                                ->value(setting('app.email.mailgun.secret'))
+                                                ->placeholder('Your mailgun secret')
+                                                ->data('target', 'form.input')
+                                                ->data('action', 'keyup->form#clearError')
+                                        }}
+
+                                        {{ form()->error()->data('input', 'mailgun_secret')->data('target', 'form.error') }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        {{ form()->label()->for('mailgun_endpoint')->text('Mailgun Endpoint') }}
+
+                                        {{
+                                            form()->email()
+                                                ->name('mailgun_endpoint')
+                                                ->value(setting('app.email.mailgun.endpoint'))
+                                                ->placeholder('Your mailgun endpoint')
+                                                ->data('target', 'form.input')
+                                                ->data('action', 'keyup->form#clearError')
+                                        }}
+
+                                        {{ form()->error()->data('input', 'mailgun_endpoint')->data('target', 'form.error') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div data-target="email.driver" data-type="ses">
-                            SES
-                            <!-- SES_KEY, SES_SECRET -->
+                            <hr/>
+
+                            <div class="form-row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        {{ form()->label()->for('ses_key')->text('SES Key') }}
+
+                                        {{
+                                            form()->email()
+                                                ->name('ses_key')
+                                                ->value(setting('app.email.ses.key'))
+                                                ->placeholder('Your SES key')
+                                                ->data('target', 'form.input')
+                                                ->data('action', 'keyup->form#clearError')
+                                        }}
+
+                                        {{ form()->error()->data('input', 'ses_key')->data('target', 'form.error') }}
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        {{ form()->label()->for('ses_secret')->text('SES Secret') }}
+
+                                        {{
+                                            form()->email()
+                                                ->name('ses_secret')
+                                                ->value(setting('app.email.ses.secret'))
+                                                ->placeholder('Your SES secret')
+                                                ->data('target', 'form.input')
+                                                ->data('action', 'keyup->form#clearError')
+                                        }}
+
+                                        {{ form()->error()->data('input', 'ses_secret')->data('target', 'form.error') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            @if(setting('app.email.enabled'))
-                <div class="card-header border-bottom">
-                    <h6 class="mb-0 text-muted font-weight-bold">{{ __('Send Test Email') }}</h6>
-                </div>
-
-                <div class="card-body">
-
-
-                    <button type="button" onclick="event.preventDefault();document.getElementById('test-email-form').submit()" class="btn btn-outline-primary">
-                        Send
-                    </button>
-                </div>
-            @endif
             <div class="card-footer bg-light text-center">
                 <button type="submit" class="btn btn-primary">
                     Save
@@ -222,7 +296,37 @@
         </div>
     </form>
 
-    <form id="test-email-form" method="post" action="#" style="display: none;">>
-        @csrf
-    </form>
+    @if(setting('app.email.enabled'))
+        <form method="post" action="{{ route('settings.email.test') }}" class="mt-4" data-controller="form">
+            @csrf
+
+            <div class="card shadow-sm">
+                <div class="card-header border-bottom">
+                    <h6 class="mb-0 text-muted font-weight-bold">{{ __('Send Test Email') }}</h6>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        {{ form()->label()->for('email')->text('Email Address') }}
+
+                        {{
+                            form()->email()
+                                ->name('email')
+                                ->placeholder('Enter an email address')
+                                ->data('target', 'form.input')
+                                ->data('action', 'keyup->form#clearError')
+                        }}
+
+                        {{ form()->error()->data('input', 'email')->data('target', 'form.error') }}
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light text-center">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="far fa-paper-plane"></i> Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    @endif
 @endsection

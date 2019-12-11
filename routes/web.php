@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/email', 'EmailController@edit')->name('email.edit');
         Route::patch('/email', 'EmailController@update')->name('email.update');
+        Route::post('/email/test', 'EmailController@test')->name('email.test');
 
         Route::post('/generate/scheduler-task', 'GenerateTaskController@scheduler')->name('generate.scheduler');
         Route::post('/generate/queue-task', 'GenerateTaskController@queue')->name('generate.queue');

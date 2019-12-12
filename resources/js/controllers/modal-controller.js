@@ -4,40 +4,40 @@ export default class extends Controller {
     static targets = ['title', 'body'];
 
     /**
-     * Set the title of the modal.
+     * Load the URL into the modals content.
      *
-     * @param {String} content
+     * @param {String} url
+     *
+     * @returns {Promise<string>}
      */
-    setTitle(content) {
-        this.titleTarget.innerHTML = content;
+    load(url) {
+        return fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                this.setContent(html);
+            });
     }
 
     /**
-     * Set the body of the modal.
+     * Set the content of the modal.
      *
-     * @param {String} content
+     * @param {String} html
      */
-    setBody(content) {
-        this.bodyTarget.innerHTML = content;
+    setContent(html) {
+        this.element.innerHTML = html;
     }
 
     /**
      * Open the modal.
      */
     open() {
-        document.body.classList.add("modal-open");
-        this.element.setAttribute("style", "display: block;");
-        this.element.classList.add("show");
-        document.body.innerHTML += '<div id="modal-backdrop" class="modal-backdrop fade show"></div>';
+        $(this.element).modal('show');
     }
 
     /**
      * Close the modal.
      */
     close() {
-        document.body.classList.remove("modal-open");
-        this.element.removeAttribute("style");
-        this.element.classList.remove("show");
-        document.getElementsByClassName("modal-backdrop")[0].remove();
+        $(this.element).modal('hide');
     }
 }

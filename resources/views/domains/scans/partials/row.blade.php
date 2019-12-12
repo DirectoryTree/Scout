@@ -35,11 +35,15 @@
         @endif
     </td>
     <td class="text-center align-middle">{{ $scan->synchronized }}</td>
-    <td class="align-middle">
+    <td class="align-middle p-0">
         @if($scan->message)
-            <pre class="mb-0 text-wrap bg-light rounded p-2">
-                <code>{{ $scan->message }}</code>
-            </pre>
+            <button
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                data-action="click->app#openModal"
+                data-url="{{ route('partials.domains.scans.message.show', [$domain, $scan]) }}">
+                View
+            </button>
         @else
             <em class="text-muted">None</em>
         @endif

@@ -22,6 +22,10 @@ Route::group(['middleware' => 'can.install'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    Route::get('/keep-alive', function () {
+        return ['success' => true];
+    });
+
     Route::group(['prefix' => 'settings', 'namespace' => 'Settings', 'as' => 'settings.'], function () {
         Route::get('/', 'GlobalController@edit')->name('edit');
         Route::patch('/', 'GlobalController@update')->name('update');
@@ -107,6 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('domains/{domain}/scans/table', 'DomainScanTableController@show')->name('domains.scans.table.show');
         Route::get('domains/{domain}/scans/{scan}/row', 'DomainScanRowController@show')->name('domains.scans.row.show');
+        Route::get('domains/{domain}/scans/{scan}/message', 'DomainScanMessageModalController@show')->name('domains.scans.message.show');
 
         Route::get('domains/{domain}/objects/{object}/tree', 'DomainObjectsTreeController@show')->name('domains.objects.tree.show');
     });

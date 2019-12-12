@@ -12,7 +12,9 @@
 @section('body')
     @include('search.partials.modal')
 
-    <div id="app">
+    <div id="app" data-controller="app" data-app-ping-url="{{ url('keep-alive') }}" data-app-session-lifetime-minutes="{{ config('session.lifetime') }}">
+        <div class="modal" data-controller="modal" data-target="app.modal"></div>
+
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
             <div class="container">
                 <a class="navbar-brand font-weight-bold" href="{{ url('/') }}">
@@ -112,12 +114,10 @@
             </div>
         </nav>
 
-        <main class="my-4">
-            <div class="container">
-                @yield('breadcrumbs')
+        <main class="my-4 container">
+            @yield('breadcrumbs')
 
-                @yield('content')
-            </div>
+            @yield('content')
         </main>
     </div>
 @endsection

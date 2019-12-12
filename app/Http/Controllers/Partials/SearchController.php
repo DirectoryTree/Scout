@@ -40,6 +40,11 @@ class SearchController extends Controller
             }
         }
 
+        // Sort the results by the total result count.
+        $results = $results->sortByDesc(function ($results) {
+            return $results['objects']->count();
+        });
+
         return Scout::response()->render(
             view('search.partials.results', compact('results'))
         )->into('global-search-results');

@@ -1,5 +1,5 @@
 @forelse($results as $result)
-    <div class="card border">
+    <div class="card border @if($results->count() > 1) mb-4 @endif">
         <div class="card-header">
             <h6 class="mb-0 text-muted font-weight-bold">{{ $result['domain']->name }}</h6>
         </div>

@@ -31,6 +31,10 @@
                     <div data-controller="email" data-target="expandable.container">
                         <hr/>
 
+                        <div class="alert alert-info shadow-sm border-2">
+                            <i class="fa fa-exclamation-circle"></i> Enabling email notifications will send all generated application notifications to the notification user.
+                        </div>
+
                         <div class="form-row">
                             <div class="col-12 col-md-3">
                                 <div class="form-group">

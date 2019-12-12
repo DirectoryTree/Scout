@@ -226,7 +226,7 @@
 
 <hr/>
 
-<div class="alert alert-primary shadow-sm">
+<div class="alert alert-info shadow-sm border-2">
     <i class="fa fa-exclamation-circle"></i>
 
     {{ __('The username and password fields are encrypted using OpenSSL and the AES-256-CBC cipher. ') }}

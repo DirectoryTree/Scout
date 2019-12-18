@@ -32,7 +32,9 @@ abstract class Timestamp extends Transformer
                 // error so it can be investigated by the user.
                 $converted = $timestamp->toDateTime($value);
 
-                return $converted ? [$converted] : $converted;
+                $timezone = config('app.timezone', 'UTC');
+
+                return $converted ? [$converted->setTimezone($timezone)] : $converted;
             } catch (LdapRecordException $ex) {
                 report($ex);
             }

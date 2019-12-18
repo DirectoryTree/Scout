@@ -1,5 +1,7 @@
 @extends('domains.objects.layout')
 
+@section('title', __(':attribute Changes', ['attribute' => ucfirst($attribute)]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.changes.show', $domain, $object, $attribute))
 
 @section('page')
@@ -28,8 +30,8 @@
                     @forelse($changes as $change)
                         <tr>
                             <td class="pl-4 text-nowrap align-middle">
-                                <span title="{{ $change->created_at }}">
-                                    {{ $change->created_at->diffForHumans() }}
+                                <span title="{{ $change->ldap_updated_at }}">
+                                    {{ $change->ldap_updated_at->diffForHumans() }}
                                 </span>
                             </td>
                             <td class="table-success align-middle">

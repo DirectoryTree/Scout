@@ -1,5 +1,7 @@
 @extends('domains.objects.layout')
 
+@section('title', __(':name Changes', ['name' => $object->name]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.changes.index', $domain, $object))
 
 @section('page')

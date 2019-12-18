@@ -4,13 +4,15 @@ namespace App\System;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Fluent;
-use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 class ScheduledTask extends Fluent
 {
     use GeneratesXml;
 
+    /**
+     * The SYSTEM user SID in Windows.
+     */
     const USER_SYSTEM = 'S-1-5-18';
 
     /**
@@ -19,50 +21,6 @@ class ScheduledTask extends Fluent
      * @var string
      */
     protected $dateFormat = 'Y-m-d\TH:i:s';
-
-    /**
-     * Create the scheduled task XML file.
-     *
-     * @return string
-     */
-    public function create()
-    {
-        $path = $this->path();
-
-        File::put($path, $this->toXml());
-
-        return $path;
-    }
-
-    /**
-     * Determine if the scheduled task file exists.
-     *
-     * @return bool
-     */
-    public function exists()
-    {
-        return File::exists($this->path());
-    }
-
-    /**
-     * Get the full file path of the XML document.
-     *
-     * @return string
-     */
-    public function path()
-    {
-        return storage_path(sprintf('app'.DIRECTORY_SEPARATOR.'%s.xml', $this->name));
-    }
-
-    /**
-     * Generate a command for importing the scheduled task.
-     *
-     * @return string
-     */
-    public function command()
-    {
-        return sprintf('schtasks /Create /TN "%s" /XML "%s" /F', $this->name, $this->path());
-    }
 
     /**
      * Get the triggers for the scheduled task.

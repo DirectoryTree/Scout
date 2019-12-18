@@ -2,7 +2,7 @@
 
 namespace App\System;
 
-class QueueTask extends ScheduledTask
+class QueueTask extends StoredScheduledTask
 {
     /**
      * The task attributes.

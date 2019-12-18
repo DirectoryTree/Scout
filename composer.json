@@ -12,6 +12,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "ext-ldap": "*",
+        "consoletvs/charts": "6.*",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "directorytree/ldaprecord": "dev-master",
         "fideloper/proxy": "^4.0",
@@ -19,7 +20,6 @@
         "laravel/framework": "^6.0",
         "laravel/ui": "^1.0",
         "spatie/array-to-xml": "^2.11",
-        "spatie/laravel-activitylog": "^3.8",
         "spatie/laravel-html": "^2.24",
         "spatie/valuestore": "^1.2"
     },

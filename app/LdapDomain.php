@@ -109,14 +109,19 @@ class LdapDomain extends Model
             // Get the last scan that was performed on the domain.
             $lastScan = $domain->scans()->latest()->first();
 
-            // No scan has taken place yet. Include this domain to be synchronized.
+            // If no scan has taken place yet, we will
+            // include this domain to be synchronized.
             if (! $lastScan) {
                 return true;
             }
 
-            $startedAt = $lastScan->started_at ?? now()->subMinutes($frequencyInMinutes);
+            // If the last scan has not yet been started, we
+            // will avoid stacking scans until it has begun.
+            if (! $lastScan->started_at) {
+                return false;
+            }
 
-            return now()->diffInMinutes($startedAt) >= $frequencyInMinutes;
+            return now()->diffInMinutes($lastScan->started_at) >= $frequencyInMinutes;
         });
     }
 

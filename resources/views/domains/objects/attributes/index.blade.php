@@ -1,5 +1,7 @@
 @extends('domains.objects.layout')
 
+@section('title', __(':object Attributes', ['object' => $object->name]))
+
 @section('breadcrumbs', Breadcrumbs::render('domains.objects.attributes.index', $domain, $object))
 
 @section('page')

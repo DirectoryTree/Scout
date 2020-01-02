@@ -19,15 +19,14 @@ class LdapConnectionProvider extends ServiceProvider
     {
         Container::setLogger(logger());
 
-        $container = Container::getInstance();
-
         try {
             // Here we will create each domain connection so it can be easily
             // retrieved throughout the lifecycle of the application.
-            LdapDomain::all()->each(function (LdapDomain $domain) use ($container) {
-                $connection = new Connection($domain->getLdapConnectionAttributes());
-
-                $container->add($connection, $domain->getLdapConnectionName());
+            LdapDomain::all()->each(function (LdapDomain $domain) {
+                Container::addConnection(
+                    new Connection($domain->getLdapConnectionAttributes()),
+                    $domain->getLdapConnectionName()
+                );
             });
         } catch (Exception $e) {
             // Migrations haven't been ran yet.

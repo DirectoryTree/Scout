@@ -88,6 +88,6 @@ class DomainConnector extends Connector
      */
     public function getConnection()
     {
-        return Container::getInstance()->get($this->domain->getLdapConnectionName());
+        return Container::getConnection($this->domain->getLdapConnectionName());
     }
 }

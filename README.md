@@ -12,6 +12,8 @@
 
 ## About Scout
 
+🚨 Scout is still in heavy development - it is not ready for production. 🚨
+
 Scout is a web application that periodically scans your LDAP directory, detecting and logging all
 changes that occur to objects and their attributes. Scout comes with great features that will
 help you and your IT team:

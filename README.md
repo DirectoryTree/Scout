@@ -5,8 +5,6 @@
 <p align="center">
     <a href="https://travis-ci.com/DirectoryTree/Scout"><img src="https://img.shields.io/travis/DirectoryTree/Scout.svg?style=flat-square"/></a>
     <a href="https://scrutinizer-ci.com/g/DirectoryTree/Scout/?branch=master"><img src="https://img.shields.io/scrutinizer/g/DirectoryTree/Scout/master.svg?style=flat-square"/></a>
-    <a href="https://packagist.org/packages/DirectoryTree/Scout"><img src="https://img.shields.io/packagist/dt/directorytree/scout.svg?style=flat-square"/></a>
-    <a href="https://packagist.org/packages/DirectoryTree/Scout"><img src="https://img.shields.io/packagist/v/directorytree/scout.svg?style=flat-square"/></a>
     <a href="https://packagist.org/packages/DirectoryTree/Scout"><img src="https://img.shields.io/packagist/l/directorytree/scout.svg?style=flat-square"/></a>
 </p>
 

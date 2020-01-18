@@ -1,6 +1,7 @@
+<p align="center">
 <img width="200" src="https://github.com/DirectoryTree/Scout/blob/master/public/img/logo-circle.png" alt="Scout Logo">
-
-<p align="center">Scout audits your LDAP directory so you don't have to.</p>
+Scout audits your LDAP directory so you don't have to.
+</p>
 
 <p align="center">
     <a href="https://travis-ci.com/DirectoryTree/Scout"><img src="https://img.shields.io/travis/DirectoryTree/Scout.svg?style=flat-square"/></a>

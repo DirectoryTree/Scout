@@ -12,9 +12,9 @@
     <div id="app">
         <main class="my-4">
             <div class="container">
-                <h3 class="my-4 text-center">
-                    <i class="fa fa-binoculars"></i> {{ config('app.name') }}
-                </h3>
+                <div class="d-flex justify-content-center">
+                    <img style="width:200px;" src="{{ asset('img/logo-circle.png') }}" alt="Scout logo">
+                </div>
 
                 @yield('content')
             </div>

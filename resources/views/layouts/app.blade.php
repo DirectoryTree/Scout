@@ -15,17 +15,17 @@
     <div id="app" data-controller="app" data-app-ping-url="{{ url('keep-alive') }}" data-app-session-lifetime-minutes="{{ config('session.lifetime') }}">
         <div class="modal" data-controller="modal" data-target="app.modal"></div>
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-app shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white navbar-app shadow-sm">
             <div class="container">
                 <a class="navbar-brand font-weight-bold" href="{{ url('/') }}">
-                    <i class="fa fa-binoculars"></i> {{ config('app.name', 'Scout') }}
+                    <img style="width:80px;" src="{{ asset('img/logo-plain.png') }}" alt="Scout logo text">
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="app-navigation">
+                <div class="collapse navbar-collapse font-weight-bold" id="app-navigation">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : null }}">

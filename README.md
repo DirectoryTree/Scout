@@ -1,4 +1,4 @@
-<h1 align="center">Scout</h1>
+<img width="200" src="https://github.com/DirectoryTree/Scout/public/img/logo-circle.png" alt="Scout Logo">
 
 <p align="center">Scout audits your LDAP directory so you don't have to.</p>
 

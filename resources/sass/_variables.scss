@@ -20,6 +20,8 @@ $cyan: #39afd1;
 $dark: #322867;
 $danger: #d4442e;
 
+$primary:#ed5156;
+
 // Expand default container widths.
 $container-max-widths: (
     sm: 540px,
@@ -27,11 +29,6 @@ $container-max-widths: (
     lg: 960px,
     xl: 1280px,
 ) !default;
-
-// Dropdowns
-$dropdown-bg: $dark;
-$dropdown-color:#fff;
-$dropdown-divider-bg: #7877b1;
 
 // Cards
 $card-cap-bg:#fff;
@@ -44,7 +41,6 @@ $border-radius: .35rem;
 $input-placeholder-color: #cbcbcb;
 
 // Swal
-$swal2-confirm-button-background-color: $dark;
 $swal2-border-radius: 2rem;
 
 $list-group-item-padding-y: 0.5rem;

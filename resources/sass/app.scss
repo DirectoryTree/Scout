@@ -29,21 +29,8 @@
 // Ladda buttons
 @import '~ladda/css/ladda';
 
-.dropdown-menu .dropdown-item {
-    color: #fff;
-    background-color: $dark;
-    &:hover {
-        color: #ddd;
-        background-color: darken($dark, 10%);
-    }
-    &:active {
-        color: #ddd;
-        background-color: darken($dark, 10%);
-    }
-    &:focus {
-        color: #ddd;
-        background-color: darken($dark, 10%);
-    }
+ol.breadcrumb {
+    font-weight: $font-weight-bold;
 }
 
 .dropdown-divider {

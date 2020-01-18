@@ -130,7 +130,7 @@ export default class extends Controller {
             if (element.length) {
                 this.setError(element.get(0), _.first(errors[input]));
             } else {
-                console.error('Unable to find input: ' + input);
+                console.error(`Unable to find input [${input}]`);
             }
         }
     }

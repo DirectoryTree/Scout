@@ -25,8 +25,8 @@
                         </div>
                     </div>
                 @else
-                    <div class="card-header bg-light border-bottom border-2">
-                        <h5 class="mb-0 text-center text-muted">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0 text-center text-muted font-weight-bold">
                             {{ __('Login') }}
                         </h5>
                     </div>

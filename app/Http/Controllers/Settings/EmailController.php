@@ -85,7 +85,7 @@ class EmailController extends Controller
     {
         $this->validate($request, ['email' => 'required|email']);
 
-        Mail::raw('This email is test from Scout.', function (Message $message) use ($request) {
+        Mail::raw('This email is a test from Scout.', function (Message $message) use ($request) {
             $message->to($request->email);
         });
 

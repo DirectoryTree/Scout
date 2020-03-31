@@ -1,4 +1,8 @@
 <p align="center">
+    🚨 This repository has been renamed and moved to <a href="https://github.com/DirectoryTree/Watchdog">Watchdog</a> 🚨
+</p>
+
+<p align="center">
 <img width="200" src="https://github.com/DirectoryTree/Scout/blob/master/public/img/logo-circle.png" alt="Scout Logo">
 <br/>Scout audits your LDAP directory so you don't have to.
 </p>

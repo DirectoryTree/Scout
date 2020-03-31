@@ -1,5 +1,5 @@
 <h3 align="center">
-    🚨 This repository has been rebuild, renamed and moved to <a href="https://github.com/DirectoryTree/Watchdog">Watchdog</a> 🚨
+    🚨 This repository has been rebuilt, renamed and moved to <a href="https://github.com/DirectoryTree/Watchdog">Watchdog</a> 🚨
 </h3>
 
 <p align="center">

@@ -1,6 +1,6 @@
-<p align="center">
-    🚨 This repository has been renamed and moved to <a href="https://github.com/DirectoryTree/Watchdog">Watchdog</a> 🚨
-</p>
+<h3 align="center">
+    🚨 This repository has been rebuild, renamed and moved to <a href="https://github.com/DirectoryTree/Watchdog">Watchdog</a> 🚨
+</h3>
 
 <p align="center">
 <img width="200" src="https://github.com/DirectoryTree/Scout/blob/master/public/img/logo-circle.png" alt="Scout Logo">
